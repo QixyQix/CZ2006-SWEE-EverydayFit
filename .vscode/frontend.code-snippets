@@ -1,0 +1,23 @@
+{
+  /* 
+	Create custom snippets reference:
+	https://code.visualstudio.com/docs/editor/userdefinedsnippets#_create-your-own-snippets
+	*/
+  "Component": {
+    "scope": "javascript",
+    "prefix": "rntk",
+    "body": [
+      "import React from 'react';",
+      "import { Layout, Text } from '@ui-kitten/components';",
+      "import tailwind from 'tailwind-rn';",
+      "",
+      "export default $TM_FILENAME_BASE = () => {",
+      "  return (",
+      "      <Layout>",
+      "        <Text category='h1'></Text>",
+      "      </Layout>",
+      "  );",
+      "};"
+    ]
+  }
+}
