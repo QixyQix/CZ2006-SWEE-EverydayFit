@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@eva-design/eva": "^2.1.1",
+    "@react-native-picker/picker": "^1.16.1",
     "@react-navigation/bottom-tabs": "^6.0.7",
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/stack": "^6.0.9",
@@ -16,6 +17,7 @@
     "@ui-kitten/eva-icons": "^5.1.1",
     "expo": "~42.0.1",
     "expo-status-bar": "~1.0.4",
+    "formik": "^2.2.9",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
@@ -24,7 +26,8 @@
     "react-native-screens": "^3.8.0",
     "react-native-svg": "^9.13.6",
     "react-native-web": "~0.13.12",
-    "tailwind-rn": "^3.0.1"
+    "tailwind-rn": "^3.0.1",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
