@@ -66,7 +66,7 @@ const get_run_score = (age_group, secs) => {
 
   // get score
   const score = running_score_table[age_group][pos];
-  console.log("HI", score)
+
   return (score);
 };
 
@@ -108,9 +108,8 @@ const get_score = (age, numPushups, numSitups, run_secs, serviceType) => {
     return {totalPoints, award};
 }
 
-export default function Calculator({age, pushUpCount,sitUpCount, runCount, serviceType}) {
+export default function Calculator(age, pushUpCount,sitUpCount, runCount, serviceType) {
 
-  console.log({age});
-  return get_score({age}, {pushUpCount},{sitUpCount}, {runCount}, {serviceType});
+  return get_score(age, pushUpCount,sitUpCount, runCount, serviceType);
 
 }

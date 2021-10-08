@@ -10,7 +10,7 @@ import Calculator from "../testIPPT/calculator";
 // TODO Add form validation
 
 export default Ippt = () => {
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange, handleSubmit, setValues } = useFormik({
     initialValues: {
       gender: "male",
       typeOfService: "active",
@@ -27,9 +27,15 @@ export default Ippt = () => {
     },
 
     // TODO Implement IPPT calculation
-    
-    onSubmit: (values) => { <Calculator age = {values.age} pushUpCount = {values.pushUpCount} sitUpCount = {values.sitUpCount} runCount = {values.runTimeMinutes* 60 + values.runTimeSeconds} serviceType = {values.typeOfService} /> } 
+
   });
+  const getScoreDetails = () => {
+
+    var i = Calculator({values}.values.age , {values}.values.pushUpCount, {values}.values.sitUpCount, ( parseInt( {values}.values.runTimeMinutes * 60 ) + parseInt( {values}.values.runTimeSeconds ) ) , {values}.values.typeOfService ) ;
+    values.ipptPoints = i.totalPoints;
+    values.grade = i.award;
+    setValues(values);
+  };
 
   return (
     // TODO Improve styling
@@ -104,7 +110,7 @@ export default Ippt = () => {
       </Layout>
 
       <Layout style={tailwind("flex-row items-center")}>
-        <Button onPress={handleSubmit}>CALCULATE</Button>
+        <Button onPress={getScoreDetails}>CALCULATE</Button>
 
         {/* TODO Add medal icon according to grade */}
         {values.ipptPoints && values.grade ? (
