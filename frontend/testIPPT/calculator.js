@@ -76,49 +76,16 @@ const get_score = (age, numPushups, numSitups, run_secs, serviceType) => {
     }    
     else if (totalPoints > 60)
     {
-       award = "Pass with Incentive";
-    }   
-    else 
-    {
        award = "Pass";
     }   
-//     "nsman"
-//     Award Type Total Points Required
-//  >50
-//  >60
-// =
-//         awards = [
-//             Award(
-//                 name=
-//                 subtitle="Commando/Diver/Guards",
-//                 cash=500,
-//                 min_score=90,
-//             ),
-//             Award(
-//                 name="Gold",
-//                 cash=500,
-//                 min_score=85,
-//             ),
-//             Award(
-//                 name="Sliver",
-//                 cash=300,
-//                 min_score=75,
-//             ),
-//             Award(
-//                 name="Pass",
-//                 subtitle="NSMen incentive",
-//                 min_score=61,
-//             ),
-//             Award(
-//                 name="Pass*",
-//                 subtitle="NSMen only",
-//                 min_score=51,
-//             ),
-//             Award(
-//                 name="Fail",
-//                 min_score=0,
-//             ),
-//         ]
+    else if (serviceType == "nsman")
+    {
+      award = "Pass"
+    }
+    else if (serviceType == "active")
+    {
+       award = "Fail";
+    }   
 }
 
 

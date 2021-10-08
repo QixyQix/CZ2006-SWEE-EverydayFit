@@ -30,6 +30,7 @@ import Calculator from "./testIPPT/calculator";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+// update
 const HomeNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
   <Stack.Screen name="TEST" component= {Calculator}/>
