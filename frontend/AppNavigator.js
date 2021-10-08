@@ -24,11 +24,15 @@ import SetReps from "./Components/setReps";
 import {FontAwesome5} from '@expo/vector-icons';
 import {MaterialIcons} from '@expo/vector-icons';
 
+
+import Calculator from "./testIPPT/calculator";
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const HomeNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
+  <Stack.Screen name="TEST" component= {Calculator}/>
     <Stack.Screen name="Startup" component={Startup} />
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Register" component={Register} />
@@ -38,6 +42,7 @@ const HomeNavigator = () => (
     <Stack.Screen name="Fitness Plan" component={FitnessPlanner} />
     <Stack.Screen name="ADDACTIVITY" component= {AddActivity}/>
     <Stack.Screen name="SETREPS" component= {SetReps}/>
+    
   </Stack.Navigator>
 );
 
