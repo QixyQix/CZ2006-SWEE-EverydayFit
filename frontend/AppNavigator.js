@@ -21,6 +21,9 @@ import FitnessPlanner from "./Components/fitnessPlan";
 import AddActivity from "./Components/addActivity";
 import SetReps from "./Components/setReps";
 
+import {FontAwesome5} from '@expo/vector-icons';
+import {MaterialIcons} from '@expo/vector-icons';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -29,7 +32,7 @@ const HomeNavigator = () => (
     <Stack.Screen name="Startup" component={Startup} />
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Register" component={Register} />
-    <Stack.Screen name="Home" component={HomeScreen} />
+    <Stack.Screen name="HomeScrn" component={HomeScreen} />
     <Stack.Screen name="FITNESS_PLAN" component={FitnessPlanScreen} />
     <Stack.Screen name="CALENDAR" component={MyCalendar} />
     <Stack.Screen name="Fitness Plan" component={FitnessPlanner} />
@@ -40,16 +43,20 @@ const HomeNavigator = () => (
 
 // TODO Create tab icons (NOTE: no icons for Bmi and Ippt in Eva Icons, might need to import 3rd party icons)
 
-const HomeIcon = (props) => <Icon {...props} name="home" />;
+const HomeIcon = (props) => <MaterialIcons name = 'home' size = {30} color = 'rgb(0, 0, 230)' />;
+
+const BMIIcon = (props) => <FontAwesome5 name = 'weight' size = {25} color = 'rgb(0, 0, 230)' />;
+
+const IPPTIcon = (props) => <FontAwesome5 name = 'running' size = {25} color = 'rgb(0, 0, 230)' />;
 
 const BottomTabBar = ({ navigation, state }) => (
   <BottomNavigation
     selectedIndex={state.index}
     onSelect={(index) => navigation.navigate(state.routeNames[index])}
   >
-    <BottomNavigationTab title="BMI" />
+    <BottomNavigationTab title="BMI" icon={BMIIcon}/>
     <BottomNavigationTab title="Home" icon={HomeIcon} />
-    <BottomNavigationTab title="IPPT" />
+    <BottomNavigationTab title="IPPT" icon={IPPTIcon}/>
   </BottomNavigation>
 );
 

@@ -7,14 +7,6 @@ const calendarIcon = (props) => (
   <Icon  name='calendar' {...props}/>
 );
 
-const DayCell = ({ date }, style) => (
-
-    <View style={[styles.dayContainer, style.container]}>
-      <Text style={style.text}>{`${date.getDate()}`}</Text>
-    </View>
-
-);
-
 export const MyCalendar = () => {
 
   const [date, setDate] = React.useState(new Date());
@@ -33,8 +25,8 @@ export const MyCalendar = () => {
 
       />
 
-      <TouchableOpacity title="GO TO THE DATE CHOSEN" onPress= {() =>  navigation.navigate('FITNESS_PLAN', {select_date: date.toDateString(),})}>  
-        <Text> {date.toDateString()} </Text>
+      <TouchableOpacity style={styles.goToDate} title="GO TO " onPress= {() =>  navigation.navigate('FITNESS_PLAN', {select_date: date.toDateString(),})}>  
+        <Text style = {styles.goToDateText} >  Go to {date.toDateString()} </Text>
       </TouchableOpacity>
 
     </Layout>
@@ -56,6 +48,25 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '400',
   },
+
+  goToDate: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 30,
+    marginHorizontal: 100,
+    backgroundColor: 'rgb(0, 0, 230)',
+    height: 50,
+    borderRadius: 30,
+
+  },
+
+  goToDateText: {
+
+    color: 'rgb(255, 255, 255)',
+    fontWeight: 'bold'
+
+  },
+
 });
 
 export default MyCalendar;

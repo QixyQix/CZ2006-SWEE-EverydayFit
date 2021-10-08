@@ -19,7 +19,6 @@ export default function HomeScreen() {
 
         <View styles={styles.container}>
 
-
           <View style={styles.dateBar}>
           
               <DisplayDate date = 'Sept 1' weather = 'Sunny' />
@@ -48,7 +47,6 @@ export default function HomeScreen() {
           </View>
 
         </View>
-
 
       </View>
       

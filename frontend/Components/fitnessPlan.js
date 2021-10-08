@@ -98,7 +98,7 @@ const deleteHandler = (index) => {
 
 const styles = StyleSheet.create({
   container: {
-    maxHeight: 260,
+    maxHeight: 350,
  
   },
   container2: {

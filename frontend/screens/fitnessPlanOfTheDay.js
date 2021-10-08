@@ -12,14 +12,11 @@ export default function FitnessPlanScreen({route}) {
   const navigation = useNavigation();
 
   return (
-    <>
-      <View styles={styles.container}>
 
-        <View styles={styles.container}>
+        <View>
 
           <View style={styles.dateBar}>
-            <Text> FITNESS PLAN OF THE DAY {route.params.select_date.substring(0, 10)}</Text>
-
+            <Text style={styles.dayPLanText} > Fitness plan for {route.params.select_date.substring(0, 10)}</Text>
           </View>
 
           <View style = {styles.fitnessPLanView} > 
@@ -27,51 +24,32 @@ export default function FitnessPlanScreen({route}) {
           </View>
 
         </View>
-        
-      </View>
       
-    </>
     )
 }
 
 const styles = StyleSheet.create({
   fitnessPLanView:{
-    marginTop: 45,
+    marginTop: 90,
     justifyContent: 'center',
     alignContent: 'center'
 
   },
-  container: {
-
-    justifyContent: 'center',
-    alignContent: 'center'
-
-  },
-
-  calendarText: {
+  
+  dayPLanText: {
 
     fontWeight: 'bold',
-    fontSize: 12,
-    flex: 1, 
-    textAlign: 'center',
-
-  },
-
-  task: {
-
-    padding: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
+    fontSize: 20,
 
   },
 
   dateBar: {
-    
-    flexDirection: 'row',
-    flex: 1,
-    marginTop: 30,
+
+    marginTop: 50,
+    marginHorizontal: 85,
     position: 'absolute', 
     alignContent: 'center',
+    justifyContent: 'center',
  
   },
 
