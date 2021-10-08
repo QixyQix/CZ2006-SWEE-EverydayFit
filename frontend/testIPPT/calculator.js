@@ -23,33 +23,106 @@ const getAgeGrp = (age) => {
   return group
 }
 
-// class Station(Enum):
-//     pushup = 0
-//     situp = 1
+// pushup = 0, situp = 1
+
+const get_static_score = (Station, age_group, reps) => {
+
+    if (Station == 0)
+    {
+      score_table = pushup_score_table 
+    }
+    else 
+    {
+      score_table = situp_score_table
+    }
+    
+    // get the score from age group
+    score = score_table[age_group][reps - 1]
+
+    // Fix for when station not complete
+    if (reps == 0)
+    {
+        score = 0
+    }
+
+    return score;
+}
+
+const get_score = (age, numPushups, numSitups, run_secs, serviceType) => {
+
+    age_group = getAgeGrp(age)
+
+    puhsups_score = get_static_score( 0 , age_group, numPushups)
+
+    situps_score = get_static_score( 1, age_group, situps )
+
+    run_score = get_run_score( age_group, run_secs )
+
+    totalPoints = puhsups_score + situps_score + run_score
+
+    // find awards
+    //       ipptPoints: "",
+    //   grade: "",
+
+    award = '';
+
+    if (totalPoints > 80)
+    {
+       award = "Gold";
+    }
+    else if (totalPoints > 70)
+    {
+       award = "Silver";
+    }    
+    else if (totalPoints > 60)
+    {
+       award = "Pass with Incentive";
+    }   
+    else 
+    {
+       award = "Pass";
+    }   
+//     "nsman"
+//     Award Type Total Points Required
+//  >50
+//  >60
+// =
+//         awards = [
+//             Award(
+//                 name=
+//                 subtitle="Commando/Diver/Guards",
+//                 cash=500,
+//                 min_score=90,
+//             ),
+//             Award(
+//                 name="Gold",
+//                 cash=500,
+//                 min_score=85,
+//             ),
+//             Award(
+//                 name="Sliver",
+//                 cash=300,
+//                 min_score=75,
+//             ),
+//             Award(
+//                 name="Pass",
+//                 subtitle="NSMen incentive",
+//                 min_score=61,
+//             ),
+//             Award(
+//                 name="Pass*",
+//                 subtitle="NSMen only",
+//                 min_score=51,
+//             ),
+//             Award(
+//                 name="Fail",
+//                 min_score=0,
+//             ),
+//         ]
+}
 
 
-// const get_static_score(station: Station, age_group: int, reps: int):
-//     score_table = pushup_score_table if station == Station.pushup else situp_score_table
-
-//     # get the score from age group
-//     score = score_table[age_group][reps - 1]
-
-//     # Fix for when station not complete
-//     if reps == 0:
-//         score = 0
-
-//     # get additional reps needed to next score
-//     next_rep_counter = 0
-//     for value in score_table[age_group][reps:]:
-//         if value == score:
-//             next_rep_counter += 1
-//         else:
-//             break
-
-//     return score, next_rep_counter
-
-
-console.log("hello");
+console.log(get_static_score(0, 1, 45));
 export default function Calculator() {
 
   const navigation = useNavigation();
