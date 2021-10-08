@@ -4,7 +4,7 @@ import { Divider, List, ListItem } from '@ui-kitten/components';
 import AppContext from './database';
 import { useNavigation } from '@react-navigation/native';
 
-import { globalStyles } from '../global';
+import { globalStyles } from '../globalStuff/global';
 
 export default function AddActivity() {
 

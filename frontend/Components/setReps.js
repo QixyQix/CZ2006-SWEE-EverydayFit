@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import AppContext from './database.js';
 
-import { globalStyles } from '../global.js';
+import { globalStyles } from '../globalStuff/global';
 
 export default function SetReps({ route }) {
 
@@ -28,7 +28,7 @@ export default function SetReps({ route }) {
     }
     else{
       myContext.setActivity([...myContext.activityname, {title: activity, checked: checkedVal, description: 'Reps: ' + reps + ' Sets: ' + sets}]);
-      navigation.navigate('HOME');
+      navigation.navigate('Home');
     }
   }
   
@@ -58,7 +58,7 @@ export default function SetReps({ route }) {
         />
         
       <Button 
-        accessoryLeft = {<MaterialCommunityIcons size={20} name= 'plus-circle-outline' color="white" />}
+        accessoryLeft = {<MaterialCommunityIcons size={20} name= 'pencil-plus' color="white" />}
         styles={styles.button} 
         onPress={pressHandler}>
         Add Activity

@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import {DisplayDate} from '../Components/dateWeather';
 import WeatherInfoOfTheDay from '../Components/todaysWeather';
-// import FitnessPlanner from '../Components/fitnessPlan';
+import FitnessPlanner from '../Components/fitnessPlan';
 
 export default function HomeScreen() {
 
@@ -41,12 +41,12 @@ export default function HomeScreen() {
           <View  style = {styles.fitnessView}> 
             <Text style = {styles.fitnessText} > FITNESS PLAN OF THE DAY </Text>
           </View>
-{/*
+
           <View style = {styles.fitnessPLanView} > 
           
           <FitnessPlanner />
           </View>
-*/}
+
         </View>
 
 

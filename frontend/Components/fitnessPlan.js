@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
-import { globalStyles } from '../global';
+import { globalStyles } from '../globalStuff/global';
 import { Divider, List, ListItem, Button, CheckBox, Icon, SelectItem, Layout, Select, MenuItem, OverflowMenu, IndexPath} from '@ui-kitten/components';
 import AppContext from './database';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -88,7 +88,7 @@ const deleteHandler = (index) => {
           renderItem={renderItem}
           />
           <Button style={styles.button} 
-          accessoryLeft = {<MaterialCommunityIcons size={21} name= 'plus-circle-outline' color="white" />}
+         accessoryLeft = {<MaterialCommunityIcons size={21} name= 'pencil-plus' color="white" />}
           status='success' onPress={pressHandler}>
               Add Fitness Activity
           </Button>

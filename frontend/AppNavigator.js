@@ -17,6 +17,9 @@ import Startup from "./screens/Startup";
 import HomeScreen from "./screens/Home";
 import FitnessPlanScreen from "./screens/fitnessPlanOfTheDay";
 import MyCalendar from "./Components/calendar";
+import FitnessPlanner from "./Components/fitnessPlan";
+import AddActivity from "./Components/addActivity";
+import SetReps from "./Components/setReps";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -29,6 +32,9 @@ const HomeNavigator = () => (
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="FITNESS_PLAN" component={FitnessPlanScreen} />
     <Stack.Screen name="CALENDAR" component={MyCalendar} />
+    <Stack.Screen name="Fitness Plan" component={FitnessPlanner} />
+    <Stack.Screen name="ADDACTIVITY" component= {AddActivity}/>
+    <Stack.Screen name="SETREPS" component= {SetReps}/>
   </Stack.Navigator>
 );
 
