@@ -14,6 +14,10 @@ import Bmi from "./screens/Bmi";
 import Ippt from "./screens/Ippt";
 import Startup from "./screens/Startup";
 
+import HomeScreen from "./screens/Home";
+import FitnessPlanScreen from "./screens/fitnessPlanOfTheDay";
+import MyCalendar from "./Components/calendar";
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -22,6 +26,9 @@ const HomeNavigator = () => (
     <Stack.Screen name="Startup" component={Startup} />
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Register" component={Register} />
+    <Stack.Screen name="Home" component={HomeScreen} />
+    <Stack.Screen name="FITNESS_PLAN" component={FitnessPlanScreen} />
+    <Stack.Screen name="CALENDAR" component={MyCalendar} />
   </Stack.Navigator>
 );
 

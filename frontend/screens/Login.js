@@ -49,8 +49,9 @@ export default Login = ({ navigation }) => {
       </Layout>
 
       <Layout style={tailwind("flex-row")}>
-        <Button onPress={() => navigation.goBack()}>{`<-`}</Button>
-        <Button onPress={handleSubmit}>Login</Button>
+        <Button onPress={() => navigation.goBack()}>{`<-`}</Button> 
+        { /* <Button onPress={handleSubmit}>Login</Button>*/}
+        <Button onPress={() =>  navigation.navigate("Home")}>Login</Button>
       </Layout>
     </Layout>
   );
