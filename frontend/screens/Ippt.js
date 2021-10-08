@@ -4,6 +4,9 @@ import { Layout, Text, Button, Input } from "@ui-kitten/components";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
 
+import { PrivateValueStore, useNavigation } from '@react-navigation/native';
+import Calculator from "../testIPPT/calculator";
+
 // TODO Add form validation
 
 export default Ippt = () => {
@@ -24,9 +27,8 @@ export default Ippt = () => {
     },
 
     // TODO Implement IPPT calculation
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+    
+    onSubmit: (values) => { <Calculator age = {values.age} pushUpCount = {values.pushUpCount} sitUpCount = {values.sitUpCount} runCount = {values.runTimeMinutes* 60 + values.runTimeSeconds} serviceType = {values.typeOfService} /> } 
   });
 
   return (
