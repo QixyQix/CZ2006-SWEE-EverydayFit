@@ -3,9 +3,7 @@ import tailwind from "tailwind-rn";
 import { Layout, Text, Button, Input } from "@ui-kitten/components";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
-
-import { PrivateValueStore, useNavigation } from '@react-navigation/native';
-import Calculator from "../testIPPT/calculator";
+import { calculateIppt } from "../utils/ippt";
 
 // TODO Add form validation
 
@@ -13,7 +11,7 @@ export default Ippt = () => {
   const { values, handleChange, handleSubmit, setValues } = useFormik({
     initialValues: {
       gender: "male",
-      typeOfService: "active",
+      serviceType: "active",
       age: "",
 
       // TODO Resolve diffs with class diagram (original version has only 1 field for runTime)
@@ -26,16 +24,23 @@ export default Ippt = () => {
       grade: "",
     },
 
-    // TODO Implement IPPT calculation
+    onSubmit: (values) => {
+      // Convert minutes and seconds to only seconds
+      const runTime =
+        parseInt(values.runTimeMinutes) * 60 + parseInt(values.runTimeSeconds);
 
+      const { ipptPoints, grade } = calculateIppt(
+        parseInt(values.age),
+        parseInt(values.pushUpCount),
+        parseInt(values.sitUpCount),
+        runTime,
+        values.serviceType
+      );
+
+      // Update new values
+      setValues({ ...values, ipptPoints, grade });
+    },
   });
-  const getScoreDetails = () => {
-
-    var i = Calculator({values}.values.age , {values}.values.pushUpCount, {values}.values.sitUpCount, ( parseInt( {values}.values.runTimeMinutes * 60 ) + parseInt( {values}.values.runTimeSeconds ) ) , {values}.values.typeOfService ) ;
-    values.ipptPoints = i.totalPoints;
-    values.grade = i.award;
-    setValues(values);
-  };
 
   return (
     // TODO Improve styling
@@ -54,9 +59,9 @@ export default Ippt = () => {
       <Layout style={tailwind("flex-row items-center")}>
         <Text>Type of Service: </Text>
         <Picker
-          selectedValue={values.typeOfService}
+          selectedValue={values.serviceType}
           onValueChange={(itemValue, _) =>
-            handleChange("typeOfService")(itemValue)
+            handleChange("serviceType")(itemValue)
           }
           style={tailwind("w-4/12")}
         >
@@ -110,7 +115,7 @@ export default Ippt = () => {
       </Layout>
 
       <Layout style={tailwind("flex-row items-center")}>
-        <Button onPress={getScoreDetails}>CALCULATE</Button>
+        <Button onPress={handleSubmit}>CALCULATE</Button>
 
         {/* TODO Add medal icon according to grade */}
         {values.ipptPoints && values.grade ? (
