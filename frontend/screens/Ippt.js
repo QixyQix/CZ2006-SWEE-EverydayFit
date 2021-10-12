@@ -4,6 +4,7 @@ import { Layout, Text, Button, Input } from "@ui-kitten/components";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
 import { calculateIppt } from "../utils/ippt";
+import { Keyboard, TouchableWithoutFeedback} from 'react-native';
 
 // TODO Add form validation
 
@@ -44,6 +45,7 @@ export default Ippt = () => {
 
   return (
     // TODO Improve styling
+    <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
     <Layout style={tailwind("flex-1 justify-center items-center")}>
       <Layout style={tailwind("flex-row items-center")}>
         <Text>Gender: </Text>
@@ -125,5 +127,6 @@ export default Ippt = () => {
         ) : null}
       </Layout>
     </Layout>
+    </TouchableWithoutFeedback>
   );
 };
