@@ -10,11 +10,10 @@ import Bmi from "./screens/Bmi";
 import Ippt from "./screens/Ippt";
 import Startup from "./screens/Startup";
 
-import HomeScreen from "./screens/Home";
+import Home from "./screens/Home";
 import FitnessPlanScreen from "./screens/fitnessPlanOfTheDay";
 import MyCalendar from "./Components/calendar";
-import FitnessPlanner from "./Components/fitnessPlan";
-import AddActivity from "./Components/addActivity";
+import AddActivity from "./screens/AddActivity";
 import SetReps from "./Components/setReps";
 
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -28,10 +27,9 @@ const HomeNavigator = () => (
     <Stack.Screen name="Startup" component={Startup} />
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Register" component={Register} />
-    <Stack.Screen name="HomeScrn" component={HomeScreen} />
+    <Stack.Screen name="HomeScrn" component={Home} />
     <Stack.Screen name="FITNESS_PLAN" component={FitnessPlanScreen} />
     <Stack.Screen name="CALENDAR" component={MyCalendar} />
-    <Stack.Screen name="Fitness Plan" component={FitnessPlanner} />
     <Stack.Screen name="ADDACTIVITY" component={AddActivity} />
     <Stack.Screen name="SETREPS" component={SetReps} />
   </Stack.Navigator>
