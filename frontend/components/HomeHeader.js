@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 export default HomeHeader = () => {
   return (
     <Layout style={tailwind("flex-row justify-around")}>
+      <LogoutButton/>
       <DateWeatherButton date="Sept 1" weather="sunny" />
       <DateWeatherButton date="Sept 2" weather="cloudy" />
       <DateWeatherButton date="Sept 3" weather="rainy" />
@@ -22,6 +23,7 @@ const CalendarButton = () => {
   const navigation = useNavigation();
 
   return (
+
     <TouchableOpacity
       style={tailwind("items-center")}
       onPress={() => navigation.navigate("CALENDAR")}
@@ -34,5 +36,28 @@ const CalendarButton = () => {
       />
       <Text style={tailwind("font-bold")}>Calendar</Text>
     </TouchableOpacity>
+
+    
+  );
+};
+
+const LogoutButton = () => {
+  const navigation = useNavigation();
+
+  return (
+    
+    <TouchableOpacity 
+      style={tailwind("items-center")}
+      onPress= {() =>  navigation.navigate('Startup')}
+    >  
+    <FontAwesome5 
+      style={tailwind("pb-1")}
+      name = 'power-off' 
+      size = {25} 
+      color = 'black' 
+    />   
+     <Text style={tailwind("font-bold")} > Logout </Text>
+    </TouchableOpacity>
+
   );
 };
