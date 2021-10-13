@@ -1,9 +1,8 @@
-// @ts-nocheck
-import dotenv from "dotenv";
-import express from "express";
-import path from "path";
-import mongoose from "mongoose";
-import * as routes from "./routes";
+import dotenv from 'dotenv';
+import express from 'express';
+import path from 'path';
+import mongoose from 'mongoose';
+import * as routes from './routes';
 
 dotenv.config();
 
@@ -20,10 +19,10 @@ const app = express();
 
 app.use(express.json());
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure routes
 routes.register(app);
