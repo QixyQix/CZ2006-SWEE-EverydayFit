@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import tailwind from "tailwind-rn";
-import { Alert } from "react-native";
 import {
   Divider,
   List,
@@ -13,21 +12,22 @@ import {
 import AppContext from "../Components/database";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import EditButton from './editButton';
 
 export default FitnessPlanner = () => {
   const navigation = useNavigation();
   const myContext = useContext(AppContext);
 
-  const alertHandler = (index) => {
-    Alert.alert("Confirm", "Are you sure you want to delete this activity?", [
-      {
-        text: "No",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-      { text: "Yes", onPress: () => deleteActivity(index) },
-    ]);
-  };
+  // const alertHandler = (index) => {
+  //   Alert.alert("Confirm", "Are you sure you want to delete this activity?", [
+  //     {
+  //       text: "No",
+  //       onPress: () => console.log("Cancel Pressed"),
+  //       style: "cancel",
+  //     },
+  //     { text: "Yes", onPress: () => deleteActivity(index) },
+  //   ]);
+  // };
 
   //  const [activity, setActivity] = useState([
   //    {title: 'Push-up', checked: false},
@@ -35,16 +35,16 @@ export default FitnessPlanner = () => {
   //    {title: 'Planks', checked: false},
   //    {title: 'Push-up', checked: false}])
 
-  const renderItemAccessory = (index) => (
-    <Button
-      style={tailwind("")}
-      appearance="ghost"
-      accessoryRight={
-        <MaterialCommunityIcons size={20} name="delete" color="maroon" />
-      }
-      onPress={() => alertHandler(index)}
-    ></Button>
-  );
+  // const renderItemAccessory = (index) => (
+  //   <Button
+  //     style={tailwind("")}
+  //     appearance="ghost"
+  //     accessoryRight={
+  //       <MaterialCommunityIcons size={20} name="delete" color="maroon" />
+  //     }
+  //     onPress={() => alertHandler(index)}
+  //   ></Button>
+  // );
 
   const switchState = (state, index) => {
     let newArr = [...myContext.activityName];
@@ -56,14 +56,14 @@ export default FitnessPlanner = () => {
     navigation.navigate("ADDACTIVITY");
   };
 
-  const deleteActivity = (index) => {
-    if (index !== -1) {
-      myContext.setActivity([
-        ...myContext.activityName.slice(0, index),
-        ...myContext.activityName.slice(index + 1),
-      ]);
-    }
-  };
+  // const deleteActivity = (index) => {
+  //   if (index !== -1) {
+  //     myContext.setActivity([
+  //       ...myContext.activityName.slice(0, index),
+  //       ...myContext.activityName.slice(index + 1),
+  //     ]);
+  //   }
+  // };
 
   const renderItem = ({ item, index }) => (
     <Layout style={tailwind("flex-col")} level="1">
@@ -75,7 +75,7 @@ export default FitnessPlanner = () => {
       >
         <ListItem
           //accessoryLeft = {renderItemIcon}
-          accessoryRight={renderItemAccessory(index)}
+          accessoryRight={<EditButton index={index}/>}
           title={`${item.title}`}
           description={`${item.description}`}
         />
