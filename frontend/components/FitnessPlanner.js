@@ -9,10 +9,10 @@ import {
   Layout,
   Text,
 } from "@ui-kitten/components";
-import AppContext from "../Components/database";
+import AppContext from "./database";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import EditButton from './EditButton';
+import EditButton from "./EditButton";
 
 export default FitnessPlanner = () => {
   const navigation = useNavigation();
@@ -75,7 +75,7 @@ export default FitnessPlanner = () => {
       >
         <ListItem
           //accessoryLeft = {renderItemIcon}
-          accessoryRight={<EditButton index={index}/>}
+          accessoryRight={<EditButton index={index} />}
           title={`${item.title}`}
           description={`${item.description}`}
         />
