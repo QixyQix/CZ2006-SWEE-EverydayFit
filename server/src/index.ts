@@ -3,6 +3,7 @@ import express from 'express';
 import path from 'path';
 import mongoose from 'mongoose';
 import * as routes from './routes';
+import crypto from 'crypto';
 
 dotenv.config();
 
@@ -32,3 +33,8 @@ app.listen(port, () => {
     // tslint:disable-next-line:no-console
     console.log(`server started at http://localhost:${port}`);
 });
+
+const genJWTSecret = process.env.GENERATE_JWT_SECRETKEY || false;
+if (genJWTSecret === 'true') {
+  console.log(`GENERATED JWT SK: ${crypto.randomBytes(64).toString('hex')}`);
+}
