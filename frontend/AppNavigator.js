@@ -12,9 +12,9 @@ import Startup from "./screens/Startup";
 
 import Home from "./screens/Home";
 import FitnessPlanScreen from "./screens/fitnessPlanOfTheDay";
-import MyCalendar from "./Components/calendar";
+import MyCalendar from "./components/calendar";
 import AddActivity from "./screens/AddActivity";
-import SetReps from "./Components/setReps";
+import SetReps from "./components/setReps";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
