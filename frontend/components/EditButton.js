@@ -33,6 +33,9 @@ export const EditButton = (index) => {
     }
   };
 
+
+  //testing
+
   const deleteHandler = (index) => {
     if (index !== -1) {
       setVisible(false);
