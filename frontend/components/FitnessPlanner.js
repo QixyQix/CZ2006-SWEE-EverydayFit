@@ -82,7 +82,7 @@ export default FitnessPlanner = () => {
       </CheckBox>
     </Layout>
   );
-
+   console.log(myContext.activityName)
   return (
     <Layout>
       <Text style={tailwind("text-center font-bold text-xl")}>

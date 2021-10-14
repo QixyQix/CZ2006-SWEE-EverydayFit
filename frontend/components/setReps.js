@@ -27,7 +27,7 @@ export default function SetReps({ route }) {
       alertHandler();
     }
     else{
-      myContext.setActivity([...myContext.activityname, {title: activity, checked: checkedVal, description: 'Reps: ' + reps + ' Sets: ' + sets}]);
+      myContext.setActivity([...myContext.activityName, {title: activity, checked: checkedVal, description: 'Reps: ' + reps + ' Sets: ' + sets}]);
       navigation.navigate('HomeScrn');
     }
   }

@@ -34,14 +34,12 @@ export const EditButton = (index) => {
   };
 
 
-  //testing
-
   const deleteHandler = (index) => {
     if (index !== -1) {
       setVisible(false);
       myContext.setActivity([
-        ...myContext.activityname.slice(0, index),
-        ...myContext.activityname.slice(index + 1),
+        ...myContext.activityName.slice(0, index),
+        ...myContext.activityName.slice(index + 1),
       ]);
     }
   };

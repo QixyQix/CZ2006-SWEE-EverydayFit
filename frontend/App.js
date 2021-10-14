@@ -10,7 +10,7 @@ export default function App() {
   const [activity, setActivity] = useState([]);
 
   const userSettings = {
-    activityname: activity,
+    activityName: activity,
     setActivity,
   };
 
