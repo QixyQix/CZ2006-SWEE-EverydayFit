@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import * as routes from './routes';
 import crypto from 'crypto';
 
+import AuthRouter from './routes/authRouter';
+
 dotenv.config();
 
 const mongoURL = process.env.MONGODB_URL || 'mongodb://localhost:27017';
@@ -26,6 +28,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure routes
+app.use('/auth', AuthRouter);
 routes.register(app);
 
 // start the express server
