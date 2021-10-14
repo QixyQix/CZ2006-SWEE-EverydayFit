@@ -1,8 +1,10 @@
 import User from '../models/user';
 
 const CreateUser = async (email: string, name: string, hashedPassword: string) => {
+    const normalizedEmail = email.trim().toLowerCase();
+
     const newUser = new User({
-        email,
+        email: normalizedEmail,
         name,
         hashedPassword
     });
@@ -17,8 +19,10 @@ const CreateUser = async (email: string, name: string, hashedPassword: string) =
 }
 
 const GetUserByEmail = async (email: string) => {
+    const normalizedEmail = email.trim().toLowerCase();
+
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: normalizedEmail });
         return user;
     } catch (err) {
         console.error(`UserRepo: GetUserByEmail: ${err.message}`);

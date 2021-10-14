@@ -79,8 +79,35 @@ const Register = async (email: string, name: string, password: string) => {
     }
 }
 
+const Login = async (email: string, password: string) => {
+    const user = await UserRepo.GetUserByEmail(email.trim());
+    if (!user) {
+        console.info(`AuthService: Login: Attempt to login for non-existent account ${email}`);
+        return { success: false, message: 'Invalid login', token: '', refreshToken: '' };
+    }
+
+    if (!bcrypt.compareSync(password, user.hashedPassword)) {
+        console.info(`AuthService: Login: Failed login for account ${email}`);
+        return { success: false, message: 'Invalid login', token: '', refreshToken: '' };
+    }
+
+    try {
+        const generalToken = GenerateGeneralJWTToken(user._id);
+        const refreshToken = GenerateRefreshJWTToken(user._id);
+
+        await RefreshTokenRepo.CreateRefreshToken(user._id, refreshToken);
+
+        return { success: true, message: 'Successfully logged in', token: generalToken, refreshToken };
+    } catch (err) {
+        console.error(`AuthService: Login: Error generating tokens for user ${email}`);
+        throw new Error('An error occured while logging in');
+    }
+
+}
+
 const AuthService = {
-    Register
+    Register,
+    Login
 }
 
 export { AuthService as default };
