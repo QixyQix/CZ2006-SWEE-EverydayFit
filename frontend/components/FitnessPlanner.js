@@ -12,7 +12,7 @@ import {
 import AppContext from "../Components/database";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import EditButton from './editButton';
+import EditButton from './EditButton';
 
 export default FitnessPlanner = () => {
   const navigation = useNavigation();
