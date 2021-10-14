@@ -21,8 +21,19 @@ const CreateRefreshToken = async (userID: string, token: string) => {
 
 }
 
+const GetRefreshTokenByToken = async (token: string) => {
+    try {
+        const refreshToken = await RefreshToken.findOne({ token });
+        return refreshToken;
+    } catch (err) {
+        console.error(`RefreshTokenRepo: GetRefreshTokenByToken: An error occured while retrieving token ${token}`);
+        throw new Error('An error occured while retrieving refresh token');
+    }
+}
+
 const RefreshTokenRepo = {
-    CreateRefreshToken
+    CreateRefreshToken,
+    GetRefreshTokenByToken,
 }
 
 export { RefreshTokenRepo as default };
