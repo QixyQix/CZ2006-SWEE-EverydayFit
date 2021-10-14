@@ -3,6 +3,9 @@ import express from 'express';
 import path from 'path';
 import mongoose from 'mongoose';
 import * as routes from './routes';
+import crypto from 'crypto';
+
+import AuthRouter from './routes/authRouter';
 
 dotenv.config();
 
@@ -25,6 +28,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure routes
+app.use('/auth', AuthRouter);
 routes.register(app);
 
 // start the express server
@@ -32,3 +36,8 @@ app.listen(port, () => {
     // tslint:disable-next-line:no-console
     console.log(`server started at http://localhost:${port}`);
 });
+
+const genJWTSecret = process.env.GENERATE_JWT_SECRETKEY || false;
+if (genJWTSecret === 'true') {
+  console.log(`GENERATED JWT SK: ${crypto.randomBytes(64).toString('hex')}`);
+}
