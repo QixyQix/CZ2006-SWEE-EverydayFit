@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Alert } from 'react-native';
 import { Icon, Button, Layout,  MenuItem, OverflowMenu } from '@ui-kitten/components';
-import AppContext from './database';
+import AppContext from './Components/database';
 import { useNavigation } from '@react-navigation/native';
 
 
