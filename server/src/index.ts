@@ -24,7 +24,8 @@ const port = process.env.SERVER_PORT;
 const app = express();
 
 // Setup cron
-const forecastSchedule = new CronJob('*/1 * * * *', ScheduledService.RetrieveForecastsFromAPI)
+const pollForecastSchedule = process.env.SCHEDULE_NEA_API || '* */2 * * *'
+const forecastSchedule = new CronJob(pollForecastSchedule, ScheduledService.RetrieveForecastsFromAPI)
 forecastSchedule.start();
 
 app.use(express.json());
