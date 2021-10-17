@@ -1,18 +1,18 @@
-const calculateIppt = (age, pushUpCount, sitUpCount, runTime, serviceType) => {
+const calculateIppt = (age, pushUpCount, sitUpCount, runTime, serviceType, gender) => {
   const ageGroup = getAgeGroup(age);
-  const pushUpScore = getStaticScore(0, ageGroup, pushUpCount);
-  const sitUpScore = getStaticScore(1, ageGroup, sitUpCount);
-  const runScore = getRunScore(ageGroup, runTime);
+  const pushUpScore = getStaticScore(0, ageGroup, pushUpCount, gender);
+  const sitUpScore = getStaticScore(1, ageGroup, sitUpCount ,gender);
+  const runScore = getRunScore(ageGroup, runTime, gender);
 
   const ipptPoints = pushUpScore + sitUpScore + runScore;
-
+// something test
   let grade = "";
 
-  if (ipptPoints > 80) {
+  if (ipptPoints >= 85) {
     grade = "Gold";
-  } else if (ipptPoints > 70) {
+  } else if (ipptPoints >= 75) {
     grade = "Silver";
-  } else if (ipptPoints > 60) {
+  } else if (ipptPoints >= 61) {
     grade = "Pass";
   } else if (serviceType == "nsman") {
     grade = "Pass";
@@ -31,10 +31,17 @@ const getAgeGroup = (age) => {
 const getStaticScore = (station, ageGroup, reps) => {
   let scoreTable;
 
-  if (station == 0) {
+  if (station == 0 && gender == 'male') {
     scoreTable = pushupScoreTable;
-  } else {
+  } 
+  if (station == 0 && gender == 'female') {
+    scoreTable = femalePushUpScoreTable;
+  } 
+  if (station == 1 && gender == 'male') {
     scoreTable = situpScoreTable;
+  }
+  else {
+    scoreTable = femaleSitUpScoreTable;
   }
 
   // get the score from age group
