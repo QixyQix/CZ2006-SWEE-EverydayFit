@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { EForecastCategory } from './constants';
 
 export interface IForecast {
     _id: string,
@@ -6,6 +7,7 @@ export interface IForecast {
     highTemp: number,
     lowTemp: number,
     forecast: string,
+    forecastCategory: string,
     wetWeather: boolean
 }
 
@@ -14,6 +16,7 @@ const forecastSchema = new mongoose.Schema({
     highTemp: Number,
     lowTemp: Number,
     forecast: String,
+    forecastCategory: { type: String, enum: Object.values(EForecastCategory) },
     wetWeather: Boolean,
 });
 
