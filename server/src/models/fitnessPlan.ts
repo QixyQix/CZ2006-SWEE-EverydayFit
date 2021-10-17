@@ -4,7 +4,7 @@ import { IUser } from './user';
 
 export interface IActivity extends mongoose.Document {
     _id: string,
-    exercise: IExercise,
+    exercise: IExercise['_id'],
     totalQuantity: number,
     sets: number,
     done: boolean,
@@ -20,8 +20,8 @@ const activitySchema = new mongoose.Schema({
 export interface IFitnessPlan extends mongoose.Document {
     _id: string,
     date: Date,
-    owner: IUser,
-    activities: [IActivity],
+    owner: IUser['_id'],
+    activities: IActivity[],
 }
 
 const fitnessPlanSchema = new mongoose.Schema({
