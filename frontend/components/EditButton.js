@@ -1,11 +1,14 @@
 import React, { useState, useContext } from "react";
-import { Alert } from "react-native";
+import tailwind from "tailwind-rn";
 import {
   Icon,
   Button,
   Layout,
   MenuItem,
   OverflowMenu,
+  Text,
+  Modal,
+  Card,
 } from "@ui-kitten/components";
 import AppContext from "./database";
 import { useNavigation } from "@react-navigation/native";
@@ -13,32 +16,26 @@ import { useNavigation } from "@react-navigation/native";
 export const EditButton = (index) => {
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
+  const [visibleBtn, setVisibleBtn] = useState(false);
   const myContext = useContext(AppContext);
 
-  const alertHandler = (index, which) => {
+
+  const pressHandler = (index, which) => {
     if (which == 0) {
       navigation.navigate("ADDACTIVITY");
       setVisible(false);
-    } else if (which == 1) {
-      Alert.alert("Confirm", "Are you sure you want to delete this activity?", [
-        {
-          text: "No",
-          onPress: () => setVisible(false),
-          style: "cancel",
-        },
-        { text: "Yes", onPress: () => deleteHandler(index) },
-      ]);
     } else {
       setVisible(false);
     }
   };
 
+
   const deleteHandler = (index) => {
     if (index !== -1) {
       setVisible(false);
       myContext.setActivity([
-        ...myContext.activityname.slice(0, index),
-        ...myContext.activityname.slice(index + 1),
+        ...myContext.activityName.slice(0, index),
+        ...myContext.activityName.slice(index + 1),
       ]);
     }
   };
@@ -59,14 +56,34 @@ export const EditButton = (index) => {
         placement="left start"
         onBackdropPress={() => setVisible(false)}
       >
-        <MenuItem title="Edit" onPress={() => alertHandler(index.index, 0)} />
-        <MenuItem title="Delete" onPress={() => alertHandler(index.index, 1)} />
+        <MenuItem 
+          title="Edit" 
+          onPress={() => pressHandler(index.index, 0)} />
+        <MenuItem 
+          title="Delete" 
+          onPress={() => setVisibleBtn(true)} />
         <MenuItem
           title="Replace"
-          onPress={() => alertHandler(index.index, 2)}
+          onPress={() => pressHandler(index.index, 1)}
         />
       </OverflowMenu>
+
+      <Modal visible={visibleBtn} >
+          <Card disabled={true}  >
+            <Text> Are you sure you want to delete this activity? </Text> 
+            <Layout style={tailwind("flex-row justify-center items-center ")}>
+            <Button onPress={() => {setVisibleBtn(false); setVisible(false)}}>
+              No
+            </Button>
+            <Button onPress={ () => {deleteHandler(index.index); setVisibleBtn(false);} } >
+              Yes
+            </Button>
+            </Layout> 
+          </Card>
+      </Modal>
+
     </Layout>
+
   );
 };
 

@@ -5,12 +5,13 @@ import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { AppNavigator } from "./AppNavigator";
 import AppContext from "./components/database";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [activity, setActivity] = useState([]);
 
   const userSettings = {
-    activityname: activity,
+    activityName: activity,
     setActivity,
   };
 
@@ -19,6 +20,7 @@ export default function App() {
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.light}>
         <AppNavigator />
+        <StatusBar hidden={true} />
       </ApplicationProvider>
     </AppContext.Provider>
   );

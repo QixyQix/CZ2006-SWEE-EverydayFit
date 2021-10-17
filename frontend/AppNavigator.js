@@ -14,7 +14,7 @@ import Home from "./screens/Home";
 import FitnessPlanScreen from "./screens/fitnessPlanOfTheDay";
 import MyCalendar from "./components/calendar";
 import AddActivity from "./screens/AddActivity";
-import SetReps from "./components/setReps";
+import SetReps from "./components/SetReps";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
