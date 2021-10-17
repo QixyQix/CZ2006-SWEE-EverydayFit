@@ -67,6 +67,7 @@ export default Register = ({ navigation }) => {
         <Button onPress={() => navigation.goBack()}>{`<-`}</Button>
         <Button onPress={handleSubmit}>Register</Button>
       </Layout>
+      
     </Layout>
   );
 };

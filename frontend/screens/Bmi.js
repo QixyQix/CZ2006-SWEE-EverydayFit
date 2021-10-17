@@ -3,7 +3,7 @@ import tailwind from "tailwind-rn";
 import { Layout, Text, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
+import { Keyboard, TouchableWithoutFeedback} from 'react-native';
 /* 
 TODO Create custom error messages for invalid numbers (e.g. 5..2), numbers that are out of range
 TODO Show error message for leading zeros (e.g. 007)
@@ -12,6 +12,26 @@ const schema = Yup.object().shape({
   weight: Yup.number().min(1.0).max(999.9).required("Required"),
   height: Yup.number().min(0.01).max(9.99).required("Required"),
 });
+
+const displayWeightCat = (bmi) => {
+
+  if (bmi <= 18.5)
+  {
+    return ('Underweight');
+  }
+  else if (bmi > 18.5 && bmi <= 24.99)
+  {
+    return ('Healthy');
+  }
+  else if (bmi >= 25.0 && bmi <= 29.9)
+  {
+    return ('Overweight');
+  }
+  else if (bmi >= 30.0)
+  {
+    return ('Obese');
+  }
+  }
 
 export default Bmi = () => {
   const { handleSubmit, values, handleChange, errors, touched, setValues } =
@@ -30,12 +50,14 @@ export default Bmi = () => {
         setValues(values);
 
         // TODO Implement bmiCategory
+        values.bmiCategory = displayWeightCat(values.bmi);
       },
       validationSchema: schema,
     });
 
   return (
     // TODO Improve styling
+    <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
     <Layout style={tailwind("flex-1 justify-center items-center")}>
       <Layout style={tailwind("flex-row items-center")}>
         <Text>Enter your weight</Text>
@@ -74,5 +96,6 @@ export default Bmi = () => {
         </>
       )}
     </Layout>
+    </TouchableWithoutFeedback>
   );
 };

@@ -3,14 +3,16 @@ import tailwind from "tailwind-rn";
 import { Layout, Text, Button, Input } from "@ui-kitten/components";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
+import { calculateIppt } from "../utils/ippt";
+import { Keyboard, TouchableWithoutFeedback} from 'react-native';
 
 // TODO Add form validation
 
 export default Ippt = () => {
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange, handleSubmit, setValues } = useFormik({
     initialValues: {
       gender: "male",
-      typeOfService: "active",
+      serviceType: "active",
       age: "",
 
       // TODO Resolve diffs with class diagram (original version has only 1 field for runTime)
@@ -23,14 +25,28 @@ export default Ippt = () => {
       grade: "",
     },
 
-    // TODO Implement IPPT calculation
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      // Convert minutes and seconds to only seconds
+      const runTime =
+        parseInt(values.runTimeMinutes) * 60 + parseInt(values.runTimeSeconds);
+
+      const { ipptPoints, grade } = calculateIppt(
+        parseInt(values.age),
+        parseInt(values.pushUpCount),
+        parseInt(values.sitUpCount),
+        runTime,
+        values.serviceType,
+        values.gender
+      );
+
+      // Update new values
+      setValues({ ...values, ipptPoints, grade });
     },
   });
 
   return (
     // TODO Improve styling
+    <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
     <Layout style={tailwind("flex-1 justify-center items-center")}>
       <Layout style={tailwind("flex-row items-center")}>
         <Text>Gender: </Text>
@@ -46,9 +62,9 @@ export default Ippt = () => {
       <Layout style={tailwind("flex-row items-center")}>
         <Text>Type of Service: </Text>
         <Picker
-          selectedValue={values.typeOfService}
+          selectedValue={values.serviceType}
           onValueChange={(itemValue, _) =>
-            handleChange("typeOfService")(itemValue)
+            handleChange("serviceType")(itemValue)
           }
           style={tailwind("w-4/12")}
         >
@@ -112,5 +128,6 @@ export default Ippt = () => {
         ) : null}
       </Layout>
     </Layout>
+    </TouchableWithoutFeedback>
   );
 };
