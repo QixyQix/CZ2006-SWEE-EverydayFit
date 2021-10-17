@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import FitnessPlanService from "../service/FitnessPlanService";
+import FitnessPlanService from "../service/fitnessPlanService";
 
 const GetFitnessPlans = async (req: Request, res: Response) => {
     const userID = req.params.user;

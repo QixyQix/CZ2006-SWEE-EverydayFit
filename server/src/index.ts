@@ -4,8 +4,11 @@ import path from 'path';
 import mongoose from 'mongoose';
 import * as routes from './routes';
 import crypto from 'crypto';
+import { CronJob } from 'cron';
 
 import AuthRouter from './routes/authRouter';
+
+import ScheduledService from './service/scheduledService';
 
 dotenv.config();
 
@@ -20,6 +23,11 @@ mongoose
 const port = process.env.SERVER_PORT;
 const app = express();
 
+// Setup cron
+const pollForecastSchedule = process.env.SCHEDULE_NEA_API || '* */2 * * *'
+const forecastSchedule = new CronJob(pollForecastSchedule, ScheduledService.RetrieveForecastsFromAPI)
+forecastSchedule.start();
+
 app.use(express.json());
 
 app.set('views', path.join(__dirname, 'views'));
@@ -33,8 +41,8 @@ routes.register(app);
 
 // start the express server
 app.listen(port, () => {
-    // tslint:disable-next-line:no-console
-    console.log(`server started at http://localhost:${port}`);
+  // tslint:disable-next-line:no-console
+  console.log(`server started at http://localhost:${port}`);
 });
 
 const genJWTSecret = process.env.GENERATE_JWT_SECRETKEY || false;
