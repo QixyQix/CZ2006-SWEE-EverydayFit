@@ -35,7 +35,8 @@ export default Ippt = () => {
         parseInt(values.pushUpCount),
         parseInt(values.sitUpCount),
         runTime,
-        values.serviceType
+        values.serviceType,
+        values.gender
       );
 
       // Update new values
