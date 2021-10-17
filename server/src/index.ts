@@ -7,6 +7,8 @@ import crypto from 'crypto';
 import { CronJob } from 'cron';
 
 import AuthRouter from './routes/authRouter';
+import ForecastRouter from './routes/forecastRouter';
+import FitnessPlanRouter from './routes/fitnessPlanRouter';
 
 import ScheduledService from './service/scheduledService';
 
@@ -37,6 +39,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure routes
 app.use('/auth', AuthRouter);
+app.use('/forecasts', ForecastRouter);
+app.use('/plan', FitnessPlanRouter);
 routes.register(app);
 
 // start the express server
