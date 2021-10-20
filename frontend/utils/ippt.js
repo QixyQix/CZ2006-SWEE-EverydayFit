@@ -34,10 +34,10 @@ const getStaticScore = (station, ageGroup, reps, gender) => {
   if (station == 0 && gender == 'male') {
     scoreTable = pushupScoreTable;
   } 
-  if (station == 0 && gender == 'female') {
+  else if (station == 0 && gender == 'female') {
     scoreTable = femalePushUpScoreTable;
   } 
-  if (station == 1 && gender == 'male') {
+  else if (station == 1 && gender == 'male') {
     scoreTable = situpScoreTable;
   }
   else {
@@ -51,7 +51,7 @@ const getStaticScore = (station, ageGroup, reps, gender) => {
   if (reps == 0) {
     score = 0;
   }
-
+  console.log(score)
   return score;
 };
 
