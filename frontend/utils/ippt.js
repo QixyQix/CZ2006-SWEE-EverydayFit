@@ -55,40 +55,34 @@ const getStaticScore = (station, ageGroup, reps, gender) => {
   return score;
 };
 
-const getRunScore = (ageGroup, runTime) => {
+const getRunScore = (ageGroup, runTime, gender) => {
   // round up to nearest 10
+  let runTimeTable;
+  let runScoreTable;
+
+  if(gender == 'female'){
+    runTimeTable = femaleRunTime;
+    runScoreTable = femaleRunningScoreTable;
+  } else {
+    runTimeTable = runTimes;
+    runScoreTable = runningScoreTable;
+  }
+
   runTime = Math.ceil(runTime / 10) * 10;
 
   // Limit the values
-  runTime = Math.min(runTimes[0], runTime);
-  runTime = Math.max(runTimes[runTimes.length - 1], runTime);
+  runTime = Math.min(runTimeTable[0], runTime);
+  runTime = Math.max(runTimeTable[runTimeTable.length - 1], runTime);
 
   // get the position in the array of the timing
-  const pos = runTimes.indexOf(runTime);
+  const pos = runTimeTable.indexOf(runTime);
 
   // get score
-  const score = runningScoreTable[ageGroup][pos];
+  const score = runScoreTable[ageGroup][pos];
   //console.log(score);
   return score;
 };
 
-const getRunScoreFemale = (ageGroup, runTime) => {
-
-  runTime = Math.ceil(runTime / 10) * 10;
-
-  // Limit the values
-  runTime = Math.min(femaleRunTime[0], runTime);
-  runTime = Math.max(femaleRunTime[femaleRunTime.length - 1], runTime);
-
-  // get the position in the array of the timing
-  const pos = femaleRunTime.indexOf(runTime);
-
-  // get score
-  const score = femaleRunningScoreTable[ageGroup][pos];
-  //console.log(score);
-  return score;
-
-}
 
 const pushupScoreTable = [
   [
