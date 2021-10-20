@@ -4,7 +4,7 @@ export interface IExercise extends mongoose.Document {
     _id: string,
     name: string,
     category: string,
-    isOutdoor: boolean,
+    isOutdoor: string,
     quantityUnit: string,
     calorieBurnRatePerUnit: number
 }
@@ -12,7 +12,7 @@ export interface IExercise extends mongoose.Document {
 const exerciseSchema = new mongoose.Schema({
     name: String,
     category: String,
-    isOutdoor: Boolean,
+    isOutdoor: String,
     quantityUnit: String,
     calorieBurnRatePerUnit: Number,
 });
