@@ -4,7 +4,7 @@ import { Layout, Text, Button, Input } from "@ui-kitten/components";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
 import { calculateIppt } from "../utils/ippt";
-import { Keyboard, TouchableWithoutFeedback} from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, ScrollView} from 'react-native';
 
 // TODO Add form validation
 
@@ -47,8 +47,9 @@ export default Ippt = () => {
   return (
     // TODO Improve styling
     <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
-    <Layout style={tailwind("flex-1 justify-center items-center")}>
-      <Layout style={tailwind("flex-row items-center")}>
+    <ScrollView>
+    <Layout style={tailwind("flex-1 justify-center items-center pb-10")}>
+      <Layout style={tailwind("flex-row items-center h-16 mt-8 mb-16")}>
         <Text>Gender: </Text>
         <Picker
           selectedValue={values.gender}
@@ -59,7 +60,7 @@ export default Ippt = () => {
           <Picker.Item label="Female" value="female" />
         </Picker>
       </Layout>
-      <Layout style={tailwind("flex-row items-center")}>
+      <Layout style={tailwind("flex-row items-center h-4 mb-16")}>
         <Text>Type of Service: </Text>
         <Picker
           selectedValue={values.serviceType}
@@ -72,7 +73,7 @@ export default Ippt = () => {
           <Picker.Item label="NSman" value="nsman" />
         </Picker>
       </Layout>
-      <Layout style={tailwind("flex-row items-center")}>
+      <Layout style={tailwind("flex-row items-center mb-2")}>
         <Text>Enter your age: </Text>
         <Input
           keyboardType="number-pad"
@@ -81,9 +82,10 @@ export default Ippt = () => {
           maxLength={3}
         />
       </Layout>
-      <Layout style={tailwind("flex-row items-center")}>
+      <Layout style={tailwind("flex-row items-center mb-2")}>
         <Text>2.4 km run: </Text>
         <Input
+          style={tailwind("mx-1")}
           keyboardType="number-pad"
           value={values.runTimeMinutes}
           onChangeText={handleChange("runTimeMinutes")}
@@ -91,6 +93,7 @@ export default Ippt = () => {
         />
         <Text>min </Text>
         <Input
+          style={tailwind("mx-1")}
           keyboardType="number-pad"
           value={values.runTimeSeconds}
           onChangeText={handleChange("runTimeSeconds")}
@@ -98,7 +101,7 @@ export default Ippt = () => {
         />
         <Text>s</Text>
       </Layout>
-      <Layout style={tailwind("flex-row items-center")}>
+      <Layout style={tailwind("flex-row items-center mb-2")}>
         <Text>Push-ups: </Text>
         <Input
           keyboardType="number-pad"
@@ -107,7 +110,7 @@ export default Ippt = () => {
           maxLength={2}
         />
       </Layout>
-      <Layout style={tailwind("flex-row items-center")}>
+      <Layout style={tailwind("flex-row items-center mb-2")}>
         <Text>Sit-ups: </Text>
         <Input
           keyboardType="number-pad"
@@ -128,6 +131,7 @@ export default Ippt = () => {
         ) : null}
       </Layout>
     </Layout>
+    </ScrollView>
     </TouchableWithoutFeedback>
   );
 };

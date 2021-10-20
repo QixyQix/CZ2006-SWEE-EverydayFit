@@ -2,6 +2,7 @@ import React from "react";
 import tailwind from "tailwind-rn";
 import { Layout, Text, Card, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
+import { Keyboard, TouchableWithoutFeedback, ScrollView} from 'react-native';
 
 // TODO Implement form validation
 
@@ -22,6 +23,9 @@ export default Register = ({ navigation }) => {
 
   return (
     // TODO Improve styling
+    <ScrollView>
+    <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
+    
     <Layout style={tailwind("flex-1 justify-center items-center")}>
       <Card style={tailwind("w-10/12")}>
         <Text category="h1" style={tailwind("text-center")}>
@@ -63,11 +67,14 @@ export default Register = ({ navigation }) => {
         />
       </Layout>
 
-      <Layout style={tailwind("flex-row")}>
-        <Button onPress={() => navigation.goBack()}>{`<-`}</Button>
+      <Layout style={tailwind("flex-row p-9")}>
+        <Button style={tailwind("mr-4")} onPress={() => navigation.goBack()}>{`<-`}</Button>
         <Button onPress={handleSubmit}>Register</Button>
       </Layout>
       
     </Layout>
+    
+    </TouchableWithoutFeedback>
+    </ScrollView>
   );
 };

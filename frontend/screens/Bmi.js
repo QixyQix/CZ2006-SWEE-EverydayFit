@@ -59,9 +59,10 @@ export default Bmi = () => {
     // TODO Improve styling
     <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
     <Layout style={tailwind("flex-1 justify-center items-center")}>
-      <Layout style={tailwind("flex-row items-center")}>
+      <Layout style={tailwind("flex-row items-center mb-2")}>
         <Text>Enter your weight</Text>
         <Input
+          style={tailwind("mx-1")}
           keyboardType="numeric"
           value={values.weight}
           onChangeText={handleChange("weight")}
@@ -74,9 +75,10 @@ export default Bmi = () => {
         <Text style={tailwind("text-red-600")}>{errors.weight}</Text>
       ) : null}
 
-      <Layout style={tailwind("flex-row items-center")}>
+      <Layout style={tailwind("flex-row items-center mb-2")}>
         <Text>Enter your height</Text>
         <Input
+          style={tailwind("mx-1")}
           keyboardType="numeric"
           value={values.height}
           onChangeText={handleChange("height")}
@@ -88,7 +90,7 @@ export default Bmi = () => {
         <Text style={tailwind("text-red-600")}>{errors.height}</Text>
       ) : null}
 
-      <Button onPress={handleSubmit}>CALCULATE</Button>
+      <Button style={tailwind("mb-2")} onPress={handleSubmit}>CALCULATE</Button>
       {values.bmi !== "" && (
         <>
           <Text>Your BMI is {values.bmi}</Text>

@@ -10,7 +10,7 @@ export default Startup = ({ navigation }) => {
           Welcome to EverydayFit
         </Text>
       </Card>
-      <Button onPress={() => navigation.navigate("Register")}>Register</Button>
+      <Button style={tailwind("my-4")} onPress={() => navigation.navigate("Register")}>Register</Button>
       <Button onPress={() => navigation.navigate("Login")}>Login</Button>
     </Layout>
   );
