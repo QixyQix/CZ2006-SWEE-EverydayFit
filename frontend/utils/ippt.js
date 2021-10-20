@@ -51,7 +51,7 @@ const getStaticScore = (station, ageGroup, reps, gender) => {
   if (reps == 0) {
     score = 0;
   }
-
+  console.log(score)
   return score;
 };
 
