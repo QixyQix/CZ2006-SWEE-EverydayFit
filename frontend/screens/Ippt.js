@@ -48,7 +48,7 @@ export default Ippt = () => {
     // TODO Improve styling
     <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
     <ScrollView>
-    <Layout style={tailwind("flex-1 justify-center items-center pb-10")}>
+    <Layout style={tailwind("flex-1 justify-center items-center")}>
       <Layout style={tailwind("flex-row items-center h-16 mt-8 mb-16")}>
         <Text>Gender: </Text>
         <Picker
@@ -120,7 +120,7 @@ export default Ippt = () => {
         />
       </Layout>
 
-      <Layout style={tailwind("flex-row items-center")}>
+      <Layout style={tailwind("flex-row items-center pb-40")}>
         <Button onPress={handleSubmit}>CALCULATE</Button>
 
         {/* TODO Add medal icon according to grade */}
