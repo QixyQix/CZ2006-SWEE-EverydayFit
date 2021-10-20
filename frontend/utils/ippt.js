@@ -5,7 +5,7 @@ const calculateIppt = (age, pushUpCount, sitUpCount, runTime, serviceType, gende
   const runScore = getRunScore(ageGroup, runTime, gender);
 
   const ipptPoints = pushUpScore + sitUpScore + runScore;
-
+  
   let grade = "";
 
   if (ipptPoints >= 85) {
@@ -24,7 +24,7 @@ const calculateIppt = (age, pushUpCount, sitUpCount, runTime, serviceType, gende
 };
 
 const getAgeGroup = (age) => {
-  return Math.max(Math.floor((age - 22) / 3), 0);
+  return Math.max(Math.ceil((age - 22) / 3), 0);
 };
 
 // pushup = 0, situp = 1
@@ -34,10 +34,10 @@ const getStaticScore = (station, ageGroup, reps, gender) => {
   if (station == 0 && gender == 'male') {
     scoreTable = pushupScoreTable;
   } 
-  if (station == 0 && gender == 'female') {
+  else if (station == 0 && gender == 'female') {
     scoreTable = femalePushUpScoreTable;
   } 
-  if (station == 1 && gender == 'male') {
+  else if (station == 1 && gender == 'male') {
     scoreTable = situpScoreTable;
   }
   else {
@@ -45,7 +45,7 @@ const getStaticScore = (station, ageGroup, reps, gender) => {
   }
 
   // get the score from age group
-  let score = scoreTable[ageGroup][reps - 1];
+  let score = scoreTable[ageGroup][reps-1];
 
   // Fix for when station not complete
   if (reps == 0) {
@@ -502,8 +502,7 @@ const femalePushUpScoreTable = [
 ];
 
 const femaleRunningScoreTable = [
-  [
-  0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,4,6,8,10,12,14,16,18,20,21,22,23,24,25,26,
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,4,6,8,10,12,14,16,18,20,21,22,23,24,25,26,
   27,28,29,30,30,31,31,32,32,33,33,34,34,35,35,35,36,36,36,37,37,37,38,38,38,
   39,39,41,41,42,42,43,43,44,44,45,45,46,46,47,47,48,49,50
   ],
