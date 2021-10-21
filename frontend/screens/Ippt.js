@@ -4,7 +4,7 @@ import { Layout, Text, Button, Input } from "@ui-kitten/components";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
 import { calculateIppt } from "../utils/ippt";
-import { Keyboard, TouchableWithoutFeedback, ScrollView} from 'react-native';
+import { Keyboard, TouchableWithoutFeedback} from 'react-native';
 
 // TODO Add form validation
 
@@ -47,9 +47,8 @@ export default Ippt = () => {
   return (
     // TODO Improve styling
     <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
-    <ScrollView>
     <Layout style={tailwind("flex-1 justify-center items-center")}>
-      <Layout style={tailwind("flex-row items-center h-16 mt-8 mb-16")}>
+      <Layout style={tailwind("flex-row flex-1 items-center")}>
         <Text>Gender: </Text>
         <Picker
           selectedValue={values.gender}
@@ -60,7 +59,7 @@ export default Ippt = () => {
           <Picker.Item label="Female" value="female" />
         </Picker>
       </Layout>
-      <Layout style={tailwind("flex-row items-center h-4 mb-16")}>
+      <Layout style={tailwind("flex-row flex-1 items-center")}>
         <Text>Type of Service: </Text>
         <Picker
           selectedValue={values.serviceType}
@@ -73,54 +72,57 @@ export default Ippt = () => {
           <Picker.Item label="NSman" value="nsman" />
         </Picker>
       </Layout>
-      <Layout style={tailwind("flex-row items-center mb-2")}>
+      <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
         <Text>Enter your age: </Text>
         <Input
           keyboardType="number-pad"
           value={values.age}
           onChangeText={handleChange("age")}
           maxLength={3}
+          style={tailwind("mx-1")}
         />
       </Layout>
-      <Layout style={tailwind("flex-row items-center mb-2")}>
+      <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
         <Text>2.4 km run: </Text>
         <Input
-          style={tailwind("mx-1")}
           keyboardType="number-pad"
           value={values.runTimeMinutes}
           onChangeText={handleChange("runTimeMinutes")}
           maxLength={2}
+          style={tailwind("mx-1")}
         />
         <Text>min </Text>
         <Input
-          style={tailwind("mx-1")}
           keyboardType="number-pad"
           value={values.runTimeSeconds}
           onChangeText={handleChange("runTimeSeconds")}
           maxLength={2}
+          style={tailwind("mx-1")}
         />
         <Text>s</Text>
       </Layout>
-      <Layout style={tailwind("flex-row items-center mb-2")}>
+      <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
         <Text>Push-ups: </Text>
         <Input
           keyboardType="number-pad"
           value={values.pushUpCount}
           onChangeText={handleChange("pushUpCount")}
           maxLength={2}
+          style={tailwind("mx-1")}
         />
       </Layout>
-      <Layout style={tailwind("flex-row items-center mb-2")}>
+      <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
         <Text>Sit-ups: </Text>
         <Input
           keyboardType="number-pad"
           value={values.sitUpCount}
           onChangeText={handleChange("sitUpCount")}
           maxLength={2}
+          style={tailwind("mx-1")}
         />
       </Layout>
 
-      <Layout style={tailwind("flex-row items-center pb-40")}>
+      <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
         <Button onPress={handleSubmit}>CALCULATE</Button>
 
         {/* TODO Add medal icon according to grade */}
@@ -131,7 +133,6 @@ export default Ippt = () => {
         ) : null}
       </Layout>
     </Layout>
-    </ScrollView>
     </TouchableWithoutFeedback>
   );
 };

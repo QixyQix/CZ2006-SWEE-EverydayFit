@@ -23,9 +23,7 @@ export default Register = ({ navigation }) => {
 
   return (
     // TODO Improve styling
-    <ScrollView>
     <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
-    
     <Layout style={tailwind("flex-1 justify-center items-center")}>
       <Card style={tailwind("w-10/12")}>
         <Text category="h1" style={tailwind("text-center")}>
@@ -73,8 +71,6 @@ export default Register = ({ navigation }) => {
       </Layout>
       
     </Layout>
-    
     </TouchableWithoutFeedback>
-    </ScrollView>
   );
 };
