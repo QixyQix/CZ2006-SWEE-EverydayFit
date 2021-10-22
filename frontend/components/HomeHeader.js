@@ -5,11 +5,12 @@ import { Layout, Text, Button, Card, Modal } from "@ui-kitten/components";
 import { TouchableOpacity } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../utils/auth";
 
 export default HomeHeader = () => {
   return (
     <Layout style={tailwind("flex-row justify-around")}>
-      <LogoutButton/>
+      <LogoutButton />
       <DateWeatherButton date="Sept 1" weather="sunny" />
       <DateWeatherButton date="Sept 2" weather="cloudy" />
       <DateWeatherButton date="Sept 3" weather="rainy" />
@@ -23,7 +24,6 @@ const CalendarButton = () => {
   const navigation = useNavigation();
 
   return (
-
     <TouchableOpacity
       style={tailwind("items-center")}
       onPress={() => navigation.navigate("CALENDAR")}
@@ -36,43 +36,49 @@ const CalendarButton = () => {
       />
       <Text style={tailwind("font-bold")}>Calendar</Text>
     </TouchableOpacity>
-
-    
   );
 };
 
 const LogoutButton = () => {
-  const navigation = useNavigation();
-
+  const { logout } = useAuth();
   const [visible, setVisible] = React.useState(false);
 
   const LogoutIcon = (props) => (
-    <FontAwesome5 style={tailwind("pb-1")} name = 'power-off' size = {15} color = 'black' />
+    <FontAwesome5
+      style={tailwind("pb-1")}
+      name="power-off"
+      size={15}
+      color="black"
+    />
   );
 
   return (
-    
     <Layout>
-      <Button style={tailwind("bg-red-400")}  accessoryLeft = { LogoutIcon  } onPress={() => setVisible(true)}>
+      <Button
+        style={tailwind("bg-red-400")}
+        accessoryLeft={LogoutIcon}
+        onPress={() => setVisible(true)}
+      >
         Logout
       </Button>
-    
-      <Modal visible={visible} >
-        <Card disabled={true}  >
+
+      <Modal visible={visible}>
+        <Card disabled={true}>
           <Text> Are you sure you want to logout </Text>
           <Layout style={tailwind("flex-row justify-center items-center ")}>
-          <Button onPress={() => setVisible(false)}>
-            No
-          </Button>
+            <Button onPress={() => setVisible(false)}>No</Button>
 
-          <Button onPress={() => setVisible(false)} onPress={ () => navigation.navigate('Startup')}>
-            Confirm
-          </Button>
-          </Layout> 
+            <Button
+              onPress={async () => {
+                await logout();
+                setVisible(false);
+              }}
+            >
+              Confirm
+            </Button>
+          </Layout>
         </Card>
       </Modal>
-
-  </Layout>
-
+    </Layout>
   );
 };

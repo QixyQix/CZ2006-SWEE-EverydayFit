@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import tailwind from "tailwind-rn";
 import { Layout, Text, Card, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
+import { useAuth } from "../utils/auth";
 
 // TODO Implement form validation
 
 export default Register = ({ navigation }) => {
+  const { register } = useAuth();
+  const [registerError, setRegisterError] = useState("");
   const { handleSubmit, values, handleChange } = useFormik({
     initialValues: {
       name: "",
@@ -15,8 +18,15 @@ export default Register = ({ navigation }) => {
     },
 
     // TODO Implement register
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      try {
+        await register(values.email, values.name, values.password);
+
+        // Remove error messages and proceed to homepage
+        setRegisterError("");
+      } catch (e) {
+        setRegisterError(e.message);
+      }
     },
   });
 
@@ -64,10 +74,13 @@ export default Register = ({ navigation }) => {
       </Layout>
 
       <Layout style={tailwind("flex-row")}>
-        <Button onPress={() => navigation.goBack()}>{`<-`}</Button>
+        <Button onPress={navigation.goBack}>{`<-`}</Button>
         <Button onPress={handleSubmit}>Register</Button>
       </Layout>
-      
+
+      {registerError ? (
+        <Text style={tailwind("text-red-600")}>{registerError}</Text>
+      ) : null}
     </Layout>
   );
 };
