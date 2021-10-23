@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import tailwind from "tailwind-rn";
 import { Layout, Text, Card, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
+import { useAuth } from "../utils/auth";
 
 // TODO Implement form validation
 
 export default Login = ({ navigation }) => {
+  const { login } = useAuth();
+  const [loginError, setLoginError] = useState("");
   const { handleSubmit, values, handleChange } = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
 
-    // TODO Implement login
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      try {
+        await login(values.email, values.password);
+
+        // Remove error message and proceed to Homepage
+        setLoginError("");
+      } catch (e) {
+        setLoginError(e.message);
+      }
     },
   });
 
@@ -47,12 +56,14 @@ export default Login = ({ navigation }) => {
           style={tailwind("w-8/12")}
         />
       </Layout>
-
-      <Layout style={tailwind("flex-row")}>
-        <Button style={tailwind("mr-4")} onPress={() => navigation.goBack()}>{`<-`}</Button> 
-        { /* <Button onPress={handleSubmit}>Login</Button>*/}
-        <Button onPress={() =>  navigation.navigate("HomeScrn")}>Login</Button>
+      <Layout style={tailwind("flex-row p-2")}>
+        <Button onPress={navigation.goBack}>{`<-`}</Button>
+        <Button onPress={handleSubmit}>Login</Button>
       </Layout>
+
+      {loginError ? (
+        <Text style={tailwind("text-red-600")}>{loginError}</Text>
+      ) : null}
     </Layout>
   );
 };
