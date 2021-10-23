@@ -7,14 +7,16 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../utils/auth";
 
-export default HomeHeader = () => {
+
+export default HomeHeader = (props) => {
+  
   return (
     <Layout style={tailwind("flex-row justify-around")}>
       <LogoutButton />
-      <DateWeatherButton date="Sept 1" weather="sunny" />
-      <DateWeatherButton date="Sept 2" weather="cloudy" />
-      <DateWeatherButton date="Sept 3" weather="rainy" />
-      <DateWeatherButton date="Sept 4" weather="stormy" />
+      <DateWeatherButton forecast={props.forecasts[0]} />
+      <DateWeatherButton forecast={props.forecasts[1]} />
+      <DateWeatherButton forecast={props.forecasts[2]} />
+      <DateWeatherButton forecast={props.forecasts[3]} />
       <CalendarButton />
     </Layout>
   );

@@ -9,7 +9,7 @@ export const weatherConditions = {
     title: "So Sunny",
     icon: "weather-sunny",
   },
-  stormy: {
+  "THUNDERY_SHOWERS": {
     color: "#616161",
     title: "A Storm is coming",
     icon: "weather-lightning",

@@ -3,10 +3,14 @@ import tailwind from "tailwind-rn";
 import { Text, Layout } from "@ui-kitten/components";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { weatherConditions } from "../constants";
+import moment from "moment";
 
-export default TodaysWeatherInfo = ({ date, weather, temperature }) => {
+export default TodaysWeatherInfo = ({ forecast }) => {
   // Capitalize first character
-  const weatherText = weather[0].toUpperCase() + weather.substring(1);
+  
+  const weather = forecast ? forecast.forecastCategory: "";
+  const weatherText = forecast ? weather[0].toUpperCase() + weather.substring(1) : "";
+  const date = forecast ? moment(forecast.date.toString()).format('MMM D') : "";
 
   return (
     <Layout
@@ -17,11 +21,12 @@ export default TodaysWeatherInfo = ({ date, weather, temperature }) => {
       <Text> {date} </Text>
       <MaterialCommunityIcons
         size={50}
-        name={weatherConditions[weather].icon}
-        color={weatherConditions[weather].color}
+        name={forecast ? weatherConditions[weather].icon : ""}
+        color={forecast ? weatherConditions[weather].color : ""}
       />
-      <Text> {weatherText} </Text>
-      <Text> {temperature} </Text>
+      <Text> {weatherText} </Text> 
+      
+      {/* <Text> {temperature} </Text> */}
     </Layout>
   );
 };
