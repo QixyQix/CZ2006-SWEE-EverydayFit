@@ -4,9 +4,9 @@ import { EExerciseCategory, EQuantityType } from './constants';
 export interface IExercise extends mongoose.Document {
     _id: string,
     name: string,
-    category: string,
+    category: EExerciseCategory,
     outdoorOnly: boolean,
-    quantityType: string,
+    quantityType: EQuantityType,
     quantityUnit: string,
     calorieBurnRatePerUnit: number
 }
