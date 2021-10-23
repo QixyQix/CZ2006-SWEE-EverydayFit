@@ -105,9 +105,23 @@ const Login = async (email: string, password: string) => {
 
 }
 
+const RefreshToken = async (userID: string) => {
+    if (!userID) {
+        throw new Error('No user ID');
+    }
+
+    try {
+        const newToken = GenerateGeneralJWTToken(userID);
+        return { token: newToken };
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}
+
 const AuthService = {
     Register,
-    Login
+    Login,
+    RefreshToken,
 }
 
 export { AuthService as default };
