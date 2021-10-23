@@ -18,22 +18,35 @@ import SetReps from "./components/SetReps";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useAuth } from "./utils/auth";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const HomeNavigator = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Startup" component={Startup} />
-    <Stack.Screen name="Login" component={Login} />
-    <Stack.Screen name="Register" component={Register} />
-    <Stack.Screen name="HomeScrn" component={Home} />
-    <Stack.Screen name="FITNESS_PLAN" component={FitnessPlanScreen} />
-    <Stack.Screen name="CALENDAR" component={MyCalendar} />
-    <Stack.Screen name="ADDACTIVITY" component={AddActivity} />
-    <Stack.Screen name="SETREPS" component={SetReps} />
-  </Stack.Navigator>
-);
+const HomeNavigator = () => {
+  const { auth } = useAuth();
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {auth.token ? (
+        <>
+          {/* If the user is logged in */}
+          <Stack.Screen name="HomeScrn" component={Home} />
+          <Stack.Screen name="FITNESS_PLAN" component={FitnessPlanScreen} />
+          <Stack.Screen name="CALENDAR" component={MyCalendar} />
+          <Stack.Screen name="ADDACTIVITY" component={AddActivity} />
+          <Stack.Screen name="SETREPS" component={SetReps} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Startup" component={Startup} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+        </>
+      )}
+    </Stack.Navigator>
+  );
+};
 
 // TODO Set color to match with the theme
 const HomeIcon = (props) => (
