@@ -65,7 +65,7 @@ export default Register = ({ navigation }) => {
         />
       </Layout>
 
-      <Layout style={tailwind("flex-row p-9")}>
+      <Layout style={tailwind("flex-row p-2")}>
         <Button style={tailwind("mr-4")} onPress={() => navigation.goBack()}>{`<-`}</Button>
         <Button onPress={handleSubmit}>Register</Button>
       </Layout>
