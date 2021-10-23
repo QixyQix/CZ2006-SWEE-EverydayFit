@@ -16,15 +16,24 @@ export default function SetReps({ route }) {
   const checkedVal = route.params.checked;
 
   const alertHandler = () => {
-    Alert.alert("Error!", "Value cannot be less than zero.", [
+    Alert.alert("Error!", "Value cannot be less than 1.", [
+      { text: "Understood", style: "cancel" },
+    ]);
+  };
+  const alertHandlerNotInt = () => {
+    Alert.alert("Error!", "Value must be a whole number.", [
       { text: "Understood", style: "cancel" },
     ]);
   };
 
   const pressHandler = () => {
-    if (reps <= 0 || sets <= 0) {
+    console.log(typeof(reps));
+    if (reps < 1 || sets < 1) {
       alertHandler();
-    } else {
+    } else if(reps.includes(".")){
+      alertHandlerNotInt();
+    } 
+     else {
       myContext.setActivity([
         ...myContext.activityName,
         {

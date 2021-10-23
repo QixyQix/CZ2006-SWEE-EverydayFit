@@ -1,12 +1,32 @@
 import React from "react";
 import tailwind from "tailwind-rn";
 import { Layout, Text, Card, Input, Button } from "@ui-kitten/components";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 
 // TODO Implement form validation
 
+const registerSchema = Yup.object().shape({
+  name: Yup.string()
+           .required("Required"),
+  email: Yup.string()
+            .email("Must be a valid email!")
+            .required("Required"),
+  //at least 1 upper, 1 lower, 1 number
+  password: Yup.string()
+               .matches(/(?=.*[a-z])/, "Must contain at least 1 lower case")
+               .matches(/(?=.*[A-Z])/, "Must contain at least 1 upper case")
+               .matches(/(?=.*[0-9])/, "Must contain at least 1 numeric value")
+               .min(8, "minimum 8 characters")
+               .required("Required"),
+  passwordConfirmation: Yup.string()
+                           .required("Required")
+                           .oneOf([Yup.ref('password')]),
+});
+
 export default Register = ({ navigation }) => {
-  const { handleSubmit, values, handleChange } = useFormik({
+  const { handleSubmit, values, handleChange, errors, touched } = useFormik({
     initialValues: {
       name: "",
       email: "",
@@ -18,10 +38,17 @@ export default Register = ({ navigation }) => {
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
+
+    validationSchema: registerSchema,
   });
 
   return (
     // TODO Improve styling
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
     <Layout style={tailwind("flex-1 justify-center items-center")}>
       <Card style={tailwind("w-10/12")}>
         <Text category="h1" style={tailwind("text-center")}>
@@ -38,22 +65,31 @@ export default Register = ({ navigation }) => {
           autoCompleteType="name"
           value={values.name}
           onChangeText={handleChange("name")}
-          style={tailwind("w-8/12 mb-4")}
+          style={tailwind("w-8/12 my-1")}
         />
+        {errors.name && touched.name ? (
+          <Text style={tailwind("text-red-600")}>{errors.name}</Text>
+        ) : null}
         <Input
           placeholder="Enter your email"
           autoCompleteType="email"
           value={values.email}
           onChangeText={handleChange("email")}
-          style={tailwind("w-8/12 mb-4")}
+          style={tailwind("w-8/12 my-1")}
         />
+        {errors.email && touched.email ? (
+          <Text style={tailwind("text-red-600")}>{errors.email}</Text>
+        ) : null}
         <Input
           placeholder="Enter your password"
           secureTextEntry
           value={values.password}
           onChangeText={handleChange("password")}
-          style={tailwind("w-8/12 mb-4")}
+          style={tailwind("w-8/12 my-1")}
         />
+        {errors.password && touched.password ? (
+          <Text style={tailwind("text-red-600")}>{errors.password}</Text>
+        ) : null}
         <Input
           placeholder="Re-enter your password"
           secureTextEntry
@@ -61,6 +97,9 @@ export default Register = ({ navigation }) => {
           onChangeText={handleChange("passwordConfirmation")}
           style={tailwind("w-8/12")}
         />
+        {errors.passwordConfirmation && touched.passwordConfirmation ? (
+          <Text style={tailwind("text-red-600")}>Password must be the same!</Text>
+        ) : null}
       </Layout>
 
       <Layout style={tailwind("flex-row")}>
@@ -69,5 +108,6 @@ export default Register = ({ navigation }) => {
       </Layout>
       
     </Layout>
+    </TouchableWithoutFeedback>
   );
 };
