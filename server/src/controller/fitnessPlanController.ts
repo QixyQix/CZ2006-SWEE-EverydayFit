@@ -38,9 +38,59 @@ const AddActivityToFitnessPlan = async (req: Request, res: Response) => {
     }
 }
 
+const DeleteActivityFromFitnessPlan = async (req: Request, res: Response) => {
+    const userID = req.params.user;
+    if (!userID) {
+        return res.status(401).json({ message: 'User not found' })
+    }
+
+    const { exerciseID } = req.body;
+    const { date } = req.params;
+
+    const dateRegex = /^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/;
+    if (!date.match(dateRegex)) {
+        console.error(`FitnessPlanController: DeleteActivityFromFitnessPlan: Invalid date string: ${date}`)
+        return res.status(500).json({ message: 'Date must be in yyyy-MM-dd format' });
+    }
+
+    const dateObj = new Date(date);
+    try {
+        const result = await FitnessPlanService.DeleteActivityFromFitnessPlan(userID, dateObj, exerciseID);
+        return res.json(result);
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
+const EditActivityFromFitnessPlan = async (req: Request, res: Response) => {
+    const userID = req.params.user;
+    if (!userID) {
+        return res.status(401).json({ message: 'User not found' })
+    }
+
+    const { exerciseID, quantity, sets, done } = req.body;
+    const { date } = req.params;
+
+    const dateRegex = /^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/;
+    if (!date.match(dateRegex)) {
+        console.error(`FitnessPlanController: EditActivityFromFitnessPlan: Invalid date string: ${date}`)
+        return res.status(500).json({ message: 'Date must be in yyyy-MM-dd format' });
+    }
+
+    const dateObj = new Date(date);
+    try {
+        const result = await FitnessPlanService.EditActivityFromFitnessPlan(userID, dateObj, exerciseID, quantity, sets, done);
+        return res.json(result);
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
 const FitnessPlanController = {
     GetFitnessPlans,
-    AddActivityToFitnessPlan
+    AddActivityToFitnessPlan,
+    DeleteActivityFromFitnessPlan,
+    EditActivityFromFitnessPlan,
 }
 
 export { FitnessPlanController as default };

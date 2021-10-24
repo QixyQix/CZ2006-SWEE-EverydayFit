@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { IExercise } from './exercise';
 import { IUser } from './user';
 
-export interface IActivity extends mongoose.Document {
+export interface IActivity extends mongoose.Types.Subdocument {
     _id: string,
     exercise: IExercise['_id'],
     totalQuantity: number,
@@ -21,7 +21,7 @@ export interface IFitnessPlan extends mongoose.Document {
     _id: string,
     date: Date,
     owner: IUser['_id'],
-    activities: IActivity[],
+    activities: mongoose.Types.Array <IActivity>,
 }
 
 const fitnessPlanSchema = new mongoose.Schema({

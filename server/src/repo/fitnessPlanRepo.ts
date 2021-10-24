@@ -46,6 +46,11 @@ const GetFitnessPlanByID = async (fitnessPlanID: string) => {
 }
 
 const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number) => {
+    if (!checkValidObjectID(exerciseID)) {
+        console.error(`ExerciseRepo: AddActivityToFitnessPlan: Invalid exerciseID ${exerciseID}`)
+        throw new Error ('Invalid Exercise ID');
+    }
+
     const activity: any = {
         exercise: exerciseID,
         totalQuantity: quantity,
@@ -66,12 +71,57 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
     }
 }
 
+const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, exerciseID: string) => {
+    if (!checkValidObjectID(exerciseID)) {
+        console.error(`ExerciseRepo: AddActivityToFitnessPlan: Invalid exerciseID ${exerciseID}`)
+        throw new Error ('Invalid Exercise ID');
+    }
+    try {
+        const result = await FitnessPlan.findOneAndUpdate(
+            { owner: userID, date },
+            { $pull: { activities: { exerciseID } } }
+        );
+        return result;
+    } catch (err) {
+        console.error(err.message);
+        console.error(`FitnessPlanRepo: DeleteActivityFromFitnessPlan: Failed to delete activity for ${userID} on ${date.toDateString()}`)
+        throw new Error('An error occured while deleting activity from fitness plan');
+    }
+}
+
+const EditActivityFromFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number, done: boolean) => {
+    if (!checkValidObjectID(exerciseID)) {
+        console.error(`ExerciseRepo: EditActivityFromFitnessPlan: Invalid exerciseID ${exerciseID}`)
+        throw new Error ('Invalid Exercise ID');
+    }
+
+    const activity: any = {
+        exercise: exerciseID,
+        totalQuantity: quantity,
+        sets,
+        done
+    };
+
+    try {
+        const result = await FitnessPlan.findOneAndUpdate(
+            { owner: userID, date, activities: {exercise: exerciseID} },
+            { $set: { activities:activity } }
+        )
+    } catch (err) {
+        console.error(err.message);
+        console.error(`FitnessPlanRepo: EditActivityFromFitnessPlan: Failed to edit activity for ${userID} on ${date.toDateString()}`)
+        throw new Error('An error occured while editing activity from fitness plan');
+    }
+}
+
 const FitnessPlanRepo = {
     CreateFitnessPlan,
     GetFitnessPlansForUserID,
     GetDateFitnessPlanForUser,
     GetFitnessPlanByID,
     AddActivityToFitnessPlan,
+    DeleteActivityFromFitnessPlan,
+    EditActivityFromFitnessPlan,
 }
 
 export { FitnessPlanRepo as default };
