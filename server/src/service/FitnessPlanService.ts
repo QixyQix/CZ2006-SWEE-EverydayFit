@@ -26,7 +26,7 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
             const newFitnessPlan = await FitnessPlanRepo.CreateFitnessPlan(userID, date, activities);
             return newFitnessPlan;
         } else {
-            if (fitnessPlan.owner !== userID) {
+            if (fitnessPlan.owner.toString() !== userID) {
                 console.error(`FitnessPlanService: AddActivityToFitnessPlan: User ${userID} attempted to modify fitness plan belonging to ${fitnessPlan.owner}`);
                 throw new Error('You do not own this fitness plan!');
             }
@@ -47,7 +47,7 @@ const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, exercis
             console.error(`FitnessPlanService: DeleteActivityFromFitnessPlan: Fitness Plan for ${userID} on ${date} is already empty`);
             throw new Error ('An error occured while trying to delete activity');
         } else {
-            if (fitnessPlan.owner !== userID) {
+            if (fitnessPlan.owner.toString() !== userID) {
                 console.error(`FitnessPlanService: DeleteActivityFromFitnessPlan: User ${userID} attempted to modify fitness plan belonging to ${fitnessPlan.owner}`);
                 throw new Error('You do not own this fitness plan!');
             }
@@ -68,7 +68,7 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, exerciseI
             console.error(`FitnessPlanService: EditActivityFromFitnessPlan: Fitness Plan for ${userID} on ${date} is empty`);
             throw new Error ('An error occured while trying to edit activity');
         } else {
-            if (fitnessPlan.owner !== userID) {
+            if (fitnessPlan.owner.toString() !== userID) {
                 console.error(`FitnessPlanService: EditActivityFromFitnessPlan: User ${userID} attempted to modify fitness plan belonging to ${fitnessPlan.owner}`);
                 throw new Error('You do not own this fitness plan!');
             }
