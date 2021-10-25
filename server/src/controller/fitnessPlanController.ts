@@ -44,7 +44,7 @@ const DeleteActivityFromFitnessPlan = async (req: Request, res: Response) => {
         return res.status(401).json({ message: 'User not found' })
     }
 
-    const { exerciseID } = req.body;
+    const { activityID } = req.body;
     const { date } = req.params;
 
     const dateRegex = /^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/;
@@ -55,7 +55,7 @@ const DeleteActivityFromFitnessPlan = async (req: Request, res: Response) => {
 
     const dateObj = new Date(date);
     try {
-        const result = await FitnessPlanService.DeleteActivityFromFitnessPlan(userID, dateObj, exerciseID);
+        const result = await FitnessPlanService.DeleteActivityFromFitnessPlan(userID, dateObj, activityID);
         return res.json(result);
     } catch (err) {
         return res.status(500).json({ message: err.message })
@@ -68,7 +68,7 @@ const EditActivityFromFitnessPlan = async (req: Request, res: Response) => {
         return res.status(401).json({ message: 'User not found' })
     }
 
-    const { exerciseID, quantity, sets, done } = req.body;
+    const { activityID, exerciseID, quantity, sets, done } = req.body;
     const { date } = req.params;
 
     const dateRegex = /^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/;
@@ -79,7 +79,7 @@ const EditActivityFromFitnessPlan = async (req: Request, res: Response) => {
 
     const dateObj = new Date(date);
     try {
-        const result = await FitnessPlanService.EditActivityFromFitnessPlan(userID, dateObj, exerciseID, quantity, sets, done);
+        const result = await FitnessPlanService.EditActivityFromFitnessPlan(userID, dateObj, activityID, exerciseID, quantity, sets, done);
         return res.json(result);
     } catch (err) {
         return res.status(500).json({ message: err.message })

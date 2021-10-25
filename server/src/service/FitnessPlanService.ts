@@ -61,7 +61,7 @@ const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, exercis
     }
 }
 
-const EditActivityFromFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number, done: boolean) => {
+const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityID: string, exerciseID: string, quantity: number, sets: number, done: boolean) => {
     try {
         const fitnessPlan = await FitnessPlanRepo.GetDateFitnessPlanForUser(userID, date);
         if (!fitnessPlan) {
@@ -73,7 +73,7 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, exerciseI
                 throw new Error('You do not own this fitness plan!');
             }
 
-            const result = await FitnessPlanRepo.EditActivityFromFitnessPlan(userID, date, exerciseID, quantity, sets, done);
+            const result = await FitnessPlanRepo.EditActivityFromFitnessPlan(userID, date, activityID, exerciseID, quantity, sets, done);
             return result;
         }
     } catch (err) {
