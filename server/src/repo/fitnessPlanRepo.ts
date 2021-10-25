@@ -45,17 +45,16 @@ const GetFitnessPlanByID = async (fitnessPlanID: string) => {
     return fitnessPlan
 }
 
-const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number) => {
+const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number, done = false) => {
     if (!checkValidObjectID(exerciseID)) {
         console.error(`ExerciseRepo: AddActivityToFitnessPlan: Invalid exerciseID ${exerciseID}`)
         throw new Error ('Invalid Exercise ID');
     }
-
     const activity: any = {
-        exercise: exerciseID,
+        exerciseID,
         totalQuantity: quantity,
         sets,
-        done: false
+        done
     };
 
     try {
@@ -95,18 +94,10 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, exerciseI
         throw new Error ('Invalid Exercise ID');
     }
 
-    const activity: any = {
-        exercise: exerciseID,
-        totalQuantity: quantity,
-        sets,
-        done
-    };
-
     try {
-        const result = await FitnessPlan.findOneAndUpdate(
-            { owner: userID, date, activities: {exercise: exerciseID} },
-            { $set: { activities:activity } }
-        )
+        const oldPlan = DeleteActivityFromFitnessPlan(userID, date, exerciseID);
+        const newPlan = AddActivityToFitnessPlan(userID, date, exerciseID, quantity, sets, done);
+        return newPlan;
     } catch (err) {
         console.error(err.message);
         console.error(`FitnessPlanRepo: EditActivityFromFitnessPlan: Failed to edit activity for ${userID} on ${date.toDateString()}`)
