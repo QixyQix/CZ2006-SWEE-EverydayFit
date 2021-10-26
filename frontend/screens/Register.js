@@ -5,12 +5,9 @@ import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-// TODO Implement form validation
-
 const registerSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
   email: Yup.string().email("Must be a valid email!").required("Required"),
-  //at least 1 upper, 1 lower, 1 number
   password: Yup.string()
     .min(6, "minimum 6 characters")
     .max(50, "Maximum 50 characters")
