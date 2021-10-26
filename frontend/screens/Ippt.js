@@ -46,7 +46,7 @@ export default Ippt = () => {
         grade: "",
       },
 
-      // FIXME Error generated after submission, ReferenceError: Can't find variable: gender
+      // TODO Show appropriate error message if calculateIppt returns undefined
       onSubmit: (values) => {
         // Convert minutes and seconds to only seconds
         const runTime =
