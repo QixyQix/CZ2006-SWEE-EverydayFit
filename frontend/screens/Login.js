@@ -6,15 +6,12 @@ import * as Yup from "yup";
 
 // TODO Implement form validation
 const loginSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email!")
-    .required("Required"),
+  email: Yup.string().email("Invalid email!").required("Required"),
   password: Yup.string()
     .min(6, "minimum 6 characters")
     .max(50, "Maximum 50 characters")
     .required("Required"),
 });
-
 
 export default Login = ({ navigation }) => {
   const { handleSubmit, values, errors, touched, handleChange } = useFormik({
@@ -43,6 +40,7 @@ export default Login = ({ navigation }) => {
         </Text>
       </Card>
 
+      {/* TODO Add labels */}
       <Layout style={tailwind("my-4")}>
         <Input
           placeholder="Email"
@@ -68,9 +66,9 @@ export default Login = ({ navigation }) => {
       </Layout>
 
       <Layout style={tailwind("flex-row")}>
-        <Button onPress={() => navigation.goBack()}>{`<-`}</Button> 
-        { /* <Button onPress={handleSubmit}>Login</Button>*/}
-        <Button onPress={() =>  navigation.navigate("HomeScrn")}>Login</Button>
+        <Button onPress={() => navigation.goBack()}>{`<-`}</Button>
+        {/* <Button onPress={handleSubmit}>Login</Button>*/}
+        <Button onPress={() => navigation.navigate("HomeScrn")}>Login</Button>
       </Layout>
     </Layout>
   );
