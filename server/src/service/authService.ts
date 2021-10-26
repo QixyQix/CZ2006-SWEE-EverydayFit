@@ -118,10 +118,26 @@ const RefreshToken = async (userID: string) => {
     }
 }
 
+const SetUserExpoToken = async (userID: string, expoToken: string) => {
+    if (!userID) {
+        throw new Error('No user ID');
+    }
+
+    const user = await UserRepo.GetUserByEmail(userID)
+    if (!user) {
+        throw new Error(`User of ID ${userID} not found`);
+    }
+
+    user.expoToken = expoToken;
+    await user.save();
+    return { message: 'Successfully set expo token for user' };
+}
+
 const AuthService = {
     Register,
     Login,
     RefreshToken,
+    SetUserExpoToken,
 }
 
 export { AuthService as default };
