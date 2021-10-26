@@ -19,16 +19,14 @@ export const EditButton = (index) => {
   const [visibleBtn, setVisibleBtn] = useState(false);
   const myContext = useContext(AppContext);
 
-
   const pressHandler = (index, which) => {
     if (which == 0) {
-      navigation.navigate("ADDACTIVITY");
+      navigation.navigate("AddActivity");
       setVisible(false);
     } else {
       setVisible(false);
     }
   };
-
 
   const deleteHandler = (index) => {
     if (index !== -1) {
@@ -56,34 +54,38 @@ export const EditButton = (index) => {
         placement="left start"
         onBackdropPress={() => setVisible(false)}
       >
-        <MenuItem 
-          title="Edit" 
-          onPress={() => pressHandler(index.index, 0)} />
-        <MenuItem 
-          title="Delete" 
-          onPress={() => setVisibleBtn(true)} />
+        <MenuItem title="Edit" onPress={() => pressHandler(index.index, 0)} />
+        <MenuItem title="Delete" onPress={() => setVisibleBtn(true)} />
         <MenuItem
           title="Replace"
           onPress={() => pressHandler(index.index, 1)}
         />
       </OverflowMenu>
 
-      <Modal visible={visibleBtn} >
-          <Card disabled={true}  >
-            <Text> Are you sure you want to delete this activity? </Text> 
-            <Layout style={tailwind("flex-row justify-center items-center ")}>
-            <Button onPress={() => {setVisibleBtn(false); setVisible(false)}}>
+      <Modal visible={visibleBtn}>
+        <Card disabled={true}>
+          <Text> Are you sure you want to delete this activity? </Text>
+          <Layout style={tailwind("flex-row justify-center items-center ")}>
+            <Button
+              onPress={() => {
+                setVisibleBtn(false);
+                setVisible(false);
+              }}
+            >
               No
             </Button>
-            <Button onPress={ () => {deleteHandler(index.index); setVisibleBtn(false);} } >
+            <Button
+              onPress={() => {
+                deleteHandler(index.index);
+                setVisibleBtn(false);
+              }}
+            >
               Yes
             </Button>
-            </Layout> 
-          </Card>
+          </Layout>
+        </Card>
       </Modal>
-
     </Layout>
-
   );
 };
 

@@ -53,7 +53,7 @@ export default FitnessPlanner = () => {
   };
 
   const pressHandler = () => {
-    navigation.navigate("ADDACTIVITY");
+    navigation.navigate("AddActivity");
   };
 
   // const deleteActivity = (index) => {
@@ -82,7 +82,7 @@ export default FitnessPlanner = () => {
       </CheckBox>
     </Layout>
   );
-  
+
   return (
     <Layout>
       <Text style={tailwind("text-center font-bold text-xl")}>
