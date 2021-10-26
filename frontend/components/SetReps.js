@@ -21,11 +21,11 @@ export default function SetReps({ route }) {
   const setRepSchema = Yup.object().shape({
     reps: Yup.string()
       .required("Required")
-      .test("isMoreThan0", "Minimun 1 rep", (val) => {return parseInt(val)>0;})
+      .test("isMoreThan0", "Minimum 1 rep", (val) => {return parseInt(val)>0;})
       .test("Integer", "reps must be whole number", (val) => {return !(val.includes("."));}),
     sets: Yup.string()
       .required("Required")
-      .test("isMoreThan0", "Minimun 1 rep", (val) => {return parseInt(val)>0;})
+      .test("isMoreThan0", "Minimum 1 set", (val) => {return parseInt(val)>0;})
       .test("Integer", "reps must be whole number", (val) => {return !(val.includes("."));}),
   });
 

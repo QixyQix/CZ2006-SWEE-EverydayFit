@@ -19,7 +19,6 @@ const schema = Yup.object().shape({
   runTimeMinutes: Yup.string().test("Minutes", isTwoDigit).required("Required"),
   runTimeSeconds: Yup.string()
     .test("Seconds", isTwoDigit)
-    .test("Seconds", isSeconds)
     .required("Required"),
   pushUpCount: Yup.string()
     .test("Push Up", "Must be a positive integer", isTwoDigit)
