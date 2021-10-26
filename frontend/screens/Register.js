@@ -15,10 +15,8 @@ const registerSchema = Yup.object().shape({
             .required("Required"),
   //at least 1 upper, 1 lower, 1 number
   password: Yup.string()
-               .matches(/(?=.*[a-z])/, "Must contain at least 1 lower case")
-               .matches(/(?=.*[A-Z])/, "Must contain at least 1 upper case")
-               .matches(/(?=.*[0-9])/, "Must contain at least 1 numeric value")
-               .min(8, "minimum 8 characters")
+               .min(6, "minimum 6 characters")
+               .max(50, "Maximum 50 characters")
                .required("Required"),
   passwordConfirmation: Yup.string()
                            .required("Required")
@@ -81,7 +79,7 @@ export default Register = ({ navigation }) => {
           <Text style={tailwind("text-red-600")}>{errors.email}</Text>
         ) : null}
         <Input
-          placeholder="Enter your password"
+          placeholder="Enter password (6-50 characters)"
           secureTextEntry
           value={values.password}
           onChangeText={handleChange("password")}

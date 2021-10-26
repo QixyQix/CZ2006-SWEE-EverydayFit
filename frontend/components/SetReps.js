@@ -8,6 +8,9 @@ import { useNavigation } from "@react-navigation/native";
 import AppContext from "./database.js";
 import tailwind from "tailwind-rn";
 
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 export default function SetReps({ route }) {
   const myContext = useContext(AppContext);
 
@@ -15,39 +18,36 @@ export default function SetReps({ route }) {
   const activity = route.params.title;
   const checkedVal = route.params.checked;
 
-  const alertHandler = () => {
-    Alert.alert("Error!", "Value cannot be less than 1.", [
-      { text: "Understood", style: "cancel" },
-    ]);
-  };
-  const alertHandlerNotInt = () => {
-    Alert.alert("Error!", "Value must be a whole number.", [
-      { text: "Understood", style: "cancel" },
-    ]);
-  };
+  const setRepSchema = Yup.object().shape({
+    reps: Yup.string()
+      .required("Required")
+      .test("isMoreThan0", "Minimun 1 rep", (val) => {return parseInt(val)>0;})
+      .test("Integer", "reps must be whole number", (val) => {return !(val.includes("."));}),
+    sets: Yup.string()
+      .required("Required")
+      .test("isMoreThan0", "Minimun 1 rep", (val) => {return parseInt(val)>0;})
+      .test("Integer", "reps must be whole number", (val) => {return !(val.includes("."));}),
+  });
 
-  const pressHandler = () => {
-    console.log(typeof(reps));
-    if (reps < 1 || sets < 1) {
-      alertHandler();
-    } else if(reps.includes(".")){
-      alertHandlerNotInt();
-    } 
-     else {
-      myContext.setActivity([
-        ...myContext.activityName,
-        {
-          title: activity,
-          checked: checkedVal,
-          description: "Reps: " + reps + " Sets: " + sets,
-        },
-      ]);
-      navigation.navigate("HomeScrn");
-    }
-  };
-
-  const [reps, setReps] = React.useState("");
-  const [sets, setSets] = React.useState("");
+  const { handleSubmit, values, handleChange, errors, touched, setValues } =
+    useFormik({
+      initialValues: {
+        reps: "10",
+        sets: "1",
+      },
+      onSubmit: (values) => {
+        myContext.setActivity([
+          ...myContext.activityName,
+          {
+            title: activity,
+            checked: checkedVal,
+            description: "Reps: " + values.reps + " Sets: " + values.sets,
+          },
+        ]);
+        navigation.navigate("HomeScrn");
+      },
+      validationSchema: setRepSchema,
+    });
 
   return (
     <TouchableWithoutFeedback
@@ -56,26 +56,41 @@ export default function SetReps({ route }) {
       }}
     >
       <Layout>
-        <Text style={tailwind("text-lg font-bold")}>
+        <Text style={tailwind("text-lg font-bold m-2")}>
           {" "}
           For {route.params.title}, please enter the following!{" "}
         </Text>
 
-        <Text> Number of Reps </Text>
-        <Input
-          keyboardType="numeric"
-          placeholder="e.g. 10"
-          value={reps}
-          onChangeText={(nextValue) => setReps(nextValue)}
-        />
+        <Layout style={tailwind("m-2")}>
+          <Text> Number of Reps </Text>
+          <Input
+            keyboardType="numeric"
+            placeholder="e.g. 10"
+            value={values.reps}
+            clearTextOnFocus
+            onChangeText={handleChange("reps")}
+          />
 
-        <Text> Number of Sets </Text>
-        <Input
-          keyboardType="numeric"
-          placeholder="e.g. 3"
-          value={sets}
-          onChangeText={(nextValue) => setSets(nextValue)}
-        />
+          {errors.reps && touched.reps ? (
+                            <Text style={tailwind("text-red-600")}>{errors.reps}</Text>
+                          ) : null}
+        </Layout>
+
+        
+        <Layout style={tailwind("m-2")}>
+          <Text> Number of Sets </Text>
+          <Input
+            keyboardType="numeric"
+            placeholder="e.g. 3"
+            value={values.sets}
+            clearTextOnFocus
+            onChangeText={handleChange("sets")}
+          />
+
+          {errors.sets && touched.sets ? (
+                    <Text style={tailwind("text-red-600")}>{errors.sets}</Text>
+                  ) : null}
+        </Layout>
 
         <Button
           accessoryLeft={
@@ -85,7 +100,7 @@ export default function SetReps({ route }) {
               color="white"
             />
           }
-          onPress={pressHandler}
+          onPress={handleSubmit}
         >
           Add Activity
         </Button>

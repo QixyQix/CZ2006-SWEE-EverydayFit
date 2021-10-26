@@ -10,10 +10,8 @@ const loginSchema = Yup.object().shape({
     .email("Invalid email!")
     .required("Required"),
   password: Yup.string()
-    .matches(/(?=.*[a-z])/, "Must contain at least 1 lower case")
-    .matches(/(?=.*[A-Z])/, "Must contain at least 1 upper case")
-    .matches(/(?=.*[0-9])/, "Must contain at least 1 numeric value")
-    .min(8, "minimum 8 characters")
+    .min(6, "minimum 6 characters")
+    .max(50, "Maximum 50 characters")
     .required("Required"),
 });
 
