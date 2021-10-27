@@ -22,7 +22,7 @@ export const EditButton = (index) => {
 
   const pressHandler = (index, which) => {
     if (which == 0) {
-      navigation.navigate("ADDACTIVITY");
+      navigation.navigate("EDITACTIVITY", {index: index});
       setVisible(false);
     } else {
       setVisible(false);
@@ -42,6 +42,7 @@ export const EditButton = (index) => {
 
   const renderItemAccessory = () => (
     <Button
+      style = {tailwind("right-4")}
       appearance="ghost"
       accessoryRight={<Icon fill="#8F9BB3" name="more-vertical-outline" />}
       onPress={() => setVisible(true)}
@@ -62,10 +63,6 @@ export const EditButton = (index) => {
         <MenuItem 
           title="Delete" 
           onPress={() => setVisibleBtn(true)} />
-        <MenuItem
-          title="Replace"
-          onPress={() => pressHandler(index.index, 1)}
-        />
       </OverflowMenu>
 
       <Modal visible={visibleBtn} >

@@ -10,7 +10,7 @@ import { Keyboard, TouchableWithoutFeedback} from 'react-native';
 
 export default Ippt = () => {
   const { values, handleChange, handleSubmit, setValues } = useFormik({
-    initialValues: {
+    initialValues: { 
       gender: "male",
       serviceType: "active",
       age: "",
@@ -47,8 +47,8 @@ export default Ippt = () => {
   return (
     // TODO Improve styling
     <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
-    <Layout style={tailwind("flex-1 justify-center items-center")}>
-      <Layout style={tailwind("flex-row flex-1 items-center")}>
+    <Layout style={tailwind("flex-grow justify-center items-center")}>
+      <Layout style={tailwind("flex-row flex-initial items-center")}>
         <Text>Gender: </Text>
         <Picker
           selectedValue={values.gender}
@@ -57,9 +57,9 @@ export default Ippt = () => {
         >
           <Picker.Item label="Male" value="male" />
           <Picker.Item label="Female" value="female" />
-        </Picker>
+        </Picker> 
       </Layout>
-      <Layout style={tailwind("flex-row flex-1 items-center")}>
+      <Layout style={tailwind("flex-row flex-initial items-center")}>
         <Text>Type of Service: </Text>
         <Picker
           selectedValue={values.serviceType}

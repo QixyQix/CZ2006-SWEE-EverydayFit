@@ -7,6 +7,8 @@ import { AppNavigator } from "./AppNavigator";
 import AppContext from "./components/database";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "./utils/auth";
+import { LogBox } from 'react-native';
+
 
 export default function App() {
   const [activity, setActivity] = useState([]);
@@ -15,6 +17,8 @@ export default function App() {
     activityName: activity,
     setActivity,
   };
+  
+  LogBox.ignoreLogs(['Warning: Failed prop type: Invalid props.style key `tintColor` supplied to `Text`.', 'Warning: Failed prop type: Invalid prop `color` supplied to `Text`:']);
 
   return (
     <AuthProvider>

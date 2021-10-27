@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Layout, Divider, List, ListItem } from "@ui-kitten/components";
 import { Keyboard, TouchableWithoutFeedback} from 'react-native';
 
-export default AddActivity = () => {
+export default EditActivity = ({ route }) => {
   const navigation = useNavigation();
 
   const [activity, setActivity] = useState([
@@ -13,12 +13,13 @@ export default AddActivity = () => {
     { title: "Push-up", checked: false },
     { title: "Burpees", checked: false },
   ]);
-
+ 
   const renderItem = ({ item, index }) => (
-
     <ListItem 
       onPress={() => {
-        navigation.navigate("SETREPS", item);
+        let indexToParse = {index: route.params.index};
+        let itemToParse = {...item, ...indexToParse};
+        navigation.navigate("EDITREPS", itemToParse);
       }}
       title={item.title}
     />

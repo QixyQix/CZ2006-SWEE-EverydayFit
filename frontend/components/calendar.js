@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity} from 'react-native';
 import { Datepicker, Icon, Layout } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 
@@ -25,7 +25,7 @@ export const MyCalendar = () => {
 
       />
 
-      <TouchableOpacity style={styles.goToDate} title="GO TO " onPress= {() =>  navigation.navigate('FITNESS_PLAN', {select_date: date.toDateString(),})}>  
+      <TouchableOpacity style={styles.goToDate} title="GO TO " onPress= {() =>  navigation.navigate('FITNESS_PLAN', {select_date: date.toDateString()})}>  
         <Text style = {styles.goToDateText} >  Go to {date.toDateString()} </Text>
       </TouchableOpacity>
 

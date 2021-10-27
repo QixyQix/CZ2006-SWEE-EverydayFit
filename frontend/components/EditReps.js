@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Alert, Keyboard, Pressable} from "react-native";
+import { Alert, TouchableWithoutFeedback, Keyboard,KeyboardAvoidingView, Pressable} from "react-native";
 
 import { Button, Input, Layout, Text } from "@ui-kitten/components";
 import { Feather } from "@expo/vector-icons";
@@ -25,14 +25,14 @@ export default function SetReps({ route }) {
     if (reps <= 0 || sets <= 0) {
       alertHandler();
     } else {
-      myContext.setActivity([
-        ...myContext.activityName,
-        {
-          title: activity,
-          checked: checkedVal,
-          description: "Reps: " + reps + " Sets: " + sets,
-        },
-      ]);
+      let change = [ ...myContext.activityName ];
+      change[route.params.index] = { 
+        ...change[route.params.index],
+        title: activity,
+        checked: checkedVal,
+        description: "Reps: " + reps + " Sets: " + sets,
+    }
+      myContext.setActivity(change);
       navigation.navigate("HomeScrn");
     }
   };
@@ -42,15 +42,14 @@ export default function SetReps({ route }) {
 
   return (
 
-    <Pressable onPress={()=> { Keyboard.dismiss()}} style={tailwind("flex-grow")} >
-      <Layout style={tailwind("flex-grow")} >
+    <Pressable onPress={()=> {Keyboard.dismiss()}} style={tailwind("flex-grow")}>
+      <Layout style={tailwind("flex-grow")}>
         <Text style={tailwind("text-lg font-bold")}>
           {" "}
           For {route.params.title}, please enter the following!{" "}
         </Text>
 
         <Text> Number of Reps </Text>
-        
         
         <Input
           keyboardType="numeric"

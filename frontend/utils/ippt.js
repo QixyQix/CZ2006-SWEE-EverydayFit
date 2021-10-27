@@ -28,7 +28,7 @@ const getAgeGroup = (age) => {
 };
 
 // pushup = 0, situp = 1
-const getStaticScore = (station, ageGroup, reps) => {
+const getStaticScore = (station, ageGroup, reps, gender) => {
   let scoreTable;
 
   if (station == 0 && gender == 'male') {
