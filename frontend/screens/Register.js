@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import tailwind from "tailwind-rn";
 import { Layout, Text, Card, Input, Button } from "@ui-kitten/components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useAuth } from "../utils/auth";
+
 
 const registerSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -18,6 +20,8 @@ const registerSchema = Yup.object().shape({
 });
 
 export default Register = ({ navigation }) => {
+  const { register } = useAuth();
+  const [registerError, setRegisterError] = useState("");
   const { handleSubmit, values, handleChange, errors, touched } = useFormik({
     initialValues: {
       name: "",
@@ -26,9 +30,15 @@ export default Register = ({ navigation }) => {
       passwordConfirmation: "",
     },
 
-    // TODO Implement register
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      try {
+        await register(values.email, values.name, values.password);
+
+        // Remove error messages and proceed to homepage
+        setRegisterError("");
+      } catch (e) {
+        setRegisterError(e.message);
+      }
     },
 
     validationSchema: registerSchema,
@@ -58,17 +68,18 @@ export default Register = ({ navigation }) => {
             autoCompleteType="name"
             value={values.name}
             onChangeText={handleChange("name")}
-            style={tailwind("w-8/12 my-1")}
+            style={tailwind("w-8/12 mb-4")}
           />
           {errors.name && touched.name ? (
             <Text style={tailwind("text-red-600")}>{errors.name}</Text>
           ) : null}
+
           <Input
             placeholder="Enter your email"
             autoCompleteType="email"
             value={values.email}
             onChangeText={handleChange("email")}
-            style={tailwind("w-8/12 my-1")}
+            style={tailwind("w-8/12 mb-4")}
           />
           {errors.email && touched.email ? (
             <Text style={tailwind("text-red-600")}>{errors.email}</Text>
@@ -78,11 +89,12 @@ export default Register = ({ navigation }) => {
             secureTextEntry
             value={values.password}
             onChangeText={handleChange("password")}
-            style={tailwind("w-8/12 my-1")}
+            style={tailwind("w-8/12 mb-4")}
           />
           {errors.password && touched.password ? (
             <Text style={tailwind("text-red-600")}>{errors.password}</Text>
           ) : null}
+
           <Input
             placeholder="Re-enter your password"
             secureTextEntry
@@ -90,6 +102,7 @@ export default Register = ({ navigation }) => {
             onChangeText={handleChange("passwordConfirmation")}
             style={tailwind("w-8/12")}
           />
+
           {errors.passwordConfirmation && touched.passwordConfirmation ? (
             <Text style={tailwind("text-red-600")}>
               Password must be the same!
@@ -97,10 +110,14 @@ export default Register = ({ navigation }) => {
           ) : null}
         </Layout>
 
-        <Layout style={tailwind("flex-row")}>
-          <Button onPress={() => navigation.goBack()}>{`<-`}</Button>
+        <Layout style={tailwind("flex-row p-2")}>
+          <Button onPress={navigation.goBack}>{`<-`}</Button>
           <Button onPress={handleSubmit}>Register</Button>
         </Layout>
+
+        {registerError ? (
+          <Text style={tailwind("text-red-600")}>{registerError}</Text>
+        ) : null}
       </Layout>
     </TouchableWithoutFeedback>
   );

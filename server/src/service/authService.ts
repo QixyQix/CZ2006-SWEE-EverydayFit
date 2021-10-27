@@ -105,9 +105,39 @@ const Login = async (email: string, password: string) => {
 
 }
 
+const RefreshToken = async (userID: string) => {
+    if (!userID) {
+        throw new Error('No user ID');
+    }
+
+    try {
+        const newToken = GenerateGeneralJWTToken(userID);
+        return { token: newToken };
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}
+
+const SetUserExpoToken = async (userID: string, expoToken: string) => {
+    if (!userID) {
+        throw new Error('No user ID');
+    }
+
+    const user = await UserRepo.GetUserByEmail(userID)
+    if (!user) {
+        throw new Error(`User of ID ${userID} not found`);
+    }
+
+    user.expoToken = expoToken;
+    await user.save();
+    return { message: 'Successfully set expo token for user' };
+}
+
 const AuthService = {
     Register,
-    Login
+    Login,
+    RefreshToken,
+    SetUserExpoToken,
 }
 
 export { AuthService as default };

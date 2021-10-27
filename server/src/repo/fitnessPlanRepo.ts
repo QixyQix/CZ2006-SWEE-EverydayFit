@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { convertTypeAcquisitionFromJson, isTemplateExpression } from 'typescript';
 import FitnessPlan from '../models/fitnessPlan';
 
 const checkValidObjectID = (id: string) => {
@@ -45,12 +46,16 @@ const GetFitnessPlanByID = async (fitnessPlanID: string) => {
     return fitnessPlan
 }
 
-const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number) => {
+const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number, done = false) => {
+    if (!checkValidObjectID(exerciseID)) {
+        console.error(`ExerciseRepo: AddActivityToFitnessPlan: Invalid exerciseID ${exerciseID}`)
+        throw new Error ('Invalid Exercise ID');
+    }
     const activity: any = {
-        exercise: exerciseID,
+        exerciseID,
         totalQuantity: quantity,
         sets,
-        done: false
+        done
     };
 
     try {
@@ -66,12 +71,61 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
     }
 }
 
+const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, activityID: string) => {
+    if (!checkValidObjectID(activityID)) {
+        console.error(`FitnessPlanRepo: AddActivityToFitnessPlan: Invalid activityID ${activityID}`)
+        throw new Error ('Invalid Activity ID');
+    }
+    try {
+        const result = await FitnessPlan.findOneAndUpdate(
+            { owner: userID, date },
+            { $pull: { activities: { _id: activityID } } }
+        );
+        return result;
+    } catch (err) {
+        console.error(err.message);
+        console.error(`FitnessPlanRepo: DeleteActivityFromFitnessPlan: Failed to delete activity for ${userID} on ${date.toDateString()}`)
+        throw new Error('An error occured while deleting activity from fitness plan');
+    }
+}
+
+const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityID: string, exerciseID: string, quantity: number, sets: number, done: boolean) => {
+    if (!checkValidObjectID(activityID)) {
+        console.error(`FitnessPlanRepo: EditActivityFromFitnessPlan: Invalid activityID ${activityID}`)
+        throw new Error ('Invalid Activity ID');
+    }
+    const activity: any = {
+        exerciseID,
+        totalQuantity: quantity,
+        sets,
+        done
+    };
+
+    try {
+        const fitnessPlan = await GetDateFitnessPlanForUser(userID, date);
+        fitnessPlan.activities.some(item => {
+            if (item._id.toString() === activityID){
+                item.totalQuantity = quantity,
+                item.sets = sets,
+                item.done = done;
+            }});
+            fitnessPlan.save();
+            return fitnessPlan;
+    } catch (err) {
+        console.error(err.message);
+        console.error(`FitnessPlanRepo: EditActivityFromFitnessPlan: Failed to edit activity for ${userID} on ${date.toDateString()}`)
+        throw new Error('An error occured while editing activity from fitness plan');
+    }
+}
+
 const FitnessPlanRepo = {
     CreateFitnessPlan,
     GetFitnessPlansForUserID,
     GetDateFitnessPlanForUser,
     GetFitnessPlanByID,
     AddActivityToFitnessPlan,
+    DeleteActivityFromFitnessPlan,
+    EditActivityFromFitnessPlan,
 }
 
 export { FitnessPlanRepo as default };

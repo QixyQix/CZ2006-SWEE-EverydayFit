@@ -9,6 +9,8 @@ import { CronJob } from 'cron';
 import AuthRouter from './routes/authRouter';
 import ForecastRouter from './routes/forecastRouter';
 import FitnessPlanRouter from './routes/fitnessPlanRouter';
+import ExerciseRouter from './routes/exerciseRouter';
+import SeedDatabase from './data/seed';
 
 import ScheduledService from './service/scheduledService';
 
@@ -41,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', AuthRouter);
 app.use('/forecasts', ForecastRouter);
 app.use('/plan', FitnessPlanRouter);
+app.use('/exercise', ExerciseRouter)
 routes.register(app);
 
 // start the express server
@@ -52,4 +55,9 @@ app.listen(port, () => {
 const genJWTSecret = process.env.GENERATE_JWT_SECRETKEY || false;
 if (genJWTSecret === 'true') {
   console.log(`GENERATED JWT SK: ${crypto.randomBytes(64).toString('hex')}`);
+}
+
+const genExercise = process.env.GENERATE_EXERCISE_DATABASE || false;
+if (genExercise === 'true'){
+  SeedDatabase();
 }

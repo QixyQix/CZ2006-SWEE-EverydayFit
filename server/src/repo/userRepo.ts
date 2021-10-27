@@ -30,9 +30,20 @@ const GetUserByEmail = async (email: string) => {
     }
 }
 
+const GetUserByID = async(userID: string)=>{
+    try{
+        const user = await User.findById(userID);
+        return user;
+    }catch(err){
+        console.error(`UserRepo: GetUserByID: ${err.message}`);
+        throw new Error(`An error occured while retrieving user by ID`);
+    }
+}
+
 const UserRepo = {
     CreateUser,
     GetUserByEmail,
+    GetUserByID,
 }
 
 export { UserRepo as default };

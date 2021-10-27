@@ -49,6 +49,8 @@ const authenticateRefreshToken = async (req: Request, res: Response, next: NextF
             res.status(500).json({ message: 'An error occured while refreshing token' });
         }
 
+        req.params.user = tokenContent.userID;
+
         next();
     });
 }

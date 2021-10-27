@@ -23,10 +23,34 @@ const Login = async (req: Request, res: Response) => {
   }
 }
 
+const Refresh = async (req: Request, res: Response) => {
+  const userID = req.params.user;
+
+  try {
+    const result = await AuthService.RefreshToken(userID);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
+const SetExpoToken = async (req: Request, res: Response) => {
+  const userID = req.params.user;
+  const { expoToken } = req.body;
+
+  try {
+    const result = await AuthService.SetUserExpoToken(userID, expoToken);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
 
 const AuthController = {
   Register,
-  Login
+  Login,
+  Refresh,
+  SetExpoToken
 };
 
 export { AuthController as default };

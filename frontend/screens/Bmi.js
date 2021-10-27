@@ -53,50 +53,47 @@ export default Bmi = () => {
     });
 
   return (
-    // TODO Improve styling
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}
-    >
-      <Layout style={tailwind("flex-1 justify-center items-center")}>
-        <Layout style={tailwind("flex-row items-center")}>
-          <Text>Enter your weight</Text>
-          <Input
-            keyboardType="numeric"
-            value={values.weight}
-            onChangeText={handleChange("weight")}
-            maxLength={5}
-          />
-          <Text>kg</Text>
-        </Layout>
+    <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
+    <Layout style={tailwind("flex-1 justify-center items-center")}>
+      <Layout style={tailwind("flex-row items-center mb-2")}>
+        <Text>Enter your weight</Text>
+        <Input
+          style={tailwind("mx-1")}
+          keyboardType="numeric"
+          value={values.weight}
+          onChangeText={handleChange("weight")}
+          maxLength={5}
+        />
+        <Text>kg</Text>
+      </Layout>
 
         {errors.weight && touched.weight ? (
           <Text style={tailwind("text-red-600")}>{errors.weight}</Text>
         ) : null}
 
-        <Layout style={tailwind("flex-row items-center")}>
-          <Text>Enter your height</Text>
-          <Input
-            keyboardType="numeric"
-            value={values.height}
-            onChangeText={handleChange("height")}
-            maxLength={4}
-          />
-          <Text>m</Text>
-        </Layout>
-        {errors.height && touched.height ? (
-          <Text style={tailwind("text-red-600")}>{errors.height}</Text>
-        ) : null}
-
-        <Button onPress={handleSubmit}>CALCULATE</Button>
-        {values.bmi !== "" && (
-          <>
-            <Text>Your BMI is {values.bmi}</Text>
-            <Text>BMI category: {values.bmiCategory}</Text>
-          </>
-        )}
+      <Layout style={tailwind("flex-row items-center mb-2")}>
+        <Text>Enter your height</Text>
+        <Input
+          style={tailwind("mx-1")}
+          keyboardType="numeric"
+          value={values.height}
+          onChangeText={handleChange("height")}
+          maxLength={4}
+        />
+        <Text>m</Text>
       </Layout>
+      {errors.height && touched.height ? (
+        <Text style={tailwind("text-red-600")}>{errors.height}</Text>
+      ) : null}
+
+      <Button style={tailwind("mb-2")} onPress={handleSubmit}>CALCULATE</Button>
+      {values.bmi !== "" && (
+        <>
+          <Text>Your BMI is {values.bmi}</Text>
+          <Text>BMI category: {values.bmiCategory}</Text>
+        </>
+      )}
+    </Layout>
     </TouchableWithoutFeedback>
   );
 };
