@@ -29,9 +29,6 @@ export default Home = () => {
     <Layout style={tailwind("flex-1")}>
       <HomeHeader forecasts = {forecasts}/>
       <TodaysWeatherInfo forecast={forecasts[0]}
-        date="Sept 1 2021"
-        weather="rainy"
-        temperature="32 celcius"
       />
       <FitnessPlanner />
     </Layout>
