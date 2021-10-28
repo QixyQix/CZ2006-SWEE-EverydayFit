@@ -13,10 +13,10 @@ export default HomeHeader = (props) => {
   return (
     <Layout style={tailwind("flex-row justify-around")}>
       <LogoutButton />
-      <DateWeatherButton forecast={props.forecasts[0]} />
-      <DateWeatherButton forecast={props.forecasts[1]} />
-      <DateWeatherButton forecast={props.forecasts[2]} />
-      <DateWeatherButton forecast={props.forecasts[3]} />
+      <DateWeatherButton forecast={props.forecast[0]} />
+      <DateWeatherButton forecast={props.forecast[1]} />
+      <DateWeatherButton forecast={props.forecast[2]} />
+      <DateWeatherButton forecast={props.forecast[3]} />
       <CalendarButton />
     </Layout>
   );

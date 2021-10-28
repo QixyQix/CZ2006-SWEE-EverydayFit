@@ -27,9 +27,8 @@ export default Home = () => {
 
   return (
     <Layout style={tailwind("flex-1")}>
-      <HomeHeader forecasts = {forecasts}/>
-      <TodaysWeatherInfo forecast={forecasts[0]}
-      />
+      <HomeHeader forecast = {forecasts}/>
+      <TodaysWeatherInfo forecast = {forecasts[0]}/>
       <FitnessPlanner />
     </Layout>
   );
