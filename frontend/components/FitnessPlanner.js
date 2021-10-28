@@ -48,9 +48,6 @@ export default FitnessPlanner = () => {
   
   return (
     <Layout style={tailwind("flex-grow flex-initial items-center m-1")}>
-      <Text style={tailwind("text-center font-bold text-xl")}>
-        FITNESS PLAN OF THE DAY
-      </Text>
       <List
         data={myContext.activityName}
         ItemSeparatorComponent={Divider}

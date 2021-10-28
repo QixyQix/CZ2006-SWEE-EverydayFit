@@ -4,7 +4,6 @@ import { Layout } from "@ui-kitten/components";
 import {
   StyleSheet,
   Text,
-  View,
 } from "react-native";
 
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -19,17 +18,17 @@ export default function FitnessPlanScreen({ route }) {
   const navigation = useNavigation();
 
   return (
-    <Layout style={tailwind("flex-1 justify-center ")}>
-      <Layout style = {tailwind("flex items-center ")}>
+    <Layout style={tailwind("flex-1")}>
+      <Layout style = {tailwind("items-center ")}>
         <Text style = {styles.dayPLanText}>
           {" "} 
           Fitness plan for {route.params.select_date.substring(0, 10)}
         </Text>
       </Layout>
 
-      <View style = {tailwind("flex-grow ")}>
+      <Layout style = {tailwind("flex-grow ")}>
         <FitnessPlanner />
-      </View>
+      </Layout>
     </Layout>
   );
 }
@@ -44,7 +43,6 @@ const styles = StyleSheet.create({
   dayPLanText: {
     fontWeight: "bold",
     fontSize: 30,
-    textDecorationLine: 'underline'
   },
 
   dateBar: {

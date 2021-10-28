@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import tailwind from "tailwind-rn";
 import { useNavigation } from "@react-navigation/native";
 import { Layout, Divider, List, ListItem } from "@ui-kitten/components";
-import { Keyboard, TouchableWithoutFeedback} from 'react-native';
 
 export default AddActivity = () => {
   const navigation = useNavigation();

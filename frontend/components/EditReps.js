@@ -42,7 +42,7 @@ export default function SetReps({ route }) {
 
   return (
 
-    <Pressable onPress={()=> {Keyboard.dismiss()}} style={tailwind("flex-grow")}>
+    <TouchableWithoutFeedback onPress={()=> {Keyboard.dismiss()}} style={tailwind("flex-grow")}>
       <Layout style={tailwind("flex-grow")}>
         <Text style={tailwind("text-lg font-bold")}>
           {" "}
@@ -78,6 +78,6 @@ export default function SetReps({ route }) {
           Add Activity
         </Button>
       </Layout>
-    </Pressable>
+    </TouchableWithoutFeedback>
   );
 }

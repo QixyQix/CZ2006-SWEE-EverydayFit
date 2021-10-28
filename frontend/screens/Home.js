@@ -14,7 +14,6 @@ export default Home = () => {
   const getForecasts = async () => {
     try{
       const res = await axios.get(`${API_URL}/forecasts`);
-      console.log(res.data);
       setForecasts(res.data);
     } catch {
       //setForecasts()

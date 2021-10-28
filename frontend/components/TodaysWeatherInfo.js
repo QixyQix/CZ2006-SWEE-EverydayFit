@@ -44,7 +44,7 @@ export default TodaysWeatherInfo = ({ forecast }) => {
           size={20}
           color="red"
           />
-          <Text  style={tailwind("font-bold")} > :{highTemp} °C </Text> 
+          <Text  style={tailwind("font-bold")} > {highTemp} °C </Text> 
         </Layout>
 
         <Layout style={tailwind("flex-row")}> 
@@ -54,7 +54,7 @@ export default TodaysWeatherInfo = ({ forecast }) => {
           size={20}
           color="blue"
         />
-          <Text style={tailwind("font-bold")} > :{lowTemp} °C </Text> 
+          <Text style={tailwind("font-bold")} > {lowTemp} °C </Text> 
         </Layout>
       </Layout>
 

@@ -4,45 +4,70 @@ import { Layout, Text, Button, Input } from "@ui-kitten/components";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
 import { calculateIppt } from "../utils/ippt";
-import { Keyboard, TouchableWithoutFeedback} from 'react-native';
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import * as Yup from "yup";
 
-// TODO Add form validation
+const isTwoDigit = (value) => /^[1-9]?\d$/.test(value);
+const isSeconds = (value) => /^[1-5]?[0-9]$/.test(value);
+
+const schema = Yup.object().shape({
+  gender: Yup.string().required("Required"),
+  serviceType: Yup.string().required("Required"),
+  age: Yup.string()
+    .required("Required")
+    .test("Age", "Must be a positive integer", isTwoDigit),
+  runTimeMinutes: Yup.string().test("Minutes", isTwoDigit).required("Required"),
+  runTimeSeconds: Yup.string()
+    .test("Seconds", isSeconds)
+    .required("Required"),
+  pushUpCount: Yup.string()
+    .test("Push Up", "Must be a positive integer", isTwoDigit)
+    .required("Required"),
+  sitUpCount: Yup.string()
+    .test("Sit Up", "Must be a positive integer", isTwoDigit)
+    .required("Required"),
+});
 
 export default Ippt = () => {
-  const { values, handleChange, handleSubmit, setValues } = useFormik({
-    initialValues: { 
-      gender: "male",
-      serviceType: "active",
-      age: "",
+  const { values, handleChange, handleSubmit, setValues, errors, touched } =
+    useFormik({
+      initialValues: {
+        gender: "male",
+        serviceType: "active",
+        age: "",
 
-      // TODO Resolve diffs with class diagram (original version has only 1 field for runTime)
-      runTimeMinutes: "",
-      runTimeSeconds: "",
+        // TODO Resolve diffs with class diagram (original version has only 1 field for runTime)
+        runTimeMinutes: "",
+        runTimeSeconds: "",
 
-      pushUpCount: "",
-      sitUpCount: "",
-      ipptPoints: "",
-      grade: "",
-    },
+        pushUpCount: "",
+        sitUpCount: "",
+        ipptPoints: "",
+        grade: "",
+      },
 
-    onSubmit: (values) => {
-      // Convert minutes and seconds to only seconds
-      const runTime =
-        parseInt(values.runTimeMinutes) * 60 + parseInt(values.runTimeSeconds);
+      // TODO Show appropriate error message if calculateIppt returns undefined
+      onSubmit: (values) => {
+        // Convert minutes and seconds to only seconds
+        const runTime =
+          parseInt(values.runTimeMinutes) * 60 +
+          parseInt(values.runTimeSeconds);
 
-      const { ipptPoints, grade } = calculateIppt(
-        parseInt(values.age),
-        parseInt(values.pushUpCount),
-        parseInt(values.sitUpCount),
-        runTime,
-        values.serviceType,
-        values.gender
-      );
+        const { ipptPoints, grade } = calculateIppt(
+          parseInt(values.age),
+          parseInt(values.pushUpCount),
+          parseInt(values.sitUpCount),
+          runTime,
+          values.serviceType,
+          values.gender
+        );
 
-      // Update new values
-      setValues({ ...values, ipptPoints, grade });
-    },
-  });
+        // Update new values
+        setValues({ ...values, ipptPoints, grade });
+      },
+      validationSchema: schema,
+    });
+
 
   return (
     // TODO Improve styling
