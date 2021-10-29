@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
     refreshToken: null,
   });
 
+  const [exercises, setExercises] = useState("");
+
   // TODO Add a loading screen while fetching the stored data
   const [isLoading, setIsLoading] = useState(true);
 
@@ -36,7 +38,7 @@ export const AuthProvider = ({ children }) => {
 
   // Base function for login and register for reusability
   const base = async (method, body) => {
-    const res = await axios.post(`${API_URL}/auth/${method}`, body);
+    const res = await axios.post(`${API_URL}/auth/${method}`, body);  
 
     if (res.status == 200) {
       // FIXME Not sure if we should store the tokens locally
@@ -56,6 +58,53 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  
+
+  const getPlan = async () => {
+    const token = auth.token;
+    const res = await axios.get(`${API_URL}/plan/`, { 
+      headers: {
+      'Authorization': `${token}`
+      }
+    })
+
+    if (res.status == 200) {
+      return res.data;
+    } else {
+      throw res.data;
+    } 
+  };
+
+  const setPlan = async (date) => {
+    const token = auth.token;
+    const res = await axios.post(`${API_URL}/plan/${date}/activity/`,  { 
+      headers: {
+      'Authorization': `${token}`
+      }, 
+      data: {
+        "activityID": "6176e77f9f39c38ebbb42069",
+        "exerciseID": "617bfa7507ad09a14b982982",
+        "quantity": 1000,
+        "sets": 15000
+       }
+    }, 
+    
+    )
+}
+
+const deletePlan = async (date) => {
+  const token = auth.token;
+  const res = await axios.delete(`${API_URL}/plan/${date}/activity/`, 
+  { 
+    headers: {
+    'Authorization': `${token}`
+    },
+    data: {
+      "activityID": "617c1b9d54b84430da062834"
+     },
+  }
+  )
+}
   const login = (email, password) => base("login", { email, password });
 
   const register = (email, name, password) =>
@@ -72,7 +121,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ auth, isLoading, login, register, logout }}>
+    <AuthContext.Provider value={{ auth, isLoading, login, register, logout, getPlan, setPlan, deletePlan }}>
       {children}
     </AuthContext.Provider>
   );
@@ -93,3 +142,4 @@ export const logAuth = async () => {
   const authData = await AsyncStorage.getItem("auth");
   console.log(JSON.stringify(JSON.parse(authData || "{}"), null, 2));
 };
+

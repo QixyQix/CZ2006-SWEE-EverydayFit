@@ -1,28 +1,21 @@
-import React, {useState, useEffect} from "react";
-import { Layout } from "@ui-kitten/components";
-import TodaysWeatherInfo from "../components/TodaysWeatherInfo";
-import FitnessPlanner from "../components/FitnessPlanner";
-import HomeHeader from "../components/HomeHeader";
+
+import {useState, useEffect} from "react";
+import React, { useEffect } from "react";
 import tailwind from "tailwind-rn";
-import {API_URL} from "@env";
-import axios from "axios";
+import { useAuth } from "../utils/auth";
+
 
 export default Home = () => {
-  const [forecasts, setForecasts] = useState([]);
+const { getPlan, setPlan, deletePlan } = useAuth();
 
-  const getForecasts = async () => {
-    try{
-      const res = await axios.get(`${API_URL}/forecasts`);
-      setForecasts(res.data);
-    } catch {
-      //setForecasts()
-    }
-    
-  };
+console.log("hi")
+//getPlan().then((data) => console.log(data));
+//setPlan('2021-10-30').then((data) => console.log(data));
+//getPlan().then((data) => console.log(data));
 
-  useEffect(() => {
-    getForecasts();
-    }, []);
+deletePlan('2021-10-30').then((data) => console.log(data));
+getPlan().then((data) => console.log(data));
+console.log("bye");
 
   return (
     <Layout style={tailwind("flex-1")}>
