@@ -1,20 +1,26 @@
-import React from "react";
-import { Layout } from "@ui-kitten/components";
 
-import TodaysWeatherInfo from "../components/TodaysWeatherInfo";
-import FitnessPlanner from "../components/FitnessPlanner";
-import HomeHeader from "../components/HomeHeader";
+import {useState, useEffect} from "react";
+import React, { useEffect } from "react";
 import tailwind from "tailwind-rn";
+import { useAuth } from "../utils/auth";
+
 
 export default Home = () => {
+const { getPlan, setPlan, deletePlan } = useAuth();
+
+console.log("hi")
+//getPlan().then((data) => console.log(data));
+//setPlan('2021-10-30').then((data) => console.log(data));
+//getPlan().then((data) => console.log(data));
+
+deletePlan('2021-10-30').then((data) => console.log(data));
+getPlan().then((data) => console.log(data));
+console.log("bye");
+
   return (
     <Layout style={tailwind("flex-1")}>
-      <HomeHeader />
-      <TodaysWeatherInfo
-        date="Sept 1 2021"
-        weather="rainy"
-        temperature="32 celcius"
-      />
+      <HomeHeader forecast = {forecasts}/>
+      <TodaysWeatherInfo forecast = {forecasts[0]}/>
       <FitnessPlanner />
     </Layout>
   );

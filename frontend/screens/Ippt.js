@@ -68,25 +68,84 @@ export default Ippt = () => {
       validationSchema: schema,
     });
 
+
   return (
     // TODO Improve styling
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}
-    >
-      <Layout style={tailwind("flex-1 justify-center items-center")}>
-        <Layout style={tailwind("flex-row flex-1 items-center")}>
-          <Text>Gender: </Text>
-          <Picker
-            selectedValue={values.gender}
-            onValueChange={(itemValue, _) => handleChange("gender")(itemValue)}
-            style={tailwind("w-4/12")}
-          >
-            <Picker.Item label="Male" value="male" />
-            <Picker.Item label="Female" value="female" />
-          </Picker>
-        </Layout>
+    <TouchableWithoutFeedback onPress = { () => {Keyboard.dismiss();}}>
+    <Layout style={tailwind("flex-grow justify-center items-center")}>
+      <Layout style={tailwind("flex-row flex-initial items-center")}>
+        <Text>Gender: </Text>
+        <Picker
+          selectedValue={values.gender}
+          onValueChange={(itemValue, _) => handleChange("gender")(itemValue)}
+          style={tailwind("w-4/12")}
+        >
+          <Picker.Item label="Male" value="male" />
+          <Picker.Item label="Female" value="female" />
+        </Picker> 
+      </Layout>
+      <Layout style={tailwind("flex-row flex-initial items-center")}>
+        <Text>Type of Service: </Text>
+        <Picker
+          selectedValue={values.serviceType}
+          onValueChange={(itemValue, _) =>
+            handleChange("serviceType")(itemValue)
+          }
+          style={tailwind("w-4/12")}
+        >
+          <Picker.Item label="Active" value="active" />
+          <Picker.Item label="NSman" value="nsman" />
+        </Picker>
+      </Layout>
+      <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
+        <Text>Enter your age: </Text>
+        <Input
+          keyboardType="number-pad"
+          value={values.age}
+          onChangeText={handleChange("age")}
+          maxLength={3}
+          style={tailwind("mx-1")}
+        />
+      </Layout>
+      <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
+        <Text>2.4 km run: </Text>
+        <Input
+          keyboardType="number-pad"
+          value={values.runTimeMinutes}
+          onChangeText={handleChange("runTimeMinutes")}
+          maxLength={2}
+          style={tailwind("mx-1")}
+        />
+        <Text>min </Text>
+        <Input
+          keyboardType="number-pad"
+          value={values.runTimeSeconds}
+          onChangeText={handleChange("runTimeSeconds")}
+          maxLength={2}
+          style={tailwind("mx-1")}
+        />
+        <Text>s</Text>
+      </Layout>
+      <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
+        <Text>Push-ups: </Text>
+        <Input
+          keyboardType="number-pad"
+          value={values.pushUpCount}
+          onChangeText={handleChange("pushUpCount")}
+          maxLength={2}
+          style={tailwind("mx-1")}
+        />
+      </Layout>
+      <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
+        <Text>Sit-ups: </Text>
+        <Input
+          keyboardType="number-pad"
+          value={values.sitUpCount}
+          onChangeText={handleChange("sitUpCount")}
+          maxLength={2}
+          style={tailwind("mx-1")}
+        />
+      </Layout>
 
         <Layout style={tailwind("flex-row flex-1 items-center")}>
           <Text>Type of Service: </Text>

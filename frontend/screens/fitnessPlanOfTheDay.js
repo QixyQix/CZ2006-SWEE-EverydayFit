@@ -1,57 +1,26 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React from "react";
+import { Layout } from "@ui-kitten/components";
 import {
   StyleSheet,
   Text,
-  View,
-  Button,
-  TextInput,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
-
-import { useNavigation } from "@react-navigation/native";
-
 import FitnessPlanner from "../components/FitnessPlanner";
+import tailwind from "tailwind-rn";
+
 
 export default function FitnessPlanScreen({ route }) {
-  const navigation = useNavigation();
-
   return (
-    <View>
-      <View style={styles.dateBar}>
-        <Text style={styles.dayPLanText}>
-          {" "}
+    <Layout style={tailwind("flex-1")}>
+      <Layout style = {tailwind("items-center ")}>
+        <Text style = {tailwind("font-bold text-3xl")}>
+          {" "} 
           Fitness plan for {route.params.select_date.substring(0, 10)}
         </Text>
-      </View>
+      </Layout>
 
-      <View style={styles.fitnessPLanView}>
+      <Layout style = {tailwind("flex-grow ")}>
         <FitnessPlanner />
-      </View>
-    </View>
+      </Layout>
+    </Layout>
   );
 }
-
-const styles = StyleSheet.create({
-  fitnessPLanView: {
-    marginTop: 90,
-    justifyContent: "center",
-    alignContent: "center",
-  },
-
-  dayPLanText: {
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-
-  dateBar: {
-    marginTop: 50,
-    marginHorizontal: 85,
-    position: "absolute",
-    alignContent: "center",
-    justifyContent: "center",
-  },
-});

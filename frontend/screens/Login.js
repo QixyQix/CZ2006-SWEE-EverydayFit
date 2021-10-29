@@ -4,7 +4,7 @@ import { Layout, Text, Card, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAuth } from "../utils/auth";
-
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 // TODO Implement form validation
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email!").required("Required"),
@@ -39,6 +39,7 @@ export default Login = ({ navigation }) => {
 
   return (
     // TODO Improve styling
+    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }} > 
     <Layout style={tailwind("flex-1 justify-center items-center")}>
       <Card style={tailwind("w-10/12")}>
         <Text category="h1" style={tailwind("text-center")}>
@@ -83,5 +84,7 @@ export default Login = ({ navigation }) => {
         <Text style={tailwind("text-red-600")}>{loginError}</Text>
       ) : null}
     </Layout>
+    </TouchableWithoutFeedback>
+    
   );
 };

@@ -40,6 +40,7 @@ export const EditButton = (index) => {
 
   const renderItemAccessory = () => (
     <Button
+      style = {tailwind("right-4")}
       appearance="ghost"
       accessoryRight={<Icon fill="#8F9BB3" name="more-vertical-outline" />}
       onPress={() => setVisible(true)}

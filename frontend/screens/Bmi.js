@@ -32,7 +32,7 @@ const getBmiCategory = (bmi) => {
 };
 
 export default Bmi = () => {
-  const { handleSubmit, values, handleChange, errors, touched, setValues } =
+    const { handleSubmit, values, handleChange, errors, touched, setValues } =
     useFormik({
       initialValues: {
         weight: "",
