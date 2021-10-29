@@ -6,5 +6,7 @@ const router = Express.Router();
 
 router.get('/',VerifyJWTToken, FitnessPlanController.GetFitnessPlans);
 router.post('/:date/activity',VerifyJWTToken, FitnessPlanController.AddActivityToFitnessPlan);
+router.delete('/:date/activity',VerifyJWTToken, FitnessPlanController.DeleteActivityFromFitnessPlan);
+router.patch('/:date/activity',VerifyJWTToken, FitnessPlanController.EditActivityFromFitnessPlan);
 
 export { router as default };

@@ -10,7 +10,7 @@ import AuthRouter from './routes/authRouter';
 import ForecastRouter from './routes/forecastRouter';
 import FitnessPlanRouter from './routes/fitnessPlanRouter';
 import ExerciseRouter from './routes/exerciseRouter';
-import SeedDatabase from './models/seed';
+import SeedDatabase from './data/seed';
 
 import ScheduledService from './service/scheduledService';
 

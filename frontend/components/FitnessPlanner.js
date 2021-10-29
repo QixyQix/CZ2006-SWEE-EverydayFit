@@ -24,7 +24,7 @@ export default FitnessPlanner = () => {
   };
 
   const pressHandler = () => {
-    navigation.navigate("ADDACTIVITY");
+    navigation.navigate("AddActivity");
   };
 
 
@@ -44,7 +44,7 @@ export default FitnessPlanner = () => {
       </CheckBox>
     </Layout>
   );
-  
+
   return (
     <Layout style={tailwind("flex-grow flex-initial items-center m-1")}>
       <List

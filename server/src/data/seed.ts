@@ -1,4 +1,4 @@
-import Exercise from "./exercise";
+import Exercise from "../models/exercise";
 import ExerciseSeed from './exerciseSeed';
 
 const SeedDatabase = async() => {

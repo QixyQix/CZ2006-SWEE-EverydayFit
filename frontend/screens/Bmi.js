@@ -3,13 +3,11 @@ import tailwind from "tailwind-rn";
 import { Layout, Text, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 
 /* 
 TODO Show error message for leading zeros (e.g. 007)
 */
-
 const isNumeric = (value) => /^(?![0.]+$)\d+(\.\d*)?$/.test(value);
 
 const schema = Yup.object().shape({

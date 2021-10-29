@@ -34,11 +34,23 @@ const Refresh = async (req: Request, res: Response) => {
   }
 }
 
+const SetExpoToken = async (req: Request, res: Response) => {
+  const userID = req.params.user;
+  const { expoToken } = req.body;
+
+  try {
+    const result = await AuthService.SetUserExpoToken(userID, expoToken);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
 
 const AuthController = {
   Register,
   Login,
-  Refresh
+  Refresh,
+  SetExpoToken
 };
 
 export { AuthController as default };
