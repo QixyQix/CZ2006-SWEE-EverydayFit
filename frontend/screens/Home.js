@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { Layout } from "@ui-kitten/components";
-
 import TodaysWeatherInfo from "../components/TodaysWeatherInfo";
 import FitnessPlanner from "../components/FitnessPlanner";
 import HomeHeader from "../components/HomeHeader";

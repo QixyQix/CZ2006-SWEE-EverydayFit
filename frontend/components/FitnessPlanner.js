@@ -7,7 +7,6 @@ import {
   Button,
   CheckBox,
   Layout,
-  Text,
 } from "@ui-kitten/components";
 import AppContext from "./database";
 import { Feather } from "@expo/vector-icons";

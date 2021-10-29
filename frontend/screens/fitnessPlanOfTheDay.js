@@ -1,26 +1,18 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React from "react";
 import { Layout } from "@ui-kitten/components";
 import {
   StyleSheet,
   Text,
 } from "react-native";
-
-import { FontAwesome5 } from "@expo/vector-icons";
-
-import { useNavigation } from "@react-navigation/native";
-
 import FitnessPlanner from "../components/FitnessPlanner";
-
 import tailwind from "tailwind-rn";
 
-export default function FitnessPlanScreen({ route }) {
-  const navigation = useNavigation();
 
+export default function FitnessPlanScreen({ route }) {
   return (
     <Layout style={tailwind("flex-1")}>
       <Layout style = {tailwind("items-center ")}>
-        <Text style = {styles.dayPLanText}>
+        <Text style = {tailwind("font-bold text-3xl")}>
           {" "} 
           Fitness plan for {route.params.select_date.substring(0, 10)}
         </Text>
@@ -32,24 +24,3 @@ export default function FitnessPlanScreen({ route }) {
     </Layout>
   );
 }
-
-const styles = StyleSheet.create({
-  fitnessPLanView: {
-    marginTop: 90,
-    justifyContent: "center",
-    alignContent: "center",
-  },
-
-  dayPLanText: {
-    fontWeight: "bold",
-    fontSize: 30,
-  },
-
-  dateBar: {
-    marginTop: 50,
-    marginHorizontal: 85,
-    position: "absolute",
-    alignContent: "center",
-    justifyContent: "center",
-  },
-});

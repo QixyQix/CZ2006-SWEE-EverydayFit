@@ -22,7 +22,7 @@ export const EditButton = (index) => {
 
   const pressHandler = (index, which) => {
     if (which == 0) {
-      navigation.navigate("EDITACTIVITY", {index: index});
+      navigation.navigate("ADDACTIVITY");
       setVisible(false);
     } else {
       setVisible(false);

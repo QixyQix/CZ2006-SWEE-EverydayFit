@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Alert, Keyboard, Pressable} from "react-native";
+import { Alert, Keyboard } from "react-native";
 
 import { Button, Input, Layout, Text } from "@ui-kitten/components";
 import { Feather } from "@expo/vector-icons";

@@ -14,9 +14,7 @@ import Home from "./screens/Home";
 import FitnessPlanScreen from "./screens/fitnessPlanOfTheDay";
 import MyCalendar from "./components/calendar";
 import AddActivity from "./screens/AddActivity";
-import EditActivity from "./screens/EditActivity";
 import SetReps from "./components/SetReps";
-import EditReps from "./components/EditReps";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -37,9 +35,7 @@ const HomeNavigator = () => {
           <Stack.Screen name="FITNESS_PLAN" component={FitnessPlanScreen} />
           <Stack.Screen name="CALENDAR" component={MyCalendar} />
           <Stack.Screen name="ADDACTIVITY" component={AddActivity} />
-          <Stack.Screen name="EDITACTIVITY" component={EditActivity} />
           <Stack.Screen name="SETREPS" component={SetReps} />
-          <Stack.Screen name="EDITREPS" component={EditReps} />
         </>
       ) : (
         <>

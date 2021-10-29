@@ -12,7 +12,6 @@ TODO Show error message for leading zeros (e.g. 007)
 
 const isNumeric = (value) => /^(?![0.]+$)\d+(\.\d*)?$/.test(value);
 
-
 const schema = Yup.object().shape({
   weight: Yup.string()
     .required("Required")
