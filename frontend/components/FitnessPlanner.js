@@ -13,18 +13,18 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import EditButton from "./EditButton";
 
-export default FitnessPlanner = () => {
+export default FitnessPlanner = (props) => {
   const navigation = useNavigation();
   const myContext = useContext(AppContext);
-
-  const switchState = (state, index) => {
-    let newArr = [...myContext.activityName];
-    newArr[index]["checked"] = state;
-    myContext.setActivity(newArr);
-  };
+  
+  // const switchState = (state, index) => {
+  //   let newArr = [...myContext.activityName];
+  //   newArr[index]["checked"] = state;
+  //   myContext.setActivity(newArr);
+  // };
 
   const pressHandler = () => {
-    navigation.navigate("AddActivity");
+    navigation.navigate("AddActivity", props);
   };
 
 

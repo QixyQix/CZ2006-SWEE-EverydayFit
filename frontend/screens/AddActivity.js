@@ -5,7 +5,7 @@ import { Layout, Divider, List, ListItem } from "@ui-kitten/components";
 import { getExercises } from "../utils/exercises";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default AddActivity = () => {
+export default AddActivity = ({ route }) => {
   const navigation = useNavigation();
   const [exercises, setExercises] = useState([]);
 
@@ -22,7 +22,11 @@ export default AddActivity = () => {
   const renderItem = ({ item }) => (
     <ListItem
       onPress={() => {
-        navigation.navigate("SetQuantity", item);
+        //console.log("hi")
+        let indexToParse = route.params;
+        let itemToParse = {...item, ...indexToParse};
+        console.log(itemToParse);
+        navigation.navigate("SetQuantity", itemToParse);
       }}
       title={item.name}
       accessoryRight={

@@ -32,8 +32,8 @@ export const MyCalendar = () => {
 
       />
 
-      <Button style={tailwind("bg-blue-700 text-gray-800 font-bold py-3 px-1 rounded items-center")}  title="GO TO " onPress= {() =>  navigation.navigate('FITNESS_PLAN', {select_date: date.toDateString()})}>  
-        <Text style={tailwind("text-base")}  >  Go to {date.toDateString()} </Text>
+      <Button style={tailwind("bg-blue-700 text-gray-800 font-bold py-3 px-1 rounded items-center")}  title="GO TO " onPress= {() =>  navigation.navigate('FITNESS_PLAN', {year: date.getFullYear(), month: date.getMonth()+1, date: date.getDate(), day: date.toDateString()})}>  
+        <Text style={tailwind("text-base")}  >  Go to {date.toDateString()}  </Text>
       </Button>
 
     </Layout>

@@ -59,10 +59,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   
-
-  const getPlan = async () => {
+  const getPlan = async (mthod, body) => {
     const token = auth.token;
-    const res = await axios.get(`${API_URL}/plan/`, { 
+    const res = await axios.get(`${API_URL}/plan/`, body, { 
       headers: {
       'Authorization': `${token}`
       }
@@ -75,21 +74,21 @@ export const AuthProvider = ({ children }) => {
     } 
   };
 
-  const setPlan = async (date) => {
+  const setPlan = async (props, values) => {
     const token = auth.token;
+    const date = `${props.date.year}-${props.date.month}-${props.date.date}`;
     const res = await axios.post(`${API_URL}/plan/${date}/activity/`,  { 
       headers: {
       'Authorization': `${token}`
       }, 
       data: {
-        "activityID": "6176e77f9f39c38ebbb42069",
-        "exerciseID": "617bfa7507ad09a14b982982",
-        "quantity": 1000,
-        "sets": 15000
+        "activityID": "",
+        "exerciseID": props._id,
+        "quantity": values.quantity,
+        "sets": values.sets
        }
-    }, 
-    
-    )
+    })
+    //console.log(values);
 }
 
 const deletePlan = async (date) => {

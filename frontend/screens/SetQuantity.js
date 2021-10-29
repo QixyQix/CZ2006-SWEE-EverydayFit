@@ -7,9 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useFormik } from "formik";
 
 import tailwind from "tailwind-rn";
-
 import { useAuth } from "../utils/auth";
-
 import moment from "moment";
 
 // TODO Add form validation
@@ -24,18 +22,14 @@ export default function SetQuantity({ route }) {
       sets: null,
     },    
     onSubmit: (values) => {
-  
-//setPlan({ , , , });
-
-//getPlan().then((data) => console.log(data));
-
-      
+      setPlan(route.params, values);
+      getPlan().then((data) => console.log(data));
     },
   });
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Layout>
+      <Layout style={tailwind("flex-grow")}>
         <Text style={tailwind("text-lg font-bold")}>
           For {exercise.name}, please enter the following!
         </Text>
