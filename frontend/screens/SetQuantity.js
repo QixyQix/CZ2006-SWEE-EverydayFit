@@ -8,18 +8,28 @@ import { useFormik } from "formik";
 
 import tailwind from "tailwind-rn";
 
+import { useAuth } from "../utils/auth";
+
+import moment from "moment";
+
 // TODO Add form validation
 export default function SetQuantity({ route }) {
   const navigation = useNavigation();
+  const { getPlan, setPlan } = useAuth();
 
   const exercise = route.params;
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       quantity: "",
       sets: null,
-    },
+    },    
     onSubmit: (values) => {
-      console.log(values);
+  
+//setPlan({ , , , });
+
+//getPlan().then((data) => console.log(data));
+
+      
     },
   });
 

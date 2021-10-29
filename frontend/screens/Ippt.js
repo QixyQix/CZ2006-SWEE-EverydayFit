@@ -146,86 +146,13 @@ export default Ippt = () => {
           style={tailwind("mx-1")}
         />
       </Layout>
-
-        <Layout style={tailwind("flex-row flex-1 items-center")}>
-          <Text>Type of Service: </Text>
-          <Picker
-            selectedValue={values.serviceType}
-            onValueChange={(itemValue, _) =>
-              handleChange("serviceType")(itemValue)
-            }
-            style={tailwind("w-4/12")}
-          >
-            <Picker.Item label="Active" value="active" />
-            <Picker.Item label="NSman" value="nsman" />
-          </Picker>
-        </Layout>
-
-        <Layout style={tailwind("flex-row flex-initial items-center")}>
-          <Text>Enter your age: </Text>
-          <Input
-            keyboardType="number-pad"
-            value={values.age}
-            onChangeText={handleChange("age")}
-            maxLength={2}
-          />
-        </Layout>
-
         {errors.age && touched.age ? (
           <Text style={tailwind("text-red-600")}>{errors.age}</Text>
         ) : null}
-
-        <Layout style={tailwind("flex-row flex-initial items-center")}>
-          <Text>2.4 km run: </Text>
-          <Input
-            keyboardType="number-pad"
-            value={values.runTimeMinutes}
-            onChangeText={handleChange("runTimeMinutes")}
-            maxLength={2}
-          />
-          <Text>min </Text>
-          <Input
-            keyboardType="number-pad"
-            value={values.runTimeSeconds}
-            onChangeText={handleChange("runTimeSeconds")}
-            maxLength={2}
-          />
-          <Text>s</Text>
-        </Layout>
-
         {(errors.runTimeMinutes && touched.runTimeMinutes) ||
         (errors.runTimeSeconds && touched.runTimeSeconds) ? (
           <Text style={tailwind("text-red-600")}>Must be a valid duration</Text>
         ) : null}
-
-        <Layout style={tailwind("flex-row flex-initial items-center")}>
-          <Text>Push-ups: </Text>
-          <Input
-            keyboardType="number-pad"
-            value={values.pushUpCount}
-            onChangeText={handleChange("pushUpCount")}
-            maxLength={2}
-          />
-        </Layout>
-
-        {errors.pushUpCount && touched.pushUpCount ? (
-          <Text style={tailwind("text-red-600")}>{errors.pushUpCount}</Text>
-        ) : null}
-
-        <Layout style={tailwind("flex-row flex-initial items-center")}>
-          <Text>Sit-ups: </Text>
-          <Input
-            keyboardType="number-pad"
-            value={values.sitUpCount}
-            onChangeText={handleChange("sitUpCount")}
-            maxLength={2}
-          />
-        </Layout>
-
-        {errors.sitUpCount && touched.sitUpCount ? (
-          <Text style={tailwind("text-red-600")}>{errors.sitUpCount}</Text>
-        ) : null}
-
         <Layout style={tailwind("flex-row flex-initial items-center")}>
           <Button onPress={handleSubmit}>CALCULATE</Button>
 
