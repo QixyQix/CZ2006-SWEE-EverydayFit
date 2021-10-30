@@ -10,6 +10,16 @@ const GetFitnessPlansForUserID = async (userID: string) => {
     }
 }
 
+const GetDateFitnessPlanForUser = async (userID: string, date: Date) => {
+    try {
+        const fitnessPlans = await FitnessPlanRepo.GetDateFitnessPlanForUser(userID, date);
+        return fitnessPlans;
+    } catch (err) {
+        console.error(`FitnessPlanService: GetDateFitnessPlanForUser: Unable to get date fitness plans for use ${userID}`);
+        throw new Error('An error occured while trying to retrieve fitness plans');
+    }
+}
+
 const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number) => {
     try {
         const fitnessPlan = await FitnessPlanRepo.GetDateFitnessPlanForUser(userID, date);
@@ -84,6 +94,7 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
 
 const FitnessPlanService = {
     GetFitnessPlansForUserID,
+    GetDateFitnessPlanForUser,
     AddActivityToFitnessPlan,
     DeleteActivityFromFitnessPlan,
     EditActivityFromFitnessPlan,
