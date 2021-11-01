@@ -59,9 +59,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   
-  const getPlan = async (mthod, body) => {
+  const getPlan = async (date) => {
     const token = auth.token;
-    const res = await axios.get(`${API_URL}/plan/`, body, { 
+    const res = await axios.get(`${API_URL}/plan/${date}`, { 
       headers: {
       'Authorization': `${token}`
       }
@@ -77,32 +77,29 @@ export const AuthProvider = ({ children }) => {
   const setPlan = async (props, values) => {
     const token = auth.token;
     const date = `${props.date.year}-${props.date.month}-${props.date.date}`;
-    const res = await axios.post(`${API_URL}/plan/${date}/activity/`,  { 
+    const res = await axios.post(`${API_URL}/plan/${date}/activity/`,  
+    {
+      "exerciseID": props._id,
+      "quantity": values.quantity,
+      "sets": values.sets
+     }, 
+     { 
       headers: {
-      'Authorization': `${token}`
+      'authorization': `${token}`
       }, 
-      data: {
-        "activityID": "",
-        "exerciseID": props._id,
-        "quantity": values.quantity,
-        "sets": values.sets
-       }
     })
-    //console.log(values);
-}
-
+    //console.log(date);
+};
 const deletePlan = async (date) => {
   const token = auth.token;
-  const res = await axios.delete(`${API_URL}/plan/${date}/activity/`, 
+  const res = await axios.delete(`${API_URL}/plan/${date}/activity/`, {
+    "activityID": '617feeb15435e1cd69fa8f5b'
+   },
   { 
     headers: {
     'Authorization': `${token}`
-    },
-    data: {
-      "activityID": "617c1b9d54b84430da062834"
-     },
-  }
-  )
+  }, 
+  })
 }
   const login = (email, password) => base("login", { email, password });
 

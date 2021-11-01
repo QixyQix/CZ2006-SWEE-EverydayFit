@@ -8,6 +8,7 @@ import { Layout } from "@ui-kitten/components";
 import HomeHeader from "../components/HomeHeader";
 import {API_URL} from "@env";
 import axios from "axios";
+import moment from 'moment'; 
 
 export default Home = () => {
 const { getPlan, setPlan, deletePlan } = useAuth();
@@ -28,15 +29,19 @@ useEffect(() => {
   getForecasts();
   }, []);
 
-//getPlan().then((data) => console.log(data));
+//deletePlan('2021-11-01');
+//getPlan('2021-11-04').then((data) => console.log(data));
 //setPlan('2021-10-30').then((data) => console.log(data));
-//deletePlan('2021-10-30').then((data) => console.log(data));
 
+  const date = new Date(); 
+  //{year: moment(forecast.date.toString()).format('YYYY'), month: moment(forecast.date.toString()).format('MM'), date: moment(forecast.date.toString()).format('DD'), day: moment(forecast.date.toString()).format("ddd MMM DD YYYY")})}
+  const dateStuff = {year: moment().local().format('YYYY'), month: moment().local().format('MM'), date: moment().local().format('DD'), day: moment().local().format("ddd MMM DD YYYY")};
+  console.log(dateStuff);
   return (
     <Layout style={tailwind("flex-1")}>
       <HomeHeader forecast = {forecasts}/>
       <TodaysWeatherInfo forecast = {forecasts[0]}/>
-      <FitnessPlanner />
+      <FitnessPlanner date = {dateStuff}/>
     </Layout>
   );
 };
