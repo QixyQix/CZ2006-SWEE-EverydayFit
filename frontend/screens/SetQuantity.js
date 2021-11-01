@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { isNumeric, schema }  from "../utils/validationSchemas";
+import { isNumeric, quantitativeSchema, timeSchema, distanceSchema }  from "../utils/validationSchemas";
 import tailwind from "tailwind-rn";
 
 // TODO Add form validation
@@ -14,7 +14,7 @@ export default function SetQuantity({ route }) {
   const navigation = useNavigation();
 
   const exercise = route.params;
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       quantity: "",
       sets: null,
@@ -22,6 +22,12 @@ export default function SetQuantity({ route }) {
     onSubmit: (values) => {
       console.log(values);
     },
+
+    validationSchema :  (exercise.quantityType === "QUANTITATIVE"
+                        ? quantitativeSchema
+                        : exercise.quantityType === "TIME"
+                        ? timeSchema
+                        : distanceSchema)
   });
 
   return (
@@ -47,6 +53,10 @@ export default function SetQuantity({ route }) {
           onChangeText={handleChange("quantity")}
         />
 
+        {errors.quantity && touched.quantity ? (
+          <Text style={tailwind("text-red-600")}>{errors.quantity}</Text>
+           ) : null}
+
         {/* Show Sets field if quantitative */}
         {exercise.quantityType === "QUANTITATIVE" && (
           <>
@@ -59,6 +69,10 @@ export default function SetQuantity({ route }) {
             />
           </>
         )}
+        
+        {errors.sets && touched.sets ? (
+          <Text style={tailwind("text-red-600")}>{errors.sets}</Text>
+           ) : null}
 
         <Button
           accessoryLeft={
