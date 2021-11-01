@@ -14,6 +14,29 @@ const GetFitnessPlans = async (req: Request, res: Response) => {
     }
 }
 
+const GetDateFitnessPlanForUser = async (req: Request, res: Response) => {
+    const userID = req.params.user;
+    if (!userID) {
+        return res.status(401).json({ message: 'User not found' })
+    }
+
+    const { date } = req.params;
+
+    const dateRegex = /^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/;
+    if (!date.match(dateRegex)) {
+        console.error(`FitnessPlanController: GetDateFitnessPlanForUser: Invalid date string: ${date}`)
+        return res.status(500).json({ message: 'Date must be in yyyy-MM-dd format' });
+    }
+
+    const dateObj = new Date(date);
+    try {
+        const result = await FitnessPlanService.GetDateFitnessPlanForUser(userID, dateObj);
+        return res.json(result);
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
 const AddActivityToFitnessPlan = async (req: Request, res: Response) => {
     const userID = req.params.user;
     if (!userID) {
@@ -88,6 +111,7 @@ const EditActivityFromFitnessPlan = async (req: Request, res: Response) => {
 
 const FitnessPlanController = {
     GetFitnessPlans,
+    GetDateFitnessPlanForUser,
     AddActivityToFitnessPlan,
     DeleteActivityFromFitnessPlan,
     EditActivityFromFitnessPlan,
