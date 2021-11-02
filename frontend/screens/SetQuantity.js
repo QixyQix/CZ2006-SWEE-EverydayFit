@@ -48,9 +48,10 @@ export default function SetQuantity({ route }) {
 
         <Input
           keyboardType="numeric"
-          placeholder="e.g. 10"
+          placeholder="e.g. 10, 1 decimal point only"
           value={values.quantity}
           onChangeText={handleChange("quantity")}
+          maxLength={5}
         />
 
         {errors.quantity && touched.quantity ? (
@@ -66,6 +67,7 @@ export default function SetQuantity({ route }) {
               placeholder="e.g. 3"
               value={values.sets}
               onChangeText={handleChange("sets")}
+              maxLength={3}
             />
           </>
         )}

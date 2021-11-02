@@ -6,27 +6,7 @@ import { useFormik } from "formik";
 import { calculateIppt } from "../utils/ippt";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import * as Yup from "yup";
-
-const isTwoDigit = (value) => /^[1-9]?\d$/.test(value);
-const isSeconds = (value) => /^[1-5]?[0-9]$/.test(value);
-
-const schema = Yup.object().shape({
-  gender: Yup.string().required("Required"),
-  serviceType: Yup.string().required("Required"),
-  age: Yup.string()
-    .required("Required")
-    .test("Age", "Must be a positive integer", isTwoDigit),
-  runTimeMinutes: Yup.string().test("Minutes", isTwoDigit).required("Required"),
-  runTimeSeconds: Yup.string()
-    .test("Seconds", isSeconds)
-    .required("Required"),
-  pushUpCount: Yup.string()
-    .test("Push Up", "Must be a positive integer", isTwoDigit)
-    .required("Required"),
-  sitUpCount: Yup.string()
-    .test("Sit Up", "Must be a positive integer", isTwoDigit)
-    .required("Required"),
-});
+import { ipptSchema }  from "../utils/validationSchemas";
 
 export default Ippt = () => {
   const { values, handleChange, handleSubmit, setValues, errors, touched } =
@@ -65,7 +45,7 @@ export default Ippt = () => {
         // Update new values
         setValues({ ...values, ipptPoints, grade });
       },
-      validationSchema: schema,
+      validationSchema: ipptSchema,
     });
 
   return (
