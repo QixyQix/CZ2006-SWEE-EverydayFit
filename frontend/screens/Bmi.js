@@ -8,15 +8,16 @@ import { Keyboard, TouchableWithoutFeedback } from "react-native";
 /* 
 TODO Show error message for leading zeros (e.g. 007)
 */
-const isNumeric = (value) => /^(?![0.]+$)\d+(\.\d*)?$/.test(value);
+const isNumeric = (value) => /^([0-9]\.[1-9]+|[1-9][0-9]*\.[1-9]+|[1-9][0-9]*)$/.test(value);
 
 const schema = Yup.object().shape({
   weight: Yup.string()
     .required("Required")
     .test("Number", "Must be a positive number", isNumeric),
   height: Yup.string()
-    .test("Number", "Must be a positive number", isNumeric)
-    .required("Required"),
+    .required("Required")
+    .test("Number", "Must be a positive number", isNumeric),
+   
 });
 
 const getBmiCategory = (bmi) => {
