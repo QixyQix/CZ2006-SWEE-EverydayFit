@@ -30,7 +30,8 @@ useEffect(() => {
   }, []);
 
 //deletePlan('2021-11-01');
-//getPlan('2021-11-04').then((data) => console.log(data));
+// deletePlan("2021-11-05", "aa");
+// getPlan('2021-11-05').then((data) => console.log(data));
 //setPlan('2021-10-30').then((data) => console.log(data));
 
   const date = new Date(); 

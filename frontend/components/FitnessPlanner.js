@@ -20,8 +20,8 @@ export default FitnessPlanner = (props) => {
 
   const { getPlan, setPlan } = useAuth();
   const { database, setDatabase } = useState([]);
-  const [exercise, setExercise] = useState();
-  const [activity, setActivity] = useState();
+  const [exercise, setExercise] = useState([]);
+  const [activity, setActivity] = useState([]);
 
   const getexercise = async () => {
     try{
@@ -36,20 +36,28 @@ export default FitnessPlanner = (props) => {
     }
 
   };
-  console.log("this:", props);
-  const getActivities = async () => {
-    setActivity(await getExercises());
-  };
   
-  useEffect(() => {
-    getexercise();
-    getActivities();
-    }, []);
+  const labelMsg = (exerciseID) => {
+    return (dictActivity[exerciseID].exerciseType === "QUANTITATIVE"
+            ? `Reps: ${dictExercise[exerciseID][0]}`
+            : dictActivity[exerciseID].exerciseType === "TIME"
+            ? `Duration ${dictExercise[exerciseID][0]} ${dictActivity[exerciseID].unitType}`
+            : `Distance ${dictExercise[exerciseID][0]} ${dictActivity[exerciseID].unitType}`)
+  }
+
+    const getActivities = async () => {
+        setActivity(await getExercises());
+    };
+    
+    useEffect(() => {
+      getexercise();
+      getActivities();
+      }, []);
  
     const theSize = activity ? activity.length : 0;
     var dictActivity = {};
     for (var j = 0; j < theSize; j++){
-      dictActivity[activity[j]._id] = activity[j].name;
+      dictActivity[activity[j]._id] = {name: activity[j].name, exerciseType: activity[j].quantityType, unitType: activity[j].quantityUnit};
     }
 
     //index 0 of array is quantity(reps) of exercises planned
@@ -62,10 +70,17 @@ export default FitnessPlanner = (props) => {
 
     const navigation = useNavigation();
 
+    const itemToParse = (itemID) => {
+      const dateToPassIn =`${props.date.year}-${props.date.month}-${props.date.date}`
+      const objToPassIn = { date: dateToPassIn, exerciseInfo: itemID};
+      return objToPassIn;
+    }
+
     const pressHandler = () => {
       navigation.navigate("AddActivity", props);
+        getexercise();
     };
-
+  
     const renderItem = ({ item, index }) => (
       <Layout style={tailwind("flex-col")} level="1">
         <CheckBox
@@ -75,9 +90,11 @@ export default FitnessPlanner = (props) => {
           onChange={(checknext) => switchState(checknext, index)}
         >
           <ListItem
-            accessoryRight={<EditButton index={index} />}
-            title= {dictActivity[item.exerciseID]}
-            description= {"Qty: " + `${dictExercise[item.exerciseID][0]}` + ", " + "Sets: " + `${dictExercise[item.exerciseID][1]}`}
+            accessoryRight={<EditButton activityID={itemToParse(item._id)} />}
+             title= {dictActivity[item.exerciseID]['name']}
+             description= {dictExercise[item.exerciseID][1] != null
+             ? labelMsg(item.exerciseID) + " Sets: " + `${dictExercise[item.exerciseID][1]}`
+             : labelMsg(item.exerciseID)} 
           />
         </CheckBox>
       </Layout>
