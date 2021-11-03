@@ -1,4 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import tailwind from "tailwind-rn";
 import {
   Divider,
@@ -7,76 +8,84 @@ import {
   Button,
   CheckBox,
   Layout,
+  ButtonGroup, 
+  Icon,
+  Modal,
+  Card,
+  Text
 } from "@ui-kitten/components";
 
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import EditButton from "./EditButton";
 import { useAuth } from "../utils/auth";
-import moment from "moment";
 import { getExercises } from "../utils/exercises";
 
 export default FitnessPlanner = (props) => {
-
-  const { getPlan, setPlan, deletePlan } = useAuth();
-  const { database, setDatabase } = useState([]);
-  const [exercise, setExercise] = useState([]);
-  const [activity, setActivity] = useState([]);
   
-  const getExercise = async () => {
-    try{
-      getPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`).then((data) => {
-        const exerciseRes = data;
-        setExercise(exerciseRes.activities);
-      } );
-      // dd
+  const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
+  const  [exercise, setExercise ] = useState([]);
+  const [ activities, setActivities ] = useState([]);
+  const [visibleBtn, setVisibleBtn] = useState(false);
 
-    } catch {
-      //dd
+  const navigation = useNavigation();
+  var dictExercise = {};
+  var dictActivity = {};
+  
+  const getActivities = async () => {
+    try{
+      const data = await getPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`)
+      setActivities(data.activities);
+    } catch (e) {
+      console.log(e)
+    }
+  };
+
+  if(activities.length !== 0 && exercise.length !== 0){
+
+    const theSize = exercise ? exercise.length : 0;
+    for (var j = 0; j < theSize; j++){ 
+      dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit};
     }
 
-  };
-  
-  
-  const labelMsg = (exerciseID) => {
-    return (!activity.length && !exercise.exerciseID ? 0 : dictActivity[exerciseID].exerciseType === "QUANTITATIVE"
-            ? `Reps: ${dictExercise[exerciseID][0]}`
-            : dictActivity[exerciseID].exerciseType === "TIME"
-            ? `Duration ${dictExercise[exerciseID][0]} ${dictActivity[exerciseID].unitType}`
-            : `Distance ${dictExercise[exerciseID][0]} ${dictActivity[exerciseID].unitType}`)
+    const sizeOfPlan = activities ? activities.length : 0;
+    for (var j = 0; j < sizeOfPlan; j++) {
+      dictActivity[activities[j].exerciseID] = [activities[j].totalQuantity, activities[j].sets];
+    }
   }
 
-    const getActivities = async () => {
-      setActivity(await getExercises());
-    };
+  const getLabelMsg = (item) => {
+    // If one of activities or exercise is empty
+    if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 || Object.keys(dictActivity) === 0) return "";
+    // console.log(item.exerciseID, dictExercise[item.exerciseId]);
+    const quantityDescription = dictExercise[item.exerciseID].exerciseType === "QUANTITATIVE"
+                                ? `Reps: ${dictActivity[item.exerciseID][0]}`
+                                : dictExercise[item.exerciseID].exerciseType === "TIME"
+                                ? `Duration ${dictActivity[item.exerciseID][0]} ${dictExercise[item.exerciseID].unitType}`
+                                : `Distance ${dictActivity[item.exerciseID][0]} ${dictExercise[item.exerciseID].unitType}`
     
-    useEffect(() => {
-      getExercise();
-      getActivities();
-      }, []);
-      
-    console.log("this are exe",exercise);
-    //console.log(`${('0'+'30').slice(-2)}`);
-    //console.log("this is it", activity);
- 
-    const theSize = activity ? activity.length : 0;
-    var dictActivity = {};
-    for (var j = 0; j < theSize; j++){
-      dictActivity[activity[j]._id] = {name: activity[j].name, exerciseType: activity[j].quantityType, unitType: activity[j].quantityUnit};
-    }
-
-    //index 0 of array is quantity(reps) of exercises planned
-    // index 1 of array is number of sets of exercises planned
-    const sizeOfPlan = exercise ? exercise.length : 0;
-    var dictExercise = {};
-    for (var j = 0; j < sizeOfPlan; j++){
-      dictExercise[exercise[j].exerciseID] = [exercise[j].totalQuantity, exercise[j].sets];
-    }
-
-    // to initialise the array on the server
+    const setsDescription =   dictActivity[item.exerciseID][1] !== null 
+                             ? " Sets: " + `${dictActivity[item.exerciseID][1]}`
+                             : " "
     
+   return (quantityDescription + setsDescription);
+  }
 
-    const navigation = useNavigation();
+  const getExercise = async () => {
+      setExercise(await getExercises());
+  };
+    
+  const getTitle= (item) => {
+      // If one of activities or exercise is empty
+      if (activities.length === 0 || exercise.length === 0) return "";
+      return dictExercise[item.exerciseID].name;
+  }
+    
+  useFocusEffect(
+      useCallback(() => {
+        getActivities();
+        getExercise();
+      }, [])
+  )
 
     const itemToParse = (itemID) => {
       const dateToPassIn =`${props.date.year}-${props.date.month}-${props.date.date}`
@@ -87,30 +96,93 @@ export default FitnessPlanner = (props) => {
     const pressHandler = () => {
         navigation.navigate("AddActivity", props);
     };
-  
+    
+    const deleteHandler = (item) => {
+      deletePlan(`${props.date.year}-${props.date.month}-${props.date.date}`, item); 
+      getActivities();
+    };
+    
+    const editHandler = () =>  {
+      console.log("TODO: Edit stuff");
+    };
+    
+    const EditIcon = (props) => (
+      <Icon {...props} name='edit-2-outline'/>
+    );
+
+    const DeleteIcon = (props) => (
+      <Icon {...props} name='trash-2-outline'/>
+    );
+
+    const renderItemAccessory = (item) => (
+      <Layout>
+
+      <Layout style={tailwind("m-7 right-2")}>
+        <ButtonGroup  appearance = 'filled' size = 'small' >
+          <Button onPress = {()=> {editHandler()}}  accessoryLeft={EditIcon} />
+          <Button onPress = {() =>{setVisibleBtn(true)}} accessoryLeft={DeleteIcon} />
+        </ButtonGroup> 
+      </Layout> 
+      
+          <Modal visible={visibleBtn}>
+            <Card disabled={true}>
+              <Text> Are you sure you want to delete this activity? </Text>
+              <Layout style={tailwind("flex-row justify-center items-center ")}>
+                <Button
+                  onPress={() => {
+                    setVisibleBtn(false);
+                  }}
+                >
+                  No
+                </Button>
+                <Button
+                  onPress={() => {
+                    deleteHandler(item);
+                    setVisibleBtn(false);
+                  }}
+                >
+                  Yes
+                </Button>
+              </Layout>
+            </Card>
+          </Modal>
+
+        </Layout>
+
+    );
+
+    
+          
+    const switchState = (state, item) => {
+      item.done = state;
+      patchPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item)
+      getActivities();
+    };
+
     const renderItem = ({ item, index }) => (
       <Layout style={tailwind("flex-col")} level="1">
         <CheckBox
           style={tailwind("left-3")}
           checked={item.done}
           status="primary"
-          onChange={(checknext) => switchState(checknext, index)}
+          onChange={(checknext) => switchState(checknext, item)}
         >
           <ListItem
-            accessoryRight={<EditButton activityID={itemToParse(item._id)} />}
-             title= {exercise.length && activity.length ? dictActivity[item.exerciseID]['name'] : null}
-             description= {!exercise.exerciseID && !activity.length ? null : dictExercise[item.exerciseID][1] != null 
-             ? labelMsg(item.exerciseID) + " Sets: " + `${dictExercise[item.exerciseID][1]}`
-             : labelMsg(item.exerciseID)} 
+            disabled = {true}
+
+            accessoryRight={() => renderItemAccessory(item._id)}
+            title={getTitle(item)}
+            description={getLabelMsg(item)}
           />
         </CheckBox>
       </Layout>
     );
 
+
   return (
     <Layout style={tailwind("flex-grow flex-initial items-center m-1")}>
-      <List
-        data={activity.length ? exercise : null}
+      <List 
+        data={activities.length ? activities : null}
         ItemSeparatorComponent={Divider}
         renderItem = {renderItem}   />
       <Button
@@ -123,6 +195,9 @@ export default FitnessPlanner = (props) => {
       >
         Add Fitness Activity
       </Button>
+
+      
+      
     </Layout>
   );
 };

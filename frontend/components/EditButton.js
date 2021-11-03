@@ -14,7 +14,7 @@ import AppContext from "./database";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../utils/auth";
 
-export const EditButton = (activityID) => {
+export const EditButton = (props) => {
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
   const [visibleBtn, setVisibleBtn] = useState(false);
@@ -30,12 +30,11 @@ export const EditButton = (activityID) => {
     }
   };
 
-  const deleteHandler = (activity) => {
-    // if (activityID !== -1) {
-    //  
-    deletePlan(activity.date, activity.exerciseInfo); 
+  const deleteHandler = (currentActivity) => {
+    const {getExercise, exercise, activity, setActivity} = {...props};
+    deletePlan(currentActivity.date, currentActivity.exerciseInfo); 
     setVisible(false);
-    // }
+    props.getActivities();
   };
 
   const renderItemAccessory = () => (
@@ -55,7 +54,7 @@ export const EditButton = (activityID) => {
         placement="left start"
         onBackdropPress={() => setVisible(false)}
       >
-        <MenuItem title="Edit" onPress={() => pressHandler(activityID.activityID, 0)} />
+        <MenuItem title="Edit" onPress={() => pressHandler(props.activityID, 0)} />
         <MenuItem title="Delete" onPress={() => setVisibleBtn(true)} />
       </OverflowMenu>
 
@@ -73,7 +72,7 @@ export const EditButton = (activityID) => {
             </Button>
             <Button
               onPress={() => {
-                deleteHandler(activityID.activityID);
+                deleteHandler(props.activityID);
                 setVisibleBtn(false);
               }}
             >

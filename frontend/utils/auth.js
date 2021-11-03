@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
   const setPlan = async (props, values) => {
     const token = auth.token;
-    const date = `${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`;
+    const date = `${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`;
     const res = await axios.post(`${API_URL}/plan/${date}/activity/`,  
     {
       "exerciseID": props._id,
@@ -89,27 +89,51 @@ export const AuthProvider = ({ children }) => {
       }, 
     })
     //console.log(date);
-};
-const deletePlan = async (date1, exerciseInfo) => {
-  const token = auth.token;
-  const date = date1;
-  const activityID = exerciseInfo;
-  console.log(date, `${exerciseInfo}`);
-  try {
-    const res = await axios.delete(`${API_URL}/plan/${date}/activity/`, 
-    { 
-      headers: {
-      'authorization': `${token}`
+  };
+  const patchPlan = async (date, values) => {
+    const token = auth.token;
+    console.log(date, values);
+    try {
+      const res = await axios.patch(`${API_URL}/plan/${date}/activity/`, 
+      {
+        "activityID": values._id,
+        "exerciseID": values.exerciseID,
+        "quantity": values.totalQuantity,
+        "sets": values.sets,
+        "done": values.done
       },
-      data : {
-        "activityID": activityID
-      },
-    })
-  } catch (e)
- {
-   console.log("An error: AUTISM");
- }  
-}
+      { 
+        headers: {
+        'authorization': `${token}`
+        },
+      })
+    } catch (e)
+      {
+        console.log("An error: patching");
+      }  
+  }
+
+  const deletePlan = async (date1, exerciseInfo) => {
+    const token = auth.token;
+    const date = date1;
+    const activityID = exerciseInfo;
+    console.log(date, `${exerciseInfo}`);
+    try {
+      const res = await axios.delete(`${API_URL}/plan/${date}/activity/`, 
+      { 
+        headers: {
+        'authorization': `${token}`
+        },
+        data : {
+          "activityID": activityID
+        },
+      })
+    } catch (e)
+      {
+        console.log("An error: AUTISM");
+      }  
+  }
+
   const login = (email, password) => base("login", { email, password });
 
   const register = (email, name, password) =>
@@ -126,7 +150,7 @@ const deletePlan = async (date1, exerciseInfo) => {
   };
 
   return (
-    <AuthContext.Provider value={{ auth, isLoading, login, register, logout, getPlan, setPlan, deletePlan }}>
+    <AuthContext.Provider value={{ auth, isLoading, login, register, logout, getPlan, setPlan, deletePlan, patchPlan }}>
       {children}
     </AuthContext.Provider>
   );
