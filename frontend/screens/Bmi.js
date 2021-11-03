@@ -4,21 +4,8 @@ import { Layout, Text, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import { bmiSchema }  from "../utils/validationSchemas";
 
-/* 
-TODO Show error message for leading zeros (e.g. 007)
-*/
-const isNumeric = (value) => /^([0-9]\.[1-9]+|[1-9][0-9]*\.[1-9]+|[1-9][0-9]*)$/.test(value);
-
-const schema = Yup.object().shape({
-  weight: Yup.string()
-    .required("Required")
-    .test("Number", "Must be a positive number", isNumeric),
-  height: Yup.string()
-    .required("Required")
-    .test("Number", "Must be a positive number", isNumeric),
-   
-});
 
 const getBmiCategory = (bmi) => {
   if (bmi <= 18.5) {
@@ -50,7 +37,7 @@ export default Bmi = () => {
 
         values.bmiCategory = getBmiCategory(values.bmi);
       },
-      validationSchema: schema,
+      validationSchema: bmiSchema,
     });
 
   return (
