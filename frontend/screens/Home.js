@@ -9,9 +9,15 @@ import HomeHeader from "../components/HomeHeader";
 import {API_URL} from "@env";
 import axios from "axios";
 import moment from 'moment'; 
+import { useNavigation } from "@react-navigation/native";
 
 export default Home = () => {
 const { getPlan, setPlan, deletePlan } = useAuth();
+const navigation = useNavigation();
+const [count, setCount] = useState(0);
+moment.locale();
+  
+
 
 const [forecasts, setForecasts] = useState([]);
 

@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
   const setPlan = async (props, values) => {
     const token = auth.token;
-    const date = `${props.date.year}-${props.date.month}-${props.date.date}`;
+    const date = `${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`;
     const res = await axios.post(`${API_URL}/plan/${date}/activity/`,  
     {
       "exerciseID": props._id,

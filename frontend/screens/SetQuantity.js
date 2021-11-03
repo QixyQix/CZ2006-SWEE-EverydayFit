@@ -23,6 +23,7 @@ export default function SetQuantity({ route }) {
     },    
     onSubmit: (values) => {
       setPlan(route.params, values);
+      navigation.pop(2);
     },
   });
 

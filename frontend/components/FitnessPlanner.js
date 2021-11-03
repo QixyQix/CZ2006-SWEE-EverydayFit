@@ -18,14 +18,14 @@ import { getExercises } from "../utils/exercises";
 
 export default FitnessPlanner = (props) => {
 
-  const { getPlan, setPlan } = useAuth();
+  const { getPlan, setPlan, deletePlan } = useAuth();
   const { database, setDatabase } = useState([]);
   const [exercise, setExercise] = useState([]);
   const [activity, setActivity] = useState([]);
-
-  const getexercise = async () => {
+  
+  const getExercise = async () => {
     try{
-      getPlan(`${props.date.year}-${props.date.month}-${props.date.date}`).then((data) => {
+      getPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`).then((data) => {
         const exerciseRes = data;
         setExercise(exerciseRes.activities);
       } );
@@ -37,8 +37,9 @@ export default FitnessPlanner = (props) => {
 
   };
   
+  
   const labelMsg = (exerciseID) => {
-    return (dictActivity[exerciseID].exerciseType === "QUANTITATIVE"
+    return (!activity.length && !exercise.exerciseID ? 0 : dictActivity[exerciseID].exerciseType === "QUANTITATIVE"
             ? `Reps: ${dictExercise[exerciseID][0]}`
             : dictActivity[exerciseID].exerciseType === "TIME"
             ? `Duration ${dictExercise[exerciseID][0]} ${dictActivity[exerciseID].unitType}`
@@ -46,13 +47,17 @@ export default FitnessPlanner = (props) => {
   }
 
     const getActivities = async () => {
-        setActivity(await getExercises());
+      setActivity(await getExercises());
     };
     
     useEffect(() => {
-      getexercise();
+      getExercise();
       getActivities();
       }, []);
+      
+    console.log("this are exe",exercise);
+    //console.log(`${('0'+'30').slice(-2)}`);
+    //console.log("this is it", activity);
  
     const theSize = activity ? activity.length : 0;
     var dictActivity = {};
@@ -68,6 +73,9 @@ export default FitnessPlanner = (props) => {
       dictExercise[exercise[j].exerciseID] = [exercise[j].totalQuantity, exercise[j].sets];
     }
 
+    // to initialise the array on the server
+    
+
     const navigation = useNavigation();
 
     const itemToParse = (itemID) => {
@@ -77,8 +85,7 @@ export default FitnessPlanner = (props) => {
     }
 
     const pressHandler = () => {
-      navigation.navigate("AddActivity", props);
-        getexercise();
+        navigation.navigate("AddActivity", props);
     };
   
     const renderItem = ({ item, index }) => (
@@ -91,8 +98,8 @@ export default FitnessPlanner = (props) => {
         >
           <ListItem
             accessoryRight={<EditButton activityID={itemToParse(item._id)} />}
-             title= {dictActivity[item.exerciseID]['name']}
-             description= {dictExercise[item.exerciseID][1] != null
+             title= {exercise.length && activity.length ? dictActivity[item.exerciseID]['name'] : null}
+             description= {!exercise.exerciseID && !activity.length ? null : dictExercise[item.exerciseID][1] != null 
              ? labelMsg(item.exerciseID) + " Sets: " + `${dictExercise[item.exerciseID][1]}`
              : labelMsg(item.exerciseID)} 
           />
@@ -103,7 +110,7 @@ export default FitnessPlanner = (props) => {
   return (
     <Layout style={tailwind("flex-grow flex-initial items-center m-1")}>
       <List
-        data={exercise}
+        data={activity.length ? exercise : null}
         ItemSeparatorComponent={Divider}
         renderItem = {renderItem}   />
       <Button
