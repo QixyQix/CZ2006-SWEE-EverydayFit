@@ -5,7 +5,7 @@ import * as Yup from "yup";
 const isNumeric = (value) => /^([0-9]\.[1-9]|[1-9][0-9]*\.[1-9]|[1-9][0-9]*)$/.test(value);
 const isIntMoreThan1 = (value) => /^([1-9][0-9]{0,100}|100)$/.test(value);
 const isTwoDigit = (value) => /^[1-9]?\d$/.test(value);
-const isSeconds = (value) => /^[1-5]?[0-9]$/.test(value);
+const isSeconds = (value) => /^[0-5]?[0-9]$/.test(value);
 
 
 const quantitativeSchema = Yup.object().shape({
