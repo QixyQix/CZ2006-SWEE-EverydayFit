@@ -22,10 +22,8 @@ export default AddActivity = ({ route }) => {
   const renderItem = ({ item }) => (
     <ListItem
       onPress={() => {
-        //console.log("hi")
         let indexToParse = route.params;
         let itemToParse = {...item, ...indexToParse};
-        console.log(itemToParse);
         navigation.navigate("SetQuantity", itemToParse);
       }}
       title={item.name}

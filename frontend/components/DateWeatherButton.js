@@ -10,13 +10,15 @@ import moment from "moment";
 export default DateWeatherButton = ({ forecast }) => {
   const navigation = useNavigation();
   const weather = forecast ? forecast.forecastCategory: "";
-  const date = forecast ? moment(forecast.date.toString()).format('MMM D') : "";
+  const date = forecast ? moment(forecast.date.substring(0, 10)).format('MMM D') : "";
+
+  const dayFormat = forecast ? moment(forecast.date.substring(0, 10)).format('ddd MMM DD YYYY') : "";
 
   return (
     <TouchableOpacity
       style={tailwind("items-center")}
       title="THE DATE"
-      onPress={() => navigation.navigate("FITNESS_PLAN", {year: moment(forecast.date.toString()).format('YYYY'), month: moment(forecast.date.toString()).format('MM'), date: moment(forecast.date.toString()).format('DD'), day: moment(forecast.date.toString()).format("ddd MMM DD YYYY")})}
+      onPress={() => navigation.navigate("FITNESS_PLAN", {year: moment(date).format('YYYY'), month: moment(date).format('MM'), date: moment(date).format('DD'), day: dayFormat})}
     >
       <MaterialCommunityIcons
         size={35}

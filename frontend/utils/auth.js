@@ -41,7 +41,6 @@ export const AuthProvider = ({ children }) => {
     const res = await axios.post(`${API_URL}/auth/${method}`, body);  
 
     if (res.status == 200) {
-      // FIXME Not sure if we should store the tokens locally
       const authData = {
         lastFetched: new Date(),
         token: res.data.token,

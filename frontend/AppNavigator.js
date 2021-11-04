@@ -11,7 +11,7 @@ import Ippt from "./screens/Ippt";
 import Startup from "./screens/Startup";
 
 import Home from "./screens/Home";
-import FitnessPlanScreen from "./screens/fitnessPlanOfTheDay";
+import FitnessPlan from "./screens/fitnessPlan";
 import MyCalendar from "./components/calendar";
 import AddActivity from "./screens/AddActivity";
 import SetQuantity from "./screens/SetQuantity";
@@ -32,7 +32,7 @@ const HomeNavigator = () => {
         <>
           {/* If the user is logged in */}
           <Stack.Screen name="HomeScrn" component={Home} />
-          <Stack.Screen name="FITNESS_PLAN" component={FitnessPlanScreen} />
+          <Stack.Screen name="FITNESS_PLAN" component={FitnessPlan} />
           <Stack.Screen name="CALENDAR" component={MyCalendar} />
           <Stack.Screen name="AddActivity" component={AddActivity} />
           <Stack.Screen name="SetQuantity" component={SetQuantity} />

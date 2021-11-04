@@ -11,10 +11,10 @@ export default TodaysWeatherInfo = ({ forecast }) => {
   
   const weather = forecast ? forecast.forecastCategory: "";
   let weatherText = forecast ? weatherConditions[weather].text : "";
-  const date = forecast ? moment(forecast.date.toString()).format('MMM D') : "";
+  const date = moment().format('DD MMM');
   const highTemp = forecast?  forecast.highTemp: "";
   const lowTemp = forecast? forecast.lowTemp: "";
-
+ 
   return (
     <Layout
       style={tailwind(

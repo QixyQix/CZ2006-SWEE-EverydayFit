@@ -5,7 +5,7 @@ import tailwind from "tailwind-rn";
 import { useNavigation } from "@react-navigation/native";
 
 
-export default function FitnessPlanScreen({ route }) {
+export default function FitnessPlan({ route }) {
   const navigation = useNavigation();
    return (
     <Layout style={tailwind("flex-1")}>
