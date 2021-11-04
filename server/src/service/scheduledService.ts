@@ -1,4 +1,5 @@
 import ForecastRepo from "../repo/forecastRepo";
+import NotifyService from '../service/notifyService';
 import axios from 'axios';
 import { EForecastCategory } from "../models/constants";
 
@@ -53,6 +54,11 @@ const RetrieveForecastsFromAPI = async () => {
 
     console.info(`ForecastRepo: RetrieveForecastsFromAPI: Completed updating forecast information`);
     console.info(`ForecastRepo: RetrieveForecastsFromAPI: Dates to notify are: ${datesToNotify}`);
+
+    if (datesToNotify.length > 0) {
+        console.info(`ForecastRepo: RetrieveForecastsFromAPI: Sending Push Notifications...`);
+        await NotifyService.NotifyUsersOfBadWeather(datesToNotify);
+    }
 }
 
 const ScheduledService = {
