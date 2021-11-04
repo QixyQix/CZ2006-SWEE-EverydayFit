@@ -4,15 +4,7 @@ import { Layout, Text, Card, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAuth } from "../utils/auth";
-
-// TODO Implement form validation
-const loginSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email!").required("Required"),
-  password: Yup.string()
-    .min(6, "minimum 6 characters")
-    .max(50, "Maximum 50 characters")
-    .required("Required"),
-});
+import { isNumeric, quantitativeSchema, timeSchema, distanceSchema, loginSchema }  from "../utils/validationSchemas";
 
 export default Login = ({ navigation }) => {
   const { login } = useAuth();
