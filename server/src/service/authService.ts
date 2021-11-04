@@ -123,7 +123,7 @@ const SetUserExpoToken = async (userID: string, expoToken: string) => {
         throw new Error('No user ID');
     }
 
-    const user = await UserRepo.GetUserByEmail(userID)
+    const user = await UserRepo.GetUserByID(userID)
     if (!user) {
         throw new Error(`User of ID ${userID} not found`);
     }
