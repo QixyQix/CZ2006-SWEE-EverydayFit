@@ -9,13 +9,21 @@ import {
   Modal,
   Card,
   Text,
+  Input,
   IndexPath, Select, SelectItem,
 } from "@ui-kitten/components";
 
 import { useAuth } from "../utils/auth";
-
+import { useFormik } from "formik";
 
 export const ButtonsStuff = (props) => {
+
+  const { values, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      quantity: "",
+      sets: null,
+    },    
+  });
 
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
 
@@ -24,8 +32,8 @@ export const ButtonsStuff = (props) => {
   const [visibleBtnA, setVisibleBtnA] = useState(false);
 
   const [placementIndex, setPlacementIndex] = React.useState(new IndexPath(0));
-  const placement = props.dateExercise.placement[placementIndex.row];
-  //console.log("hello", props);
+  const placement = props.placement[placementIndex.row];
+  
   const onPlacementSelect = (index) => {
     setPlacementIndex(index);
   };
@@ -54,9 +62,14 @@ export const ButtonsStuff = (props) => {
 
   const deleteHandler = (item) => {
       const {getExercise, exercise, activities, getActivities} = {...props};   
-      deletePlan(props.dateExercise.date, props.dateExercise.exerciseInfo); 
+      deletePlan(props.date, props.activityID); 
       props.getActivities();
   };
+
+  //console.log('HI25', props.dictExercise);
+  //console.log('HI25', props.exercise);
+ console.log("HI", props.dictExercise["617c177154b84430da0627d8"].exerciseType )
+  //console.log('HI22', props.dictActivity);
 return(
   <Layout >
     <Layout style={tailwind("m-7 right-2")}>
@@ -81,34 +94,36 @@ return(
                 value={placement}
                 selectedIndex={placementIndex}
                 onSelect={onPlacementSelect}>
-                {props.dateExercise.placement.map(renderPlacementItem)}
+                {props.placement.map(renderPlacementItem)}
               </Select>
 
-        {/* THIS IS COPIED IN
+        {/* THIS IS COPIED IN 
             <Layout style={tailwind("flex-grow")}>
             <Text style={tailwind("text-lg font-bold")}>
-              For {exercise.name}, please enter the following!
+              For {placement}, please enter the following!
             </Text>
             <Text>
-              {exercise.quantityType === "QUANTITATIVE"
+              {props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0 ? "" : props.dictExercise[props.dictExerciseToID[placement]].exerciseType === "QUANTITATIVE"
                 ? `Reps`
-                : exercise.quantityType === "TIME"
-                ? `Duration (${exercise.quantityUnit})`
-                : `Distance (${exercise.quantityUnit})`}
+                : props.dictExercise[props.dictExerciseToID[placement]].exerciseType === "TIME"
+                ? `Duration (${props.dictExercise[props.dictExerciseToID[placement]].unitType})`
+                : `Distance (${props.dictExercise[props.dictExerciseToID[placement]].unitType})`}
             </Text>
             <Input
               keyboardType="numeric"
               placeholder="e.g. 10"
-              value={values.quantity}
+              value={22}
+              //value={props.dictActivity[props.dictExerciseToID[placement]][1]}
               onChangeText={handleChange("quantity")}
             />
-            {exercise.quantityType === "QUANTITATIVE" && (
+            {props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0 ? "" : props.dictExercise[props.dictExerciseToID[placement]].exerciseType === "QUANTITATIVE" && (
               <>
                 <Text>Sets</Text>
                 <Input
                   keyboardType="numeric"
                   placeholder="e.g. 3"
-                  value={values.sets}
+                  value={23}
+                  // value = {props.dictActivity[props.dictExerciseToID[placement]][0]}
                   onChangeText={handleChange("sets")}
                 />
               </>
@@ -128,7 +143,7 @@ return(
                 </Button>
                 <Button
                   onPress={() => {
-                    EditHandler(props.dateExercise.exerciseInfo);
+                    EditHandler(props.activityID);
                     setVisibleBtnA(false);
                   }}
                 >
@@ -153,7 +168,7 @@ return(
               </Button>
               <Button
                 onPress={() => {
-                  deleteHandler(props.dateExercise.exerciseInfo);
+                  deleteHandler(props.activityID);
                   setVisibleBtn(false);
                 }}
               >
