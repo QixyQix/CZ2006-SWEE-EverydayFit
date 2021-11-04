@@ -7,9 +7,8 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../utils/auth";
 
-
 export default HomeHeader = (props) => {
-  
+
   console.log(props.forecast[0], props.forecast[1], props.forecast[2], props.forecast[3])
   return (
     <Layout style={tailwind("flex-row justify-around")}>
@@ -22,10 +21,8 @@ export default HomeHeader = (props) => {
     </Layout>
   );
 };
-
 const CalendarButton = () => {
   const navigation = useNavigation();
-
   return (
     <TouchableOpacity
       style={tailwind("items-center")}
@@ -41,11 +38,9 @@ const CalendarButton = () => {
     </TouchableOpacity>
   );
 };
-
 const LogoutButton = () => {
   const { logout } = useAuth();
   const [visible, setVisible] = React.useState(false);
-
   const LogoutIcon = (props) => (
     <FontAwesome5
       style={tailwind("pb-1")}
@@ -54,7 +49,6 @@ const LogoutButton = () => {
       color="black"
     />
   );
-
   return (
     <Layout>
       <Button
@@ -64,13 +58,11 @@ const LogoutButton = () => {
       >
         Logout
       </Button>
-
       <Modal visible={visible}>
         <Card disabled={true}>
           <Text> Are you sure you want to logout </Text>
           <Layout style={tailwind("flex-row justify-center items-center ")}>
             <Button onPress={() => setVisible(false)}>No</Button>
-
             <Button
               onPress={async () => {
                 await logout();

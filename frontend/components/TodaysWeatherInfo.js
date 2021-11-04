@@ -5,16 +5,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { weatherConditions } from "../constants";
 import { FontAwesome5 } from "@expo/vector-icons";
 import moment from "moment";
-
 export default TodaysWeatherInfo = ({ forecast }) => {
   // Capitalize first character
-  
+
   const weather = forecast ? forecast.forecastCategory: "";
   let weatherText = forecast ? weatherConditions[weather].text : "";
   const date = moment().format('DD MMM');
   const highTemp = forecast?  forecast.highTemp: "";
   const lowTemp = forecast? forecast.lowTemp: "";
- 
+
   return (
     <Layout
       style={tailwind(
@@ -25,17 +24,14 @@ export default TodaysWeatherInfo = ({ forecast }) => {
     <Layout style={tailwind("flex-col items-center ")} > 
     <Text style={tailwind("font-bold")}> {date} </Text>
     </Layout>
-
     <Layout style={tailwind("flex-col items-center ")} > 
       <MaterialCommunityIcons
         size={50}
         name={forecast ? weatherConditions[weather].icon : ""}
         color={forecast ? weatherConditions[weather].color : ""}
       />
-
       <Text style={tailwind("font-bold")} > {weatherText} </Text> 
      </Layout>
-
       <Layout>     
         <Layout style={tailwind("flex-row")} > 
           <FontAwesome5
@@ -46,7 +42,6 @@ export default TodaysWeatherInfo = ({ forecast }) => {
           />
           <Text  style={tailwind("font-bold")} > {highTemp} °C </Text> 
         </Layout>
-
         <Layout style={tailwind("flex-row")}> 
           <FontAwesome5
           style={tailwind("pb-1")}
@@ -57,7 +52,6 @@ export default TodaysWeatherInfo = ({ forecast }) => {
           <Text style={tailwind("font-bold")} > {lowTemp} °C </Text> 
         </Layout>
       </Layout>
-
     </Layout>
   );
 };

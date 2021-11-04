@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomNavigation, BottomNavigationTab } from "@ui-kitten/components";
-
 import Register from "./screens/Register";
 import Login from "./screens/Login";
 import Bmi from "./screens/Bmi";
@@ -15,17 +14,13 @@ import FitnessPlan from "./screens/fitnessPlan";
 import MyCalendar from "./components/calendar";
 import AddActivity from "./screens/AddActivity";
 import SetQuantity from "./screens/SetQuantity";
-
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useAuth } from "./utils/auth";
-
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
 const HomeNavigator = () => {
   const { auth } = useAuth();
-
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {auth.token ? (
@@ -47,20 +42,16 @@ const HomeNavigator = () => {
     </Stack.Navigator>
   );
 };
-
 // TODO Set color to match with the theme
 const HomeIcon = (props) => (
   <MaterialIcons name="home" size={30} color="rgb(0, 0, 230)" />
 );
-
 const BMIIcon = (props) => (
   <FontAwesome5 name="weight" size={25} color="rgb(0, 0, 230)" />
 );
-
 const IPPTIcon = (props) => (
   <FontAwesome5 name="running" size={25} color="rgb(0, 0, 230)" />
 );
-
 const BottomTabBar = ({ navigation, state }) => (
   <BottomNavigation
     selectedIndex={state.index}
@@ -71,7 +62,6 @@ const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigationTab title="IPPT" icon={IPPTIcon} />
   </BottomNavigation>
 );
-
 const BottomTabNavigator = () => (
   <Tab.Navigator
     tabBar={(props) => <BottomTabBar {...props} />}
@@ -83,7 +73,6 @@ const BottomTabNavigator = () => (
     <Tab.Screen name="Ippt" component={Ippt} />
   </Tab.Navigator>
 );
-
 export const AppNavigator = () => (
   <NavigationContainer>
     <BottomTabNavigator />

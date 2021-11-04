@@ -4,20 +4,16 @@ import { useNavigation } from "@react-navigation/native";
 import { Layout, Divider, List, ListItem } from "@ui-kitten/components";
 import { getExercises } from "../utils/exercises";
 import { MaterialIcons } from "@expo/vector-icons";
-
 export default AddActivity = ({ route }) => {
   const navigation = useNavigation();
   const [exercises, setExercises] = useState([]);
-
   const getExercisesAndUpdateState = async () => {
     setExercises(await getExercises());
   };
-
   // TODO Add error catching
   useEffect(() => {
     getExercisesAndUpdateState();
   }, []);
-
   // TODO Improve styling
   const renderItem = ({ item }) => (
     <ListItem
@@ -33,9 +29,7 @@ export default AddActivity = ({ route }) => {
         ) : null
       }
     />
-
   );
-
   return (
     <Layout style={tailwind("flex-1")}>
       <List

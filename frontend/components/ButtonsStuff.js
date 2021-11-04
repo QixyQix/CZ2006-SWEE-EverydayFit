@@ -22,7 +22,7 @@ export const ButtonsStuff = (props) => {
   const [visibleBtn, setVisibleBtn] = useState(false);
 
   const [visibleBtnA, setVisibleBtnA] = useState(false);
-  
+
   const [placementIndex, setPlacementIndex] = React.useState(new IndexPath(0));
   const placement = props.dateExercise.placement[placementIndex.row];
   //console.log("hello", props);
@@ -37,7 +37,7 @@ export const ButtonsStuff = (props) => {
   const DeleteIcon = (props) => (
     <Icon {...props} name='trash-2-outline'/>
   );
-  
+
    const renderToggleButton = () => (
       <Button onPress={() => setVisible(true)}>
         TOGGLE POPOVER
@@ -47,7 +47,7 @@ export const ButtonsStuff = (props) => {
    const EditHandler = (item) =>  {
     console.log("TODO: Edit stuff:", item);
 };
-  
+
    const renderPlacementItem = (title) => (
     <SelectItem title={title}/>
   );
@@ -89,7 +89,6 @@ return(
             <Text style={tailwind("text-lg font-bold")}>
               For {exercise.name}, please enter the following!
             </Text>
-
             <Text>
               {exercise.quantityType === "QUANTITATIVE"
                 ? `Reps`
@@ -97,14 +96,12 @@ return(
                 ? `Duration (${exercise.quantityUnit})`
                 : `Distance (${exercise.quantityUnit})`}
             </Text>
-
             <Input
               keyboardType="numeric"
               placeholder="e.g. 10"
               value={values.quantity}
               onChangeText={handleChange("quantity")}
             />
-
             {exercise.quantityType === "QUANTITATIVE" && (
               <>
                 <Text>Sets</Text>
@@ -117,7 +114,7 @@ return(
               </>
             )}
             </Layout>   */}
-            
+
 
 
               {/* This is for edit */}
@@ -136,7 +133,7 @@ return(
                   }}
                 >
                   Yes
-                
+
                 </Button>
               </Layout>
             </Card>

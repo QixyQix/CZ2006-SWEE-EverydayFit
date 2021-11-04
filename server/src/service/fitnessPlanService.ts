@@ -27,7 +27,7 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
             // Create fitness plan if it does not exist
             const activities: any = [
                 {
-                    exerciseID,
+                    exercise: exerciseID,
                     totalQuantity: quantity,
                     sets,
                     done: false
@@ -50,7 +50,7 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
     }
 }
 
-const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, activityID: string) => {
+const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, exerciseID: string) => {
     try {
         const fitnessPlan = await FitnessPlanRepo.GetDateFitnessPlanForUser(userID, date);
         if (!fitnessPlan) {
@@ -62,7 +62,7 @@ const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, activit
                 throw new Error('You do not own this fitness plan!');
             }
 
-            const result = await FitnessPlanRepo.DeleteActivityFromFitnessPlan(userID, date, activityID);
+            const result = await FitnessPlanRepo.DeleteActivityFromFitnessPlan(userID, date, exerciseID);
             return result;
         }
     } catch (err) {

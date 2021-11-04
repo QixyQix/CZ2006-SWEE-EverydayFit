@@ -6,10 +6,10 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { weatherConditions } from "../constants";
 import moment from "moment";
-
 export default DateWeatherButton = ({ forecast }) => {
   const navigation = useNavigation();
   const weather = forecast ? forecast.forecastCategory: "";
+
   const date = forecast ? moment(forecast.date.substring(0, 10)).format('MMM D') : "";
 
   const dayFormat = forecast ? moment(forecast.date.substring(0, 10)).format('ddd MMM DD YYYY') : "";

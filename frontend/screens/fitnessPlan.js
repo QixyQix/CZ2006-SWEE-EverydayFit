@@ -4,7 +4,6 @@ import FitnessPlanner from "../components/FitnessPlanner";
 import tailwind from "tailwind-rn";
 import { useNavigation } from "@react-navigation/native";
 
-
 export default function FitnessPlan({ route }) {
   const navigation = useNavigation();
    return (

@@ -30,23 +30,13 @@ const GetUserByEmail = async (email: string) => {
     }
 }
 
-const GetUserByID = async (userID: string) => {
-    try {
+const GetUserByID = async(userID: string)=>{
+    try{
         const user = await User.findById(userID);
         return user;
-    } catch (err) {
+    }catch(err){
         console.error(`UserRepo: GetUserByID: ${err.message}`);
         throw new Error(`An error occured while retrieving user by ID`);
-    }
-}
-
-const GetUsersByMultipleIDs = async (userIDs: string[]) => {
-    try {
-        const users = await User.find({ _id: { $in: userIDs } });
-        return users;
-    } catch (err) {
-        console.error(`UserRepo: GetUsersByMultipleIDs: ${err.message}`);
-        throw new Error(`An error occured while retrieving users by ID`);
     }
 }
 
@@ -54,7 +44,6 @@ const UserRepo = {
     CreateUser,
     GetUserByEmail,
     GetUserByID,
-    GetUsersByMultipleIDs
 }
 
 export { UserRepo as default };

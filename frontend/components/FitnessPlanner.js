@@ -23,7 +23,7 @@ import { getExercises } from "../utils/exercises";
 import ButtonsStuff from "./ButtonsStuff";
 
 export default FitnessPlanner = (props) => {
-  
+
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
   const  [exercise, setExercise ] = useState([]);
   const [ activities, setActivities ] = useState([]);
@@ -35,7 +35,7 @@ export default FitnessPlanner = (props) => {
   var dictExercise = {};
   var dictActivity = {};
   var dictExerciseToID = {'Remain the same': {exerciseID: ''}};
-  
+
   const getActivities = async () => {
     try{
       const data = await getPlan(`${props.date.year}-${(props.date.month)}-${(props.date.date)}`)
@@ -45,9 +45,7 @@ export default FitnessPlanner = (props) => {
       console.log(e)
     }
   };
-
   if(activities.length !== 0 && exercise.length !== 0){
-
     const theSize = exercise ? exercise.length : 0;
     for (var j = 0; j < theSize; j++){ 
       dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit};
@@ -58,7 +56,7 @@ export default FitnessPlanner = (props) => {
     for (var j = 0; j < sizeOfPlan; j++) {
       dictActivity[activities[j].exerciseID] = [activities[j].totalQuantity, activities[j].sets];
     }
-    
+
   }
 
   const getLabelMsg = (item) => {
@@ -77,7 +75,6 @@ export default FitnessPlanner = (props) => {
     
    return (quantityDescription + setsDescription);
   }
-
   const getExercise = async () => {
       setExercise(await getExercises());
   };
@@ -102,27 +99,28 @@ export default FitnessPlanner = (props) => {
       return objToPassIn;
     }
 
+ 
   const pressHandler = () => {
         navigation.navigate("AddActivity", props);
   };
-    
+
   const deleteHandler = (item) => {
       deletePlan(`${props.date.year}-${props.date.month}-${props.date.date}`, item); 
       getActivities();
-  };
-    
+    };
+  
+
   const EditHandler = (item) =>  {
       console.log("TODO: Edit stuff:", item);
   };
-    
+
     const EditIcon = (props) => (
       <Icon {...props} name='edit-2-outline'/>
     );
-
     const DeleteIcon = (props) => (
       <Icon {...props} name='trash-2-outline'/>
     );
-    
+
     const AAplacements = () => {
       let exercisesArray = ['Remain the same'];
       if(activities.length !== 0 && exercise.length !== 0){
@@ -135,27 +133,29 @@ export default FitnessPlanner = (props) => {
     }
 
     const placements =  AAplacements();
-    
+
     const [placementIndex, setPlacementIndex] = React.useState(new IndexPath(0));
     const placement = placements[placementIndex.row];
-    
+
     const onPlacementSelect = (index) => {
       setPlacementIndex(index);
     };
-    
+
      const renderToggleButton = () => (
         <Button onPress={() => setVisible(true)}>
           TOGGLE POPOVER
         </Button>
      );
-    
+
      const renderPlacementItem = (title) => (
       <SelectItem title={title}/>
     );
-    
+
     const renderItemAccessory = (item) => (
-      
+
+
       <Layout >
+      
       <Layout style={tailwind("m-7 right-2")}>
         <ButtonGroup  appearance = 'filled' size = 'small' >
           <Button 
@@ -168,7 +168,6 @@ export default FitnessPlanner = (props) => {
              />
         </ButtonGroup> 
       </Layout> 
-
 
         <Modal visible={visibleBtnA} >
         <Card disabled={true}>
@@ -187,7 +186,6 @@ export default FitnessPlanner = (props) => {
             <Text style={tailwind("text-lg font-bold")}>
               For {exercise.name}, please enter the following!
             </Text>
-
             <Text>
               {exercise.quantityType === "QUANTITATIVE"
                 ? `Reps`
@@ -195,14 +193,12 @@ export default FitnessPlanner = (props) => {
                 ? `Duration (${exercise.quantityUnit})`
                 : `Distance (${exercise.quantityUnit})`}
             </Text>
-
             <Input
               keyboardType="numeric"
               placeholder="e.g. 10"
               value={values.quantity}
               onChangeText={handleChange("quantity")}
             />
-
             {exercise.quantityType === "QUANTITATIVE" && (
               <>
                 <Text>Sets</Text>
@@ -215,7 +211,7 @@ export default FitnessPlanner = (props) => {
               </>
             )}
             </Layout>   */}
-            
+
 
 
               {/* This is for edit */}
@@ -234,7 +230,7 @@ export default FitnessPlanner = (props) => {
                   }}
                 >
                   Yes
-                
+
                 </Button>
               </Layout>
             </Card>
@@ -264,17 +260,17 @@ export default FitnessPlanner = (props) => {
           </Card>
         </Modal>
         </Layout>
+
       
     );
 
-    
+
           
     const switchState = (state, item) => {
       item.done = state;
       patchPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item)
       getActivities();
     };
-
     const renderItem = ({ item, index }) => (
       <Layout style={tailwind("flex-col")} level="1">
         <CheckBox
@@ -284,6 +280,7 @@ export default FitnessPlanner = (props) => {
           onChange={(checknext) => switchState(checknext, item)}
         >
           <ListItem
+
             //disabled = {true}
             accessoryRight={() => 
               <ButtonsStuff dateExercise = {itemToParse(item._id)}
@@ -309,7 +306,7 @@ export default FitnessPlanner = (props) => {
         data={activities.length ? activities : null}
         ItemSeparatorComponent={Divider}
         renderItem = {renderItem}   />
-        
+
       <Button
         style={tailwind("mx-20")}
         accessoryLeft={
@@ -321,7 +318,6 @@ export default FitnessPlanner = (props) => {
         Add Fitness Activity
       </Button>
 
-    
     </Layout>
   );
 };
