@@ -5,7 +5,8 @@ import { Button, Input, Layout, Text } from "@ui-kitten/components";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useFormik } from "formik";
-
+import * as Yup from "yup";
+import { isNumeric, quantitativeSchema, timeSchema, distanceSchema }  from "../utils/validationSchemas";
 import tailwind from "tailwind-rn";
 
 // TODO Add form validation
@@ -13,7 +14,7 @@ export default function SetQuantity({ route }) {
   const navigation = useNavigation();
 
   const exercise = route.params;
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       quantity: "",
       sets: null,
@@ -21,6 +22,12 @@ export default function SetQuantity({ route }) {
     onSubmit: (values) => {
       console.log(values);
     },
+
+    validationSchema :  (exercise.quantityType === "QUANTITATIVE"
+                        ? quantitativeSchema
+                        : exercise.quantityType === "TIME"
+                        ? timeSchema
+                        : distanceSchema)
   });
 
   return (
@@ -41,10 +48,15 @@ export default function SetQuantity({ route }) {
 
         <Input
           keyboardType="numeric"
-          placeholder="e.g. 10"
+          placeholder="e.g. 10, 1 decimal point only"
           value={values.quantity}
           onChangeText={handleChange("quantity")}
+          maxLength={5}
         />
+
+        {errors.quantity && touched.quantity ? (
+          <Text style={tailwind("text-red-600")}>{errors.quantity}</Text>
+           ) : null}
 
         {/* Show Sets field if quantitative */}
         {exercise.quantityType === "QUANTITATIVE" && (
@@ -55,9 +67,14 @@ export default function SetQuantity({ route }) {
               placeholder="e.g. 3"
               value={values.sets}
               onChangeText={handleChange("sets")}
+              maxLength={3}
             />
           </>
         )}
+        
+        {errors.sets && touched.sets ? (
+          <Text style={tailwind("text-red-600")}>{errors.sets}</Text>
+           ) : null}
 
         <Button
           accessoryLeft={

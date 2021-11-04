@@ -27,7 +27,7 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
             // Create fitness plan if it does not exist
             const activities: any = [
                 {
-                    exercise: exerciseID,
+                    exerciseID,
                     totalQuantity: quantity,
                     sets,
                     done: false
