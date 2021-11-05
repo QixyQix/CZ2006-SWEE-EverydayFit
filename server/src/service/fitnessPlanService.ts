@@ -1,4 +1,5 @@
 import FitnessPlanRepo from "../repo/fitnessPlanRepo";
+import ExerciseRepo from "../repo/exerciseRepo";
 
 const GetFitnessPlansForUserID = async (userID: string) => {
     try {
@@ -22,6 +23,18 @@ const GetDateFitnessPlanForUser = async (userID: string, date: Date) => {
 
 const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number) => {
     try {
+        if (!exerciseID){
+            console.error('FitnessPlanService: AddActivityToFitnessPlan: exerciseID detail is null');
+            throw new Error('An error occured while trying to add activity');
+        }else if (!quantity){
+            console.error('FitnessPlanService: AddActivityToFitnessPlan: quantity detail is null');
+            throw new Error('An error occured while trying to add activity');
+        }else if (!sets){
+            console.error('FitnessPlanService: AddActivityToFitnessPlan: sets detail is null');
+            throw new Error('An error occured while trying to add activity');
+        }
+        const exercise = await ExerciseRepo.GetAllExercises();
+        console.log(exercise);
         const fitnessPlan = await FitnessPlanRepo.GetDateFitnessPlanForUser(userID, date);
         if (!fitnessPlan) {
             // Create fitness plan if it does not exist
@@ -52,6 +65,9 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
 
 const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, activityID: string) => {
     try {
+        if (!activityID){
+            console.error('FitnessPlanService: AddActivityToFitnessPlan: activityID detail is null');
+            throw new Error('An error occured while trying to add activity');}
         const fitnessPlan = await FitnessPlanRepo.GetDateFitnessPlanForUser(userID, date);
         if (!fitnessPlan) {
             console.error(`FitnessPlanService: DeleteActivityFromFitnessPlan: Fitness Plan for ${userID} on ${date} is already empty`);
@@ -73,6 +89,22 @@ const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, activit
 
 const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityID: string, exerciseID: string, quantity: number, sets: number, done: boolean) => {
     try {
+        if (!activityID){
+            console.error('FitnessPlanService: AddActivityToFitnessPlan: activityID detail is null');
+            throw new Error('An error occured while trying to add activity');
+        }else if (!exerciseID){
+            console.error('FitnessPlanService: AddActivityToFitnessPlan: exerciseID detail is null');
+            throw new Error('An error occured while trying to add activity');
+        }else if (!quantity){
+            console.error('FitnessPlanService: AddActivityToFitnessPlan: quantity detail is null');
+            throw new Error('An error occured while trying to add activity');
+        }else if (!sets){
+            console.error('FitnessPlanService: AddActivityToFitnessPlan: sets detail is null');
+            throw new Error('An error occured while trying to add activity');
+        }else if (!done){
+            console.error('FitnessPlanService: AddActivityToFitnessPlan: done status detail is null');
+            throw new Error('An error occured while trying to add activity');
+        }
         const fitnessPlan = await FitnessPlanRepo.GetDateFitnessPlanForUser(userID, date);
         if (!fitnessPlan) {
             console.error(`FitnessPlanService: EditActivityFromFitnessPlan: Fitness Plan for ${userID} on ${date} is empty`);
