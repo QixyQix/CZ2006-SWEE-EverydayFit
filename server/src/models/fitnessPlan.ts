@@ -4,7 +4,7 @@ import { IUser } from './user';
 
 export interface IActivity extends mongoose.Types.Subdocument {
     _id: string,
-    exercise: IExercise['_id'],
+    exerciseID: IExercise['_id'],
     totalQuantity: number,
     sets: number,
     done: boolean,
@@ -33,4 +33,3 @@ const fitnessPlanSchema = new mongoose.Schema({
 const FitnessPlan = mongoose.model<IFitnessPlan>('fitnessPlan', fitnessPlanSchema);
 
 export { FitnessPlan as default };
-

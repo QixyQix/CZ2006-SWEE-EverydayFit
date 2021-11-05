@@ -12,13 +12,16 @@ export default DateWeatherButton = ({ forecast }) => {
 
   const date = forecast ? moment(forecast.date.substring(0, 10)).format('MMM D') : "";
 
+
   const dayFormat = forecast ? moment(forecast.date.substring(0, 10)).format('ddd MMM DD YYYY') : "";
+
+  const dateYear = forecast ? moment(forecast.date.substring(0, 10)).format('YYYY') : "";
 
   return (
     <TouchableOpacity
       style={tailwind("items-center")}
       title="THE DATE"
-      onPress={() => navigation.navigate("FITNESS_PLAN", {year: moment(date).format('YYYY'), month: moment(date).format('MM'), date: moment(date).format('DD'), day: dayFormat})}
+      onPress={() => navigation.navigate("FITNESS_PLAN", {year: dateYear, month: moment(date).format('MM'), date: moment(date).format('DD'), day: dayFormat})}
     >
       <MaterialCommunityIcons
         size={35}

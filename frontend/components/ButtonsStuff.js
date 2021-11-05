@@ -12,7 +12,7 @@ import {
   Input,
   IndexPath, Select, SelectItem,
 } from "@ui-kitten/components";
-
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useAuth } from "../utils/auth";
 import { useFormik } from "formik";
 
@@ -20,11 +20,31 @@ export const ButtonsStuff = (props) => {
 
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: {
-      quantity: "",
-      sets: null,
+      sets : props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 
+        ? props.dictActivity[props.dictExerciseToID[props.exerciseName].exerciseID][1] 
+        : 0 ,
+      quantity: props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 
+        ? props.dictActivity[props.dictExerciseToID[props.exerciseName].exerciseID][0] 
+        : null,
+      done: false
+      // activityID : props.activityID,
+      // done : props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 
+      //   ? props.dictActivity[props.dictExerciseToID[props.exerciseName].exerciseID][2] 
+      //   : false,
+      // exerciseID: props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 && placement !== null ? props.dictExerciseToID[placement].exerciseID : props.dictExerciseToID[props.exerciseName].exerciseID
+      
+
     },    
+
+    // onSubmit: (values) => {
+    //     const itemsToParse = {_id: values.activityID, exerciseID: props.dictExerciseToID[placement].exerciseID, totalQuantity: values.quantity, sets: values.sets};
+    //     patchPlan(props.date, )
+    // }
+
+    
   });
 
+  //console.log(props.dictActivity);
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
 
   const [visibleBtn, setVisibleBtn] = useState(false);
@@ -51,9 +71,19 @@ export const ButtonsStuff = (props) => {
         TOGGLE POPOVER
       </Button>
    );
-
+  
    const EditHandler = (item) =>  {
-    console.log("TODO: Edit stuff:", item);
+     //console.log("NYAAA:", props.dictExerciseToID[placement].exerciseID)
+     const updatedPlan = {
+       _id: item, 
+       exerciseID: props.dictExerciseToID[placement].exerciseID, 
+       totalQuantity: values.quantity, 
+       sets: values.sets, 
+       done: false };
+       const {getExercise, exercise, activities, getActivities} = {...props};  
+      patchPlan(props.date, updatedPlan);
+      props.getActivities();
+    //console.log("TODO: Edit stuff:", updatedPlan);
 };
 
    const renderPlacementItem = (title) => (
@@ -66,12 +96,15 @@ export const ButtonsStuff = (props) => {
       props.getActivities();
   };
 
-  //console.log('HI25', props.dictExercise);
-  //console.log('HI25', props.exercise);
- console.log("HI", props.dictExercise["617c177154b84430da0627d8"].exerciseType )
-  //console.log('HI22', props.dictActivity);
+  if(props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0){
+    props.dictExerciseToID['Remain the same'] = {exerciseID: props.dictExerciseToID[props.exerciseName].exerciseID}  
+  } 
+  
+  
 return(
+   
   <Layout >
+  
     <Layout style={tailwind("m-7 right-2")}>
       <ButtonGroup  appearance = 'filled' size = 'small' >
         <Button 
@@ -84,7 +117,8 @@ return(
           />
       </ButtonGroup> 
     </Layout> 
-
+    
+    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }} >
     <Modal visible={visibleBtnA} >
         <Card disabled={true}>
             <Text style={tailwind("text-lg font-bold")}> Which exercise would you like to change to? </Text>
@@ -97,38 +131,44 @@ return(
                 {props.placement.map(renderPlacementItem)}
               </Select>
 
-        {/* THIS IS COPIED IN 
+        {/* THIS IS COPIED IN  */}
             <Layout style={tailwind("flex-grow")}>
-            <Text style={tailwind("text-lg font-bold")}>
+            <Text style={tailwind("text-base")}>
               For {placement}, please enter the following!
             </Text>
-            <Text>
-              {props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0 ? "" : props.dictExercise[props.dictExerciseToID[placement]].exerciseType === "QUANTITATIVE"
+            <Text style={tailwind("font-bold")}>
+              {props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0 
+                ? "" 
+                : props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "QUANTITATIVE"
                 ? `Reps`
-                : props.dictExercise[props.dictExerciseToID[placement]].exerciseType === "TIME"
-                ? `Duration (${props.dictExercise[props.dictExerciseToID[placement]].unitType})`
-                : `Distance (${props.dictExercise[props.dictExerciseToID[placement]].unitType})`}
+                : props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "TIME"
+                ? `Duration (${props.dictExercise[props.dictExerciseToID[placement].exerciseID].unitType})`
+                : `Distance (${props.dictExercise[props.dictExerciseToID[placement].exerciseID].unitType})`}
             </Text>
+
+            
             <Input
               keyboardType="numeric"
-              placeholder="e.g. 10"
-              value={22}
-              //value={props.dictActivity[props.dictExerciseToID[placement]][1]}
+              placeholder={`Current: ${values.quantity}`}
+              //value={22}
+              value={values.quantity}
               onChangeText={handleChange("quantity")}
             />
-            {props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0 ? "" : props.dictExercise[props.dictExerciseToID[placement]].exerciseType === "QUANTITATIVE" && (
+            
+
+            {props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0 ? "" : props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "QUANTITATIVE" && (
               <>
                 <Text>Sets</Text>
                 <Input
                   keyboardType="numeric"
-                  placeholder="e.g. 3"
-                  value={23}
-                  // value = {props.dictActivity[props.dictExerciseToID[placement]][0]}
+                  placeholder= {`Current: ${values.sets}`}
+                  //value={23}
+                  value = {values.sets}
                   onChangeText={handleChange("sets")}
                 />
               </>
             )}
-            </Layout>   */}
+            </Layout>  
 
 
 
@@ -143,16 +183,18 @@ return(
                 </Button>
                 <Button
                   onPress={() => {
+                   // handleSubmit;
                     EditHandler(props.activityID);
                     setVisibleBtnA(false);
-                  }}
-                >
+                  }}>
+                  
                   Yes
-
-                </Button>
+                  </Button>
+                  
               </Layout>
             </Card>
           </Modal>
+          </TouchableWithoutFeedback>
 
           {/* This is for deleteHandler */}
           <Modal visible={visibleBtn}>
@@ -177,7 +219,9 @@ return(
             </Layout>
           </Card>
         </Modal>
+        
       </Layout>
+      
     )
 }
 

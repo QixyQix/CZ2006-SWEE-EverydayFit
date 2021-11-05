@@ -1,4 +1,3 @@
-
 import React, {useState, useCallback} from "react";
 import { Layout } from "@ui-kitten/components";
 import {API_URL} from "@env";
@@ -9,6 +8,7 @@ import tailwind from "tailwind-rn";
 import HomeHeader from "../components/HomeHeader";
 import axios from "axios";
 import moment from 'moment'; 
+import { useAuth } from "../utils/auth";
 
 export default Home = () => {
 
@@ -25,18 +25,31 @@ const getForecasts = async () => {
 
 };
 
+const { patchPlan } = useAuth();
+const test = async () => {
+  patchPlan('2021-11-06', {
+    _id: '6185594bafc0a72931edbd75', 
+    exerciseID: '61741aa88ddc3fb8db166bca', 
+    totalQuantity: '231', sets: '555', 
+    done: false});
+}
+
   useFocusEffect(
     useCallback(() => { 
       getForecasts();
+      test();
     }, [])
   )
+  
   const dateStuff = {year: moment().format('YYYY'), month: moment().format('MM'), date: moment().format('DD'), day: moment().format("ddd MMM DD YYYY")};
-
+    
   return (
     <Layout style={tailwind("flex-1")}>
+    
       <HomeHeader forecast = {forecasts}/>
       <TodaysWeatherInfo forecast = {forecasts[0]}/>
       <FitnessPlanner date = {dateStuff}/>
+      
     </Layout>
   );
 };

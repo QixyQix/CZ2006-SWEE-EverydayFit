@@ -14,6 +14,7 @@ export default TodaysWeatherInfo = ({ forecast }) => {
   const highTemp = forecast?  forecast.highTemp: "";
   const lowTemp = forecast? forecast.lowTemp: "";
 
+  
   return (
     <Layout
       style={tailwind(

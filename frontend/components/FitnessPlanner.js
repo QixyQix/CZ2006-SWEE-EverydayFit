@@ -8,12 +8,6 @@ import {
   Button,
   CheckBox,
   Layout,
-  ButtonGroup, 
-  Icon,
-  Modal,
-  Card,
-  Text,
-  IndexPath, Select, SelectItem,
 } from "@ui-kitten/components";
 
 import { Feather } from "@expo/vector-icons";
@@ -25,28 +19,38 @@ import ButtonsStuff from "./ButtonsStuff";
 export default FitnessPlanner = (props) => {
 
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
-  const  [exercise, setExercise ] = useState([]);
+  const [ exercise, setExercise ] = useState([]);
   const [ activities, setActivities ] = useState([]);
-  const [visibleBtn, setVisibleBtn] = useState(false);
+  const [ visibleBtn, setVisibleBtn ] = useState(false);
 
   const [visibleBtnA, setVisibleBtnA] = useState(false);
 
   const navigation = useNavigation();
   var dictExercise = {};
   var dictActivity = {};
-  var dictExerciseToID = {'Remain the same': {exerciseID: '617beb17cec3b29ff9b2b6a1'}};
-
+  var dictExerciseToID = {"Remain the same" : {exerciseID: "61741aa88ddc3fb8db166bc6"}};
 
   const getActivities = async () => {
     try{
-      const data = await getPlan(`${props.date.year}-${(props.date.month)}-${(props.date.date)}`)
+      const data = await getPlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`)
+      console.log('dingdong:', data);
       setActivities(data.activities);
     } catch (e) {
       console.log(e)
     }
   };
+
+  const arrayInitialisation = () => {
+      console.log('hello');
+      setPlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, {_id: "61741aa88ddc3fb8db166bcc", quantity: 1, sets: 1});
+      getActivities();
+      //console.log('hello', activities[0]._id);
+      deletePlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, activities[activities.length-1]._id);
+  }
+
   if(activities.length !== 0 && exercise.length !== 0){
-    const theSize = exercise ? exercise.length : 0;
+    //const theSize = exercise ? exercise.length : 0;
+    const theSize = 8;
     for (var j = 0; j < theSize; j++){ 
       dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit};
       dictExerciseToID[exercise[j].name] = {exerciseID: exercise[j]._id}
@@ -54,7 +58,7 @@ export default FitnessPlanner = (props) => {
 
     const sizeOfPlan = activities ? activities.length : 0;
     for (var j = 0; j < sizeOfPlan; j++) {
-      dictActivity[activities[j].exerciseID] = [activities[j].totalQuantity, activities[j].sets, activities[j]._id];
+      dictActivity[activities[j].exerciseID] = [activities[j].totalQuantity, activities[j].sets, activities[j].done];
     }
 
   }
@@ -62,15 +66,14 @@ export default FitnessPlanner = (props) => {
   const getLabelMsg = (item) => {
     // If one of activities or exercise is empty
     if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 || Object.keys(dictActivity) === 0) return "";
-   
-    // console.log(item.exerciseID, dictExercise[item.exerciseId]);
+    
     const quantityDescription = dictExercise[item.exerciseID].exerciseType === "QUANTITATIVE"
                                 ? `Reps: ${dictActivity[item.exerciseID][0]}`
                                 : dictExercise[item.exerciseID].exerciseType === "TIME"
                                 ? `Duration ${dictActivity[item.exerciseID][0]} ${dictExercise[item.exerciseID].unitType}`
                                 : `Distance ${dictActivity[item.exerciseID][0]} ${dictExercise[item.exerciseID].unitType}`
     
-    const setsDescription =   dictActivity[item.exerciseID][1] !== null 
+    const setsDescription =   dictActivity[item.exerciseID][1] !== null && dictExercise[item.exerciseID].exerciseType !== "TIME" && dictExercise[item.exerciseID].exerciseType !== "DISTANCE"
                              ? " Sets: " + `${dictActivity[item.exerciseID][1]}`
                              : " "
     
@@ -78,20 +81,29 @@ export default FitnessPlanner = (props) => {
     
   }
   const getExercise = async () => {
+      
       setExercise(await getExercises());
+  
   };
     
   const getTitle= (item) => {
-      // If one of activities or exercise is empty
-      if (activities.length === 0 || exercise.length === 0) return "";
-          return dictExercise[item.exerciseID].name;
-        
+      //If one of activities or exercise is empty
+      if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 ) return "";
+      if(typeof(item.exerciseID) === 'undefined') removeHandler(item._id);
+      return dictExercise[item.exerciseID].name;
+      //return " ";
   }
-    
+  
+  const removeHandler = (item) => {
+    deletePlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item);
+    getActivities();
+  }
+
   useFocusEffect(
       useCallback(() => {
         getActivities();
         getExercise();
+       
       }, [])
   )
 
@@ -133,14 +145,16 @@ export default FitnessPlanner = (props) => {
                 placement = {AAplacements()}
                 activityID = {item._id}
                 getExercise = {getExercise}
-                exercise = {exercise}
+                exercise = {exercise.slice(0,8)}
                 activities = {activities}
                 getActivities = {getActivities}
                 dictExercise = {activities.length !== 0 && exercise.length !== 0 ? dictExercise : []}
                 dictActivity = {activities.length !== 0 && exercise.length !== 0 ? dictActivity : []}
                 dictExerciseToID = {activities.length !== 0 && exercise.length !== 0 ? dictExerciseToID : []} 
+                exerciseName = {getTitle(item)}
                 />}
               title={getTitle(item)}
+              //{...console.log("EXERCISE TITLE:", getTitle(item))}
               description={getLabelMsg(item)}
             />
         </CheckBox>

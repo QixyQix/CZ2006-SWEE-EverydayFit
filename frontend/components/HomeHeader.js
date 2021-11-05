@@ -9,7 +9,6 @@ import { useAuth } from "../utils/auth";
 
 export default HomeHeader = (props) => {
 
-  console.log(props.forecast[0], props.forecast[1], props.forecast[2], props.forecast[3])
   return (
     <Layout style={tailwind("flex-row justify-around")}>
       <LogoutButton />

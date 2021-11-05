@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Layout, Divider, List, ListItem } from "@ui-kitten/components";
 import { getExercises } from "../utils/exercises";
 import { MaterialIcons } from "@expo/vector-icons";
+
 export default AddActivity = ({ route }) => {
   const navigation = useNavigation();
   const [exercises, setExercises] = useState([]);
@@ -30,10 +31,12 @@ export default AddActivity = ({ route }) => {
       }
     />
   );
+  
+  
   return (
     <Layout style={tailwind("flex-1")}>
       <List
-        data={exercises}
+        data={exercises.slice(0,8)}
         ItemSeparatorComponent={Divider}
         renderItem={renderItem}
       />

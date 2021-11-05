@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     const token = auth.token;
     const date = date1;
     const activityID = exerciseInfo;
-    console.log(date, `${exerciseInfo}`);
+    //console.log(date, `${exerciseInfo}`);
     try {
       const res = await axios.delete(`${API_URL}/plan/${date}/activity/`, 
       { 
