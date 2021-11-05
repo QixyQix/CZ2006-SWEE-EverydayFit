@@ -104,9 +104,10 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
         const fitnessPlan = await GetDateFitnessPlanForUser(userID, date);
         fitnessPlan.activities.some(item => {
             if (item._id.toString() === activityID) {
+                item.exercise = exerciseID,
                 item.totalQuantity = quantity,
-                    item.sets = sets,
-                    item.done = done;
+                item.sets = sets,
+                item.done = done;
             }
         });
         fitnessPlan.save();
