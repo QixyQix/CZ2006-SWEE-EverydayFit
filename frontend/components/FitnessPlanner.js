@@ -28,6 +28,7 @@ export default FitnessPlanner = (props) => {
   const navigation = useNavigation();
   var dictExercise = {};
   var dictActivity = {};
+  var dictQuantity = {};
   var dictExerciseToID = {"Remain the same" : {exerciseID: "61741aa88ddc3fb8db166bc6"}};
 
   const getActivities = async () => {
@@ -61,20 +62,25 @@ export default FitnessPlanner = (props) => {
       dictActivity[activities[j].exerciseID] = [activities[j].totalQuantity, activities[j].sets, activities[j].done];
     }
 
-  }
+    const sizeOfPlan2 = activities ? activities.length : 0;
+    for (var j = 0; j < sizeOfPlan2; j++) {
+      dictQuantity[activities[j]._id] = [activities[j].totalQuantity, activities[j].sets, activities[j].done];
+    }
 
+  }
+ 
   const getLabelMsg = (item) => {
     // If one of activities or exercise is empty
     if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 || Object.keys(dictActivity) === 0) return "";
     
     const quantityDescription = dictExercise[item.exerciseID].exerciseType === "QUANTITATIVE"
-                                ? `Reps: ${dictActivity[item.exerciseID][0]}`
+                                ? `Reps: ${dictQuantity[item._id][0]}`
                                 : dictExercise[item.exerciseID].exerciseType === "TIME"
-                                ? `Duration ${dictActivity[item.exerciseID][0]} ${dictExercise[item.exerciseID].unitType}`
-                                : `Distance ${dictActivity[item.exerciseID][0]} ${dictExercise[item.exerciseID].unitType}`
+                                ? `Duration ${dictQuantity[item._id][0]} ${dictExercise[item.exerciseID].unitType}`
+                                : `Distance ${dictQuantity[item._id][0]} ${dictExercise[item.exerciseID].unitType}`
     
-    const setsDescription =   dictActivity[item.exerciseID][1] !== null && dictExercise[item.exerciseID].exerciseType !== "TIME" && dictExercise[item.exerciseID].exerciseType !== "DISTANCE"
-                             ? " Sets: " + `${dictActivity[item.exerciseID][1]}`
+    const setsDescription =  dictQuantity[item._id][1] !== null && dictExercise[item.exerciseID].exerciseType !== "TIME" && dictExercise[item.exerciseID].exerciseType !== "DISTANCE"
+                             ? " Sets: " + `${dictQuantity[item._id][1]}`
                              : " "
     
    return (quantityDescription + setsDescription);
@@ -151,6 +157,7 @@ export default FitnessPlanner = (props) => {
                 dictExercise = {activities.length !== 0 && exercise.length !== 0 ? dictExercise : []}
                 dictActivity = {activities.length !== 0 && exercise.length !== 0 ? dictActivity : []}
                 dictExerciseToID = {activities.length !== 0 && exercise.length !== 0 ? dictExerciseToID : []} 
+                dictQuantity = {activities.length !== 0 && exercise.length !== 0 ? dictQuantity : []}
                 exerciseName = {getTitle(item)}
                 />}
               title={getTitle(item)}

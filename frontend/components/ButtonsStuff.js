@@ -23,8 +23,8 @@ export const ButtonsStuff = (props) => {
       sets : props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 
         ? props.dictActivity[props.dictExerciseToID[props.exerciseName].exerciseID][1] 
         : 0 ,
-      quantity: props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 
-        ? props.dictActivity[props.dictExerciseToID[props.exerciseName].exerciseID][0] 
+      quantity: props.dictExercise.length !== 0 && props.dictActivity.length !== 0  
+        ? props.dictQuantity[props.activityID][0] 
         : null,
       done: false
       // activityID : props.activityID,
@@ -77,12 +77,13 @@ export const ButtonsStuff = (props) => {
      const updatedPlan = {
        _id: item, 
        exerciseID: props.dictExerciseToID[placement].exerciseID, 
-       totalQuantity: values.quantity, 
+       //totalQuantity: values.quantity, 
+       totalQuantity: values.quantity,
        sets: values.sets, 
        done: false };
        const {getExercise, exercise, activities, getActivities} = {...props};  
-      patchPlan(props.date, updatedPlan);
-      props.getActivities();
+       patchPlan(props.date, updatedPlan);
+       props.getActivities();
     //console.log("TODO: Edit stuff:", updatedPlan);
 };
 
