@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import FitnessPlan from '../models/fitnessPlan';
 
 const checkValidObjectID = (id: string) => {
@@ -93,18 +93,16 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
         console.error(`FitnessPlanRepo: EditActivityFromFitnessPlan: Invalid activityID ${activityID}`)
         throw new Error('Invalid Activity ID');
     }
-    const activity: any = {
-        exerciseID,
-        totalQuantity: quantity,
-        sets,
-        done
-    };
+    if (!checkValidObjectID(exerciseID)) {
+        console.error(`FitnessPlanRepo: EditActivityFromFitnessPlan: Invalid exerciseID ${activityID}`)
+        throw new Error('Invalid Exercise ID');
+    }
 
     try {
         const fitnessPlan = await GetDateFitnessPlanForUser(userID, date);
         fitnessPlan.activities.some(item => {
             if (item._id.toString() === activityID) {
-                item.exercise = exerciseID,
+                item.exerciseID = exerciseID,
                 item.totalQuantity = quantity,
                 item.sets = sets,
                 item.done = done;

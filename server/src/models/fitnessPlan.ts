@@ -4,7 +4,7 @@ import { IUser } from './user';
 
 export interface IActivity extends mongoose.Types.Subdocument {
     _id: string,
-    exercise: IExercise['_id'],
+    exerciseID: IExercise['_id'],
     totalQuantity: number,
     sets: number,
     done: boolean,
