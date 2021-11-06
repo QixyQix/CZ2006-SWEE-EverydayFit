@@ -1,5 +1,6 @@
 import React, { useContext, useState, createContext, useEffect } from "react";
 import { API_URL } from "@env";
+import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -15,10 +16,39 @@ export const AuthProvider = ({ children }) => {
   // TODO Add a loading screen while fetching the stored data
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load saved auth every time the app is opened
+  // Load auth values once the app is opened
   useEffect(() => {
     loadSavedAuth();
   }, []);
+
+  const registerForPushNotifications = async () => {
+    try {
+      // Get the token that identifies this device
+      let pushToken = await Notifications.getExpoPushTokenAsync();
+
+      // POST the token
+      await axios.post(
+        `${API_URL}/auth/expoToken`,
+        {
+          expoToken: pushToken.data.slice(18, 40),
+        },
+        {
+          headers: {
+            Authorization: `${auth.token}`,
+          },
+        }
+      );
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  // Registers for push notifications after logging in
+  useEffect(() => {
+    if (auth.token) {
+      registerForPushNotifications();
+    }
+  }, [auth]);
 
   const loadSavedAuth = async () => {
     try {
@@ -72,7 +102,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ auth, isLoading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{
+        auth,
+        isLoading,
+        login,
+        register,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
