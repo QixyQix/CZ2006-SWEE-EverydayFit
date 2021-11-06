@@ -87,8 +87,8 @@ export const ButtonsStuff = (props) => {
     //console.log("TODO: Edit stuff:", updatedPlan);
 };
 
-   const renderPlacementItem = (title) => (
-    <SelectItem title={title}/>
+   const renderPlacementItem = (title, index) => (
+    <SelectItem title={title} key={index} />
   );
 
   const deleteHandler = (item) => {
