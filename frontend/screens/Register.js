@@ -5,19 +5,8 @@ import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAuth } from "../utils/auth";
+import { registerSchema }  from "../utils/validationSchemas";
 
-
-const registerSchema = Yup.object().shape({
-  name: Yup.string().required("Required"),
-  email: Yup.string().email("Must be a valid email!").required("Required"),
-  password: Yup.string()
-    .min(6, "minimum 6 characters")
-    .max(50, "Maximum 50 characters")
-    .required("Required"),
-  passwordConfirmation: Yup.string()
-    .required("Required")
-    .oneOf([Yup.ref("password")]),
-});
 
 export default Register = ({ navigation }) => {
   const { register } = useAuth();

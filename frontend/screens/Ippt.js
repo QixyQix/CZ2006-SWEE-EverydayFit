@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import { calculateIppt } from "../utils/ippt";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import * as Yup from "yup";
+import { ipptSchema }  from "../utils/validationSchemas";
 
 const isTwoDigit = (value) => /^[1-9]?\d$/.test(value);
 const isSeconds = (value) => /^[1-5]?[0-9]$/.test(value);
