@@ -16,6 +16,7 @@
     "test:coverage": "jest -- coverage -c ./jest.unit.json"
   },
   "dependencies": {
+    "@jest-mock/express": "^1.4.5",
     "@types/bcryptjs": "^2.4.2",
     "@types/cron": "^1.7.3",
     "@types/events": "^3.0.0",
