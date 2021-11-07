@@ -17,7 +17,7 @@ import { useAuth } from "../utils/auth";
 import { getExercises } from "../utils/exercises";
 import { getAltExercises } from "../utils/altExercises";
 import ButtonsStuff from "./ButtonsStuff";
-
+import { FontAwesome } from "@expo/vector-icons";
 
 export default FitnessPlanner = (props) => {
 
@@ -120,7 +120,7 @@ export default FitnessPlanner = (props) => {
       useCallback(() => {
         getActivities();
         getExercise();
-        
+
       }, [])
   )
 
@@ -172,18 +172,43 @@ export default FitnessPlanner = (props) => {
                   dictExerciseToID = {activities.length !== 0 && exercise.length !== 0 ? dictExerciseToID : []} 
                   dictQuantity = {activities.length !== 0 && exercise.length !== 0 ? dictQuantity : []}
                   exerciseName = {getTitle(item)}
+                  exerciseID = {item.exerciseID}
                 />}
               title={getTitle(item)}
               description={getLabelMsg(item)}
             />
+           
             
         </CheckBox>
-        <Layout > 
+
+        <Layout style = {tailwind('flex-row items-center')}> 
+
         { activities.length !== 0 && exercise.length !==0 
           ? props.date.weather.wetWeather === true && dictExercise[item.exerciseID].outdoor === true 
-            && <Text style = {tailwind('text-xs font-bold')}> Alternative exercises: {indoorExercises[0]}, {indoorExercises[1]}, {indoorExercises[2]}, {indoorExercises[3]}, {indoorExercises[4]} </Text> 
+            && <FontAwesome
+              style={tailwind("flex-row items-center left-2")}
+              name="warning"
+              size={20}
+              color="red" /> 
           : <Text> </Text> }
-        </Layout>
+    
+
+        { activities.length !== 0 && exercise.length !==0 
+          ? props.date.weather.wetWeather === true && dictExercise[item.exerciseID].outdoor === true 
+              && <Text style = {tailwind('text-xs font-bold items-center left-3')}> 
+                Alternative exercises: 
+                {indoorExercises[0]}, 
+                {indoorExercises[1]},
+                {indoorExercises[2]}, 
+                {indoorExercises[3]}, 
+                {indoorExercises[4]} 
+              </Text> 
+          : <Text> </Text> }
+        
+          </Layout>
+          
+     
+        
       </Layout>  
       );    
 

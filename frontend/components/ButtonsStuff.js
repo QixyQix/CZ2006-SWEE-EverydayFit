@@ -60,7 +60,6 @@ export const ButtonsStuff = (props) => {
      const updatedPlan = {
        _id: item, 
        exerciseID: props.dictExerciseToID[placement].exerciseID, 
-       //totalQuantity: values.quantity, 
        totalQuantity: values.quantity,
        sets: values.sets >= 1? values.sets: 1, 
        done: false };
@@ -97,7 +96,7 @@ export const ButtonsStuff = (props) => {
     const numQuantity = props.dictQuantity[props.activityID][0]
     const numSets = props.dictQuantity[props.activityID][1]
     
-    if (numSets === null || numSets == 0)
+    if (props.dictExercise[props.exerciseID].exerciseType !== "QUANTITATIVE")
     {
       return ( (numQuantity * calorieUnit).toFixed(2) );
     }else
@@ -111,7 +110,7 @@ return(
     
   <Layout >
   
-    <Layout style={tailwind("m-7 flex-row right-2 items-center")}>
+    <Layout style={tailwind("m-1 flex-row right-10 items-center")}>
 
     <FontAwesome5
         style={tailwind("pb-1 right-5 items-center")}

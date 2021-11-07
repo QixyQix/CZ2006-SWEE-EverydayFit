@@ -111,16 +111,15 @@ export const AuthProvider = ({ children }) => {
         },
       }
     );
-    //console.log(date);
   };
   const patchPlan = async (date, values) => {
     const token = auth.token;
     
-    console.log("VALUES PATCH -->", date, {activityID: values._id,
-    exerciseID: values.exerciseID,
-    quantity: values.totalQuantity,
-    sets: values.sets,
-    done: values.done});
+    //console.log("VALUES PATCH -->", date, {activityID: values._id,
+    // exerciseID: values.exerciseID,
+    // quantity: values.totalQuantity,
+    // sets: values.sets,
+    // done: values.done});
 
     try {
       const res = await axios.patch(
