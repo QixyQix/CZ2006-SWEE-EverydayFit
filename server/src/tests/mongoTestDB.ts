@@ -3,7 +3,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const mongod = MongoMemoryServer.create();
 
-//Connect to DB
+// Connect to DB
 const connect = async () => {
     const uri = (await mongod).getUri();
     // const mongooseOpts = {
@@ -17,19 +17,21 @@ const connect = async () => {
 
 }
 
-//Disconnect and close connection
+// Disconnect and close connection
 const closeDatabase = async () => {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
     await (await mongod).stop();
 }
 
-//Clear the DB remove all data
+// Clear the DB remove all data
 const clearDatabase = async () => {
     const collections = mongoose.connection.collections;
     for (const key in collections) {
-        const collection = collections[key];
-        await collection.deleteMany({});
+        if (key) {
+            const collection = collections[key];
+            await collection.deleteMany({});
+        }
     }
 }
 
