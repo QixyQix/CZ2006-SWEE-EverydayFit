@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
     token: null,
     refreshToken: null,
   });
-  const [exercises, setExercises] = useState("");
   // TODO Add a loading screen while fetching the stored data
   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,6 +17,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     loadSavedAuth();
   }, []);
+
+  // Registers for push notifications after logging in
+  useEffect(() => {
+    if (auth.token) {
+      registerForPushNotifications();
+    }
+  }, [auth]);
 
   const registerForPushNotifications = async () => {
     try {
@@ -41,25 +47,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Registers for push notifications after logging in
-  useEffect(() => {
-    if (auth.token) {
-      registerForPushNotifications();
-    }
-  }, [auth]);
-
   const loadSavedAuth = async () => {
     try {
       const authData = await AsyncStorage.getItem("auth");
       // If auth data is available, update the state
       if (authData) {
         setAuth(JSON.parse(authData));
+        await refreshToken();
       }
     } catch (e) {
     } finally {
       setIsLoading(false);
     }
   };
+
   // Base function for login and register for reusability
   const base = async (method, body) => {
     const res = await axios.post(`${API_URL}/auth/${method}`, body);
@@ -81,42 +82,51 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getPlan = async (date) => {
-    const token = auth.token;
-    const res = await axios.get(`${API_URL}/plan/${date}`, {
-      headers: {
-        Authorization: `${token}`,
-      },
-    });
-    if (res.status == 200) {
-      return res.data;
-    } else {
-      throw res.data;
+    try {
+      await refreshToken();
+      const token = auth.token;
+      const res = await axios.get(`${API_URL}/plan/${date}`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      if (res.status == 200) {
+        return res.data;
+      } else {
+        throw res.data;
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
   const setPlan = async (props, values) => {
-    const token = auth.token;
-    const date = `${props.date.year}-${("0" + props.date.month).slice(-2)}-${(
-      "0" + props.date.date
-    ).slice(-2)}`;
-    const res = await axios.post(
-      `${API_URL}/plan/${date}/activity/`,
-      {
-        exerciseID: props._id,
-        quantity: values.quantity,
-        sets: values.sets,
-      },
-      {
-        headers: {
-          authorization: `${token}`,
+    try {
+      await refreshToken();
+      const token = auth.token;
+      const date = `${props.date.year}-${("0" + props.date.month).slice(-2)}-${(
+        "0" + props.date.date
+      ).slice(-2)}`;
+      const res = await axios.post(
+        `${API_URL}/plan/${date}/activity/`,
+        {
+          exerciseID: props._id,
+          quantity: values.quantity,
+          sets: values.sets,
         },
-      }
-    );
-    //console.log(date);
+        {
+          headers: {
+            authorization: `${token}`,
+          },
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
   };
   const patchPlan = async (date, values) => {
-    const token = auth.token;
-    console.log(date, values);
     try {
+      await refreshToken();
+      const token = auth.token;
       const res = await axios.patch(
         `${API_URL}/plan/${date}/activity/`,
         {
@@ -137,9 +147,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const deletePlan = async (date, exerciseInfo) => {
-    const token = auth.token;
-    const activityID = exerciseInfo;
     try {
+      await refreshToken();
+      const token = auth.token;
+      const activityID = exerciseInfo;
       const res = await axios.delete(`${API_URL}/plan/${date}/activity/`, {
         headers: {
           authorization: `${token}`,
@@ -164,6 +175,25 @@ export const AuthProvider = ({ children }) => {
     });
     await AsyncStorage.removeItem("auth");
   };
+
+  const refreshToken = async () => {
+    try {
+      const res = await axios.post(
+        `${API_URL}/auth/refresh/`,
+        {},
+        {
+          headers: {
+            Authorization: `${auth.refreshToken}`,
+          },
+        }
+      );
+      setAuth({ ...auth, token: res.data.token });
+    } catch (e) {
+      // Logout if refresh token is invalid
+      await logout();
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
