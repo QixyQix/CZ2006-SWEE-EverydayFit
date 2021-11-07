@@ -111,7 +111,7 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
         } else if (!sets) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: sets detail is null');
             throw new Error('An error occured while trying to add activity');
-        } else if (!done) {
+        } else if (done == null) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: done status detail is null');
             throw new Error('An error occured while trying to add activity');
         }
