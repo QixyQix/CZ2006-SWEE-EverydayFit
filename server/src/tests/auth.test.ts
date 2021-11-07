@@ -1,8 +1,5 @@
-import testDB from "../mongoTestDB";
-import AuthService from "../../service/authService";
-import AuthController from "../../controller/authController";
-import { Request, Response } from "express";
-import app from '../../app';
+import testDB from "./mongoTestDB";
+import app from '../app';
 import request from "supertest";
 
 beforeAll(async () => {
