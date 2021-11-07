@@ -97,7 +97,7 @@ export const ButtonsStuff = (props) => {
     const numQuantity = props.dictQuantity[props.activityID][0]
     const numSets = props.dictQuantity[props.activityID][1]
     
-    if (numSets === null)
+    if (numSets === null || numSets == 0)
     {
       return ( (numQuantity * calorieUnit).toFixed(2) );
     }else
