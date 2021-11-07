@@ -20,7 +20,7 @@ export default function SetQuantity({ route }) {
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       quantity: "",
-      sets: null,
+      sets: 0,
     },    
     onSubmit: (values) => {
       setPlan(route.params, values);

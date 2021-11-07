@@ -34,8 +34,7 @@ export default FitnessPlanner = (props) => {
   var dictExercise = {};
   var dictActivity = {};
   var dictQuantity = {};
-  var dictExerciseToID = {"Remain the same" : {exerciseID: "61741aa88ddc3fb8db166bc6"}};
-
+  var dictExerciseToID = {"Remain the same" : {exerciseID: "6187da4fb5cccfeba574f855"}};
   var indoorExercises = [];
  
   const getOtherExercises = async (item) => {
@@ -52,7 +51,6 @@ export default FitnessPlanner = (props) => {
   const getActivities = async () => {
     try{
       const data = await getPlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`)
-      console.log('dingdong:', data);
       setActivities(data.activities);
     } catch (e) {
       console.log(e)
@@ -60,7 +58,6 @@ export default FitnessPlanner = (props) => {
   };
 
   if(activities.length !== 0 && exercise.length !== 0){
-    //const theSize = exercise ? exercise.length : 0;
     const theSize = 8;
     for (var j = 0; j < theSize; j++){ 
       dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit, caloriesBurnt: exercise[j].calorieBurnRatePerUnit, outdoor: exercise[j].outdoorOnly};
@@ -123,7 +120,7 @@ export default FitnessPlanner = (props) => {
       useCallback(() => {
         getActivities();
         getExercise();
-        getOtherExercises("61741aa88ddc3fb8db166bcc")
+        
       }, [])
   )
 
@@ -134,8 +131,8 @@ export default FitnessPlanner = (props) => {
     const AAplacements = () => {
       let exercisesArray = ['Remain the same'];
       if(activities.length !== 0 && exercise.length !== 0){
-        for(var j=1; j < 9; j++){
-          exercisesArray[j] = exercise[j].name;
+        for(var j = 1; j < exercise.length + 1; j++){
+          exercisesArray[j] = exercise[j-1].name;
         }
         return exercisesArray;
       }
@@ -144,6 +141,7 @@ export default FitnessPlanner = (props) => {
   
           
     const switchState = async (state, item) => {
+      console.log(state)
       item.done = state;
       await patchPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item)
       await getActivities();
@@ -158,37 +156,36 @@ export default FitnessPlanner = (props) => {
           status="primary"
           onChange={(checknext) => switchState(checknext, item)}
         >
-          
+           
             <ListItem
-            accessoryRight={() => 
-               <ButtonsStuff 
-                date = {`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`}
-                placement = {activities.length !== 0 && exercise.length !== 0 ? AAplacements() : []}
-                activityID = {item._id}
-                getExercise = {getExercise}
-                exercise = {exercise.slice(0,8)}
-                
-                activities = {activities}
-                getActivities = {getActivities}
-                dictExercise = {activities.length !== 0 && exercise.length !== 0 ? dictExercise : []}
-                dictActivity = {activities.length !== 0 && exercise.length !== 0 ? dictActivity : []}
-                dictExerciseToID = {activities.length !== 0 && exercise.length !== 0 ? dictExerciseToID : []} 
-                dictQuantity = {activities.length !== 0 && exercise.length !== 0 ? dictQuantity : []}
-                exerciseName = {getTitle(item)}
+              accessoryRight={() => 
+                <ButtonsStuff 
+                  date = {`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`}
+                  placement = {activities.length !== 0 && exercise.length !== 0 ? AAplacements() : []}
+                  activityID = {item._id}
+                  getExercise = {getExercise}
+                  exercise = {exercise.slice(0,8)}
+                  activities = {activities}
+                  getActivities = {getActivities}
+                  dictExercise = {activities.length !== 0 && exercise.length !== 0 ? dictExercise : []}
+                  dictActivity = {activities.length !== 0 && exercise.length !== 0 ? dictActivity : []}
+                  dictExerciseToID = {activities.length !== 0 && exercise.length !== 0 ? dictExerciseToID : []} 
+                  dictQuantity = {activities.length !== 0 && exercise.length !== 0 ? dictQuantity : []}
+                  exerciseName = {getTitle(item)}
                 />}
               title={getTitle(item)}
-              //{...console.log("EXERCISE TITLE:", getTitle(item))}
               description={getLabelMsg(item)}
             />
-
             
-        </CheckBox>cos situp is hybrid theres only true or false
-        { activities.length !== 0 && exercise.length !==0                                                                      
-            ? ( (props.date.weather.forecastCategory === 'THUNDERY_SHOWERS' || props.date.weather.wetWeather === true) && item.outdoorOnly !== false ) &&
-            <Text style = {tailwind('font-bold')}> Alternative exercises: {indoorExercises[0]}, {indoorExercises[1]}, {indoorExercises[2]}, {indoorExercises[3]}, {indoorExercises[4]} </Text> 
-            : <Text> </Text> } 
+        </CheckBox>
+        <Layout > 
+        { activities.length !== 0 && exercise.length !==0 
+          ? props.date.weather.wetWeather === true && dictExercise[item.exerciseID].outdoor === true 
+            && <Text style = {tailwind('text-xs font-bold')}> Alternative exercises: {indoorExercises[0]}, {indoorExercises[1]}, {indoorExercises[2]}, {indoorExercises[3]}, {indoorExercises[4]} </Text> 
+          : <Text> </Text> }
+        </Layout>
       </Layout>  
-      );   
+      );    
 
   return (
     <Layout style={tailwind("flex-grow flex-initial items-center m-1")}>

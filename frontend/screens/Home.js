@@ -26,17 +26,7 @@ const getForecasts = async () => {
 };
 
 const { patchPlan } = useAuth();
-
-
-// const test = async () => {
-//   patchPlan('2021-11-06', {
-//     _id: '6185594bafc0a72931edbd75', 
-//     exerciseID: '61741aa88ddc3fb8db166bca', 
-//     totalQuantity: '231', sets: '555', 
-//     done: false});
-// }
-      // test();
-      
+   
   useFocusEffect(
     useCallback(() => { 
       getForecasts();
@@ -44,7 +34,7 @@ const { patchPlan } = useAuth();
     }, [])
   )
   
-  const dateStuff = {year: moment().format('YYYY'), month: moment().format('MM'), date: moment().format('DD'), day: moment().format("ddd MMM DD YYYY"), weather: forecasts[0]};
+  const dateStuff = {year: moment().format('YYYY'), month: moment().format('MM'), date: moment().format('DD'), day: moment().format("ddd MMM DD YYYY"), weather: (forecasts.length !== 0 ? forecasts[0] : "failed")};
     
   return (
     <Layout style={tailwind("flex-1")}>
