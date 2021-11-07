@@ -7,22 +7,21 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../utils/auth";
 
-export default HomeHeader = () => {
+export default HomeHeader = (props) => {
+
   return (
     <Layout style={tailwind("flex-row justify-around")}>
       <LogoutButton />
-      <DateWeatherButton date="Sept 1" weather="sunny" />
-      <DateWeatherButton date="Sept 2" weather="cloudy" />
-      <DateWeatherButton date="Sept 3" weather="rainy" />
-      <DateWeatherButton date="Sept 4" weather="stormy" />
+      <DateWeatherButton forecast={props.forecast[0]} />
+      <DateWeatherButton forecast={props.forecast[1]} />
+      <DateWeatherButton forecast={props.forecast[2]} />
+      <DateWeatherButton forecast={props.forecast[3]} />
       <CalendarButton />
     </Layout>
   );
 };
-
 const CalendarButton = () => {
   const navigation = useNavigation();
-
   return (
     <TouchableOpacity
       style={tailwind("items-center")}
@@ -38,11 +37,9 @@ const CalendarButton = () => {
     </TouchableOpacity>
   );
 };
-
 const LogoutButton = () => {
   const { logout } = useAuth();
   const [visible, setVisible] = React.useState(false);
-
   const LogoutIcon = (props) => (
     <FontAwesome5
       style={tailwind("pb-1")}
@@ -51,7 +48,6 @@ const LogoutButton = () => {
       color="black"
     />
   );
-
   return (
     <Layout>
       <Button
@@ -61,13 +57,11 @@ const LogoutButton = () => {
       >
         Logout
       </Button>
-
       <Modal visible={visible}>
         <Card disabled={true}>
           <Text> Are you sure you want to logout </Text>
           <Layout style={tailwind("flex-row justify-center items-center ")}>
             <Button onPress={() => setVisible(false)}>No</Button>
-
             <Button
               onPress={async () => {
                 await logout();

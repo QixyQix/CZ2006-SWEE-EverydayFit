@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAuth } from "../utils/auth";
 import { isNumeric, quantitativeSchema, timeSchema, distanceSchema, loginSchema }  from "../utils/validationSchemas";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
+// TODO Implement form validation
 
 export default Login = ({ navigation }) => {
   const { login } = useAuth();
@@ -26,11 +28,12 @@ export default Login = ({ navigation }) => {
       }
     },
 
-    validationSchema: loginSchema,
+    //validationSchema: loginSchema,
   });
 
   return (
     // TODO Improve styling
+    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }} > 
     <Layout style={tailwind("flex-1 justify-center items-center")}>
       <Card style={tailwind("w-10/12")}>
         <Text category="h1" style={tailwind("text-center")}>
@@ -75,5 +78,7 @@ export default Login = ({ navigation }) => {
         <Text style={tailwind("text-red-600")}>{loginError}</Text>
       ) : null}
     </Layout>
+    </TouchableWithoutFeedback>
+    
   );
 };

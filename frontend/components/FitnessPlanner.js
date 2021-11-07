@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import tailwind from "tailwind-rn";
 import {
   Divider,
@@ -9,100 +10,182 @@ import {
   Layout,
   Text,
 } from "@ui-kitten/components";
-import AppContext from "./database";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import EditButton from "./EditButton";
+import { useAuth } from "../utils/auth";
+import { getExercises } from "../utils/exercises";
+import ButtonsStuff from "./ButtonsStuff";
 
-export default FitnessPlanner = () => {
+
+export default FitnessPlanner = (props) => {
+
+  const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
+  const [ exercise, setExercise ] = useState([]);
+  const [ activities, setActivities ] = useState([]);
+  const [ visibleBtn, setVisibleBtn ] = useState(false);
+
+  const [visibleBtnA, setVisibleBtnA] = useState(false);
+
   const navigation = useNavigation();
-  const myContext = useContext(AppContext);
+  var dictExercise = {};
+  var dictActivity = {};
+  var dictQuantity = {};
+  var dictExerciseToID = {"Remain the same" : {exerciseID: "61741aa88ddc3fb8db166bc6"}};
 
-  // const alertHandler = (index) => {
-  //   Alert.alert("Confirm", "Are you sure you want to delete this activity?", [
-  //     {
-  //       text: "No",
-  //       onPress: () => console.log("Cancel Pressed"),
-  //       style: "cancel",
-  //     },
-  //     { text: "Yes", onPress: () => deleteActivity(index) },
-  //   ]);
-  // };
-
-  //  const [activity, setActivity] = useState([
-  //    {title: 'Push-up', checked: false},
-  //    {title: 'Sit-up', checked: false},
-  //    {title: 'Planks', checked: false},
-  //    {title: 'Push-up', checked: false}])
-
-  // const renderItemAccessory = (index) => (
-  //   <Button
-  //     style={tailwind("")}
-  //     appearance="ghost"
-  //     accessoryRight={
-  //       <MaterialCommunityIcons size={20} name="delete" color="maroon" />
-  //     }
-  //     onPress={() => alertHandler(index)}
-  //   ></Button>
-  // );
-
-  const switchState = (state, index) => {
-    let newArr = [...myContext.activityName];
-    newArr[index]["checked"] = state;
-    myContext.setActivity(newArr);
+  const getActivities = async () => {
+    try{
+      const data = await getPlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`)
+      console.log('dingdong:', data);
+      setActivities(data.activities);
+    } catch (e) {
+      console.log(e)
+    }
   };
+
+  if(activities.length !== 0 && exercise.length !== 0){
+    //const theSize = exercise ? exercise.length : 0;
+    const theSize = 8;
+    for (var j = 0; j < theSize; j++){ 
+      dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit, caloriesBurnt: exercise[j].calorieBurnRatePerUnit};
+      dictExerciseToID[exercise[j].name] = {exerciseID: exercise[j]._id}
+    }
+
+    const sizeOfPlan = activities ? activities.length : 0;
+    for (var j = 0; j < sizeOfPlan; j++) {
+      dictActivity[activities[j].exerciseID] = [activities[j].totalQuantity, activities[j].sets, activities[j].done];
+    }
+
+    const sizeOfPlan2 = activities ? activities.length : 0;
+    for (var j = 0; j < sizeOfPlan2; j++) {
+      dictQuantity[activities[j]._id] = [activities[j].totalQuantity, activities[j].sets, activities[j].done];
+    }
+
+  }
+
+  const getLabelMsg = (item) => {
+    // If one of activities or exercise is empty
+    if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 || Object.keys(dictActivity) === 0) return "";
+    
+    const quantityDescription = dictExercise[item.exerciseID].exerciseType === "QUANTITATIVE"
+                                ? `Reps: ${dictQuantity[item._id][0]}`
+                                : dictExercise[item.exerciseID].exerciseType === "TIME"
+                                ? `Duration ${dictQuantity[item._id][0]} ${dictExercise[item.exerciseID].unitType}`
+                                : `Distance ${dictQuantity[item._id][0]} ${dictExercise[item.exerciseID].unitType}`
+    
+    const setsDescription =  dictQuantity[item._id][1] !== null && dictExercise[item.exerciseID].exerciseType !== "TIME" && dictExercise[item.exerciseID].exerciseType !== "DISTANCE"
+                             ? " Sets: " + `${dictQuantity[item._id][1]}`
+                             : " "
+    
+   return (quantityDescription + setsDescription);
+    
+  }
+  const getExercise = async () => {
+      setExercise(await getExercises());
+  };
+    
+  const getTitle= (item) => {
+      //If one of activities or exercise is empty
+      if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 ) return "";
+      if(typeof(item.exerciseID) === 'undefined') removeHandler(item._id);
+      return dictExercise[item.exerciseID].name;
+      //return " ";
+  }
+  
+  const removeHandler = async (item) => {
+    await deletePlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item);
+    await getActivities();
+  }
+
+  useFocusEffect(
+      useCallback(() => {
+        getActivities();
+        getExercise();
+       
+      }, [])
+  )
 
   const pressHandler = () => {
-    navigation.navigate("AddActivity");
+    navigation.navigate("AddActivity", props);
   };
 
-  // const deleteActivity = (index) => {
-  //   if (index !== -1) {
-  //     myContext.setActivity([
-  //       ...myContext.activityName.slice(0, index),
-  //       ...myContext.activityName.slice(index + 1),
-  //     ]);
-  //   }
-  // };
+    const AAplacements = () => {
+      let exercisesArray = ['Remain the same'];
+      if(activities.length !== 0 && exercise.length !== 0){
+        for(var j=1; j < 9; j++){
+          exercisesArray[j] = exercise[j].name;
+        }
+        return exercisesArray;
+      }
+      return exercisesArray;
+    }
 
-  const renderItem = ({ item, index }) => (
-    <Layout style={tailwind("flex-col")} level="1">
-      <CheckBox
-        style={tailwind("")}
-        checked={item.checked}
-        status="primary"
-        onChange={(checknext) => switchState(checknext, index)}
-      >
-        <ListItem
-          //accessoryLeft = {renderItemIcon}
-          accessoryRight={<EditButton index={index} />}
-          title={`${item.title}`}
-          description={`${item.description}`}
-        />
-      </CheckBox>
-    </Layout>
-  );
+          
+    const switchState = async (state, item) => {
+      item.done = state;
+      await patchPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item)
+      await getActivities();
+    };
+    const renderItem = ({ item, index }) => (
+      <Layout style={tailwind("flex-col")} level="1">
+        <CheckBox
+          style={tailwind("left-3")}
+          checked={item.done}
+          status="primary"
+          onChange={(checknext) => switchState(checknext, item)}
+        >
+
+        
+          <ListItem
+           
+          
+            //disabled = {true}
+            accessoryRight={() => 
+               <ButtonsStuff 
+                
+                date = {`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`}
+                placement = {activities.length !== 0 && exercise.length !== 0 ? AAplacements() : []}
+                activityID = {item._id}
+                getExercise = {getExercise}
+                exercise = {exercise.slice(0,8)}
+                
+                activities = {activities}
+                getActivities = {getActivities}
+                dictExercise = {activities.length !== 0 && exercise.length !== 0 ? dictExercise : []}
+                dictActivity = {activities.length !== 0 && exercise.length !== 0 ? dictActivity : []}
+                dictExerciseToID = {activities.length !== 0 && exercise.length !== 0 ? dictExerciseToID : []} 
+                dictQuantity = {activities.length !== 0 && exercise.length !== 0 ? dictQuantity : []}
+                exerciseName = {getTitle(item)}
+                />}
+              title={getTitle(item)}
+              //{...console.log("EXERCISE TITLE:", getTitle(item))}
+              description={getLabelMsg(item)}
+            />
+        </CheckBox>
+      </Layout>
+
+      );
+
 
   return (
-    <Layout>
-      <Text style={tailwind("text-center font-bold text-xl")}>
-        FITNESS PLAN OF THE DAY
-      </Text>
-      <List
-        data={myContext.activityName}
+    <Layout style={tailwind("flex-grow flex-initial items-center m-1")}>
+
+      <List 
+        data={activities.length ? activities : null}
         ItemSeparatorComponent={Divider}
-        renderItem={renderItem}
-      />
+        renderItem = {renderItem}   />
+
       <Button
         style={tailwind("mx-20")}
         accessoryLeft={
-          <MaterialCommunityIcons size={21} name="pencil-plus" color="white" />
+          <Feather size={21} name="plus-circle" color="white" />
         }
         status="success"
         onPress={pressHandler}
       >
         Add Fitness Activity
       </Button>
+
     </Layout>
   );
 };

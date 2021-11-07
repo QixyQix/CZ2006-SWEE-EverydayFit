@@ -12,11 +12,13 @@ import {
 } from "@ui-kitten/components";
 import AppContext from "./database";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../utils/auth";
 
-export const EditButton = (index) => {
+export const EditButton = (props) => {
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
   const [visibleBtn, setVisibleBtn] = useState(false);
+  const { getPlan, deletePlan } = useAuth();
   const myContext = useContext(AppContext);
 
   const pressHandler = (index, which) => {
@@ -28,18 +30,16 @@ export const EditButton = (index) => {
     }
   };
 
-  const deleteHandler = (index) => {
-    if (index !== -1) {
-      setVisible(false);
-      myContext.setActivity([
-        ...myContext.activityName.slice(0, index),
-        ...myContext.activityName.slice(index + 1),
-      ]);
-    }
+  const deleteHandler = (currentActivity) => {
+    const {getExercise, exercise, activity, setActivity} = {...props};
+    deletePlan(currentActivity.date, currentActivity.exerciseInfo); 
+    setVisible(false);
+    props.getActivities();
   };
 
   const renderItemAccessory = () => (
     <Button
+      style = {tailwind("right-4")}
       appearance="ghost"
       accessoryRight={<Icon fill="#8F9BB3" name="more-vertical-outline" />}
       onPress={() => setVisible(true)}
@@ -54,12 +54,8 @@ export const EditButton = (index) => {
         placement="left start"
         onBackdropPress={() => setVisible(false)}
       >
-        <MenuItem title="Edit" onPress={() => pressHandler(index.index, 0)} />
+        <MenuItem title="Edit" onPress={() => pressHandler(props.activityID, 0)} />
         <MenuItem title="Delete" onPress={() => setVisibleBtn(true)} />
-        <MenuItem
-          title="Replace"
-          onPress={() => pressHandler(index.index, 1)}
-        />
       </OverflowMenu>
 
       <Modal visible={visibleBtn}>
@@ -76,7 +72,7 @@ export const EditButton = (index) => {
             </Button>
             <Button
               onPress={() => {
-                deleteHandler(index.index);
+                deleteHandler(props.activityID);
                 setVisibleBtn(false);
               }}
             >

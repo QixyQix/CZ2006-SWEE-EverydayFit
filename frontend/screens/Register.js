@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { useAuth } from "../utils/auth";
 import { registerSchema }  from "../utils/validationSchemas";
 
+
 export default Register = ({ navigation }) => {
   const { register } = useAuth();
   const [registerError, setRegisterError] = useState("");

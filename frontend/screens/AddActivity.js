@@ -5,24 +5,23 @@ import { Layout, Divider, List, ListItem } from "@ui-kitten/components";
 import { getExercises } from "../utils/exercises";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default AddActivity = () => {
+export default AddActivity = ({ route }) => {
   const navigation = useNavigation();
   const [exercises, setExercises] = useState([]);
-
   const getExercisesAndUpdateState = async () => {
     setExercises(await getExercises());
   };
-
   // TODO Add error catching
   useEffect(() => {
     getExercisesAndUpdateState();
   }, []);
-
   // TODO Improve styling
   const renderItem = ({ item }) => (
     <ListItem
       onPress={() => {
-        navigation.navigate("SetQuantity", item);
+        let indexToParse = route.params;
+        let itemToParse = {...item, ...indexToParse};
+        navigation.navigate("SetQuantity", itemToParse);
       }}
       title={item.name}
       accessoryRight={
@@ -32,11 +31,12 @@ export default AddActivity = () => {
       }
     />
   );
-
+  
+  
   return (
     <Layout style={tailwind("flex-1")}>
       <List
-        data={exercises}
+        data={exercises.slice(0,8)}
         ItemSeparatorComponent={Divider}
         renderItem={renderItem}
       />

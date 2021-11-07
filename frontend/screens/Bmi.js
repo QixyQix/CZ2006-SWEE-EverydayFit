@@ -6,6 +6,19 @@ import * as Yup from "yup";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { bmiSchema }  from "../utils/validationSchemas";
 
+/* 
+TODO Show error message for leading zeros (e.g. 007)
+*/
+const isNumeric = (value) => /^(?![0.]+$)\d+(\.\d*)?$/.test(value);
+
+const schema = Yup.object().shape({
+  weight: Yup.string()
+    .required("Required")
+    .test("Number", "Must be a positive number", isNumeric),
+  height: Yup.string()
+    .test("Number", "Must be a positive number", isNumeric)
+    .required("Required"),
+});
 
 const getBmiCategory = (bmi) => {
   if (bmi <= 18.5) {
@@ -20,7 +33,7 @@ const getBmiCategory = (bmi) => {
 };
 
 export default Bmi = () => {
-  const { handleSubmit, values, handleChange, errors, touched, setValues } =
+    const { handleSubmit, values, handleChange, errors, touched, setValues } =
     useFormik({
       initialValues: {
         weight: "",
@@ -37,7 +50,7 @@ export default Bmi = () => {
 
         values.bmiCategory = getBmiCategory(values.bmi);
       },
-      validationSchema: bmiSchema,
+      validationSchema: schema,
     });
 
   return (

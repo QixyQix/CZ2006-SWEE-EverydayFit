@@ -8,31 +8,29 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { isNumeric, quantitativeSchema, timeSchema, distanceSchema }  from "../utils/validationSchemas";
 import tailwind from "tailwind-rn";
+import { useAuth } from "../utils/auth";
+import moment from "moment";
 
 // TODO Add form validation
 export default function SetQuantity({ route }) {
   const navigation = useNavigation();
+  const { getPlan, setPlan } = useAuth();
 
   const exercise = route.params;
-  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
+  const { values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       quantity: "",
       sets: null,
-    },
+    },    
     onSubmit: (values) => {
-      console.log(values);
+      setPlan(route.params, values);
+      navigation.pop(2);
     },
-
-    validationSchema :  (exercise.quantityType === "QUANTITATIVE"
-                        ? quantitativeSchema
-                        : exercise.quantityType === "TIME"
-                        ? timeSchema
-                        : distanceSchema)
   });
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Layout>
+      <Layout style={tailwind("flex-grow")}>
         <Text style={tailwind("text-lg font-bold")}>
           For {exercise.name}, please enter the following!
         </Text>
@@ -48,15 +46,10 @@ export default function SetQuantity({ route }) {
 
         <Input
           keyboardType="numeric"
-          placeholder="e.g. 10, 1 decimal point only"
+          placeholder="e.g. 10"
           value={values.quantity}
           onChangeText={handleChange("quantity")}
-          maxLength={5}
         />
-
-        {errors.quantity && touched.quantity ? (
-          <Text style={tailwind("text-red-600")}>{errors.quantity}</Text>
-           ) : null}
 
         {/* Show Sets field if quantitative */}
         {exercise.quantityType === "QUANTITATIVE" && (
@@ -67,14 +60,9 @@ export default function SetQuantity({ route }) {
               placeholder="e.g. 3"
               value={values.sets}
               onChangeText={handleChange("sets")}
-              maxLength={3}
             />
           </>
         )}
-        
-        {errors.sets && touched.sets ? (
-          <Text style={tailwind("text-red-600")}>{errors.sets}</Text>
-           ) : null}
 
         <Button
           accessoryLeft={

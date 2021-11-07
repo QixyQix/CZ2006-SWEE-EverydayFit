@@ -3,25 +3,56 @@ import tailwind from "tailwind-rn";
 import { Text, Layout } from "@ui-kitten/components";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { weatherConditions } from "../constants";
-
-export default TodaysWeatherInfo = ({ date, weather, temperature }) => {
+import { FontAwesome5 } from "@expo/vector-icons";
+import moment from "moment";
+export default TodaysWeatherInfo = ({ forecast }) => {
   // Capitalize first character
-  const weatherText = weather[0].toUpperCase() + weather.substring(1);
 
+  const weather = forecast ? forecast.forecastCategory: "";
+  let weatherText = forecast ? weatherConditions[weather].text : "";
+  const date = moment().format('DD MMM');
+  const highTemp = forecast?  forecast.highTemp: "";
+  const lowTemp = forecast? forecast.lowTemp: "";
+
+  
   return (
     <Layout
       style={tailwind(
         "flex-row justify-center items-center border rounded-2xl mx-8 my-2 py-1"
       )}
     >
-      <Text> {date} </Text>
+    
+    <Layout style={tailwind("flex-col items-center ")} > 
+    <Text style={tailwind("font-bold")}> {date} </Text>
+    </Layout>
+    <Layout style={tailwind("flex-col items-center ")} > 
       <MaterialCommunityIcons
         size={50}
-        name={weatherConditions[weather].icon}
-        color={weatherConditions[weather].color}
+        name={forecast ? weatherConditions[weather].icon : ""}
+        color={forecast ? weatherConditions[weather].color : ""}
       />
-      <Text> {weatherText} </Text>
-      <Text> {temperature} </Text>
+      <Text style={tailwind("font-bold")} > {weatherText} </Text> 
+     </Layout>
+      <Layout>     
+        <Layout style={tailwind("flex-row")} > 
+          <FontAwesome5
+          style={tailwind("pb-1")}
+          name="temperature-high"
+          size={20}
+          color="red"
+          />
+          <Text  style={tailwind("font-bold")} > {highTemp} °C </Text> 
+        </Layout>
+        <Layout style={tailwind("flex-row")}> 
+          <FontAwesome5
+          style={tailwind("pb-1")}
+          name="temperature-low"
+          size={20}
+          color="blue"
+        />
+          <Text style={tailwind("font-bold")} > {lowTemp} °C </Text> 
+        </Layout>
+      </Layout>
     </Layout>
   );
 };
