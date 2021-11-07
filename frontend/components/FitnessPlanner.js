@@ -8,6 +8,7 @@ import {
   Button,
   CheckBox,
   Layout,
+  Text,
 } from "@ui-kitten/components";
 
 import { Feather } from "@expo/vector-icons";
@@ -15,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../utils/auth";
 import { getExercises } from "../utils/exercises";
 import ButtonsStuff from "./ButtonsStuff";
+
 
 export default FitnessPlanner = (props) => {
 
@@ -41,19 +43,11 @@ export default FitnessPlanner = (props) => {
     }
   };
 
-  const arrayInitialisation = () => {
-      console.log('hello');
-      setPlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, {_id: "61741aa88ddc3fb8db166bcc", quantity: 1, sets: 1});
-      getActivities();
-      //console.log('hello', activities[0]._id);
-      deletePlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, activities[activities.length-1]._id);
-  }
-
   if(activities.length !== 0 && exercise.length !== 0){
     //const theSize = exercise ? exercise.length : 0;
     const theSize = 8;
     for (var j = 0; j < theSize; j++){ 
-      dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit};
+      dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit, caloriesBurnt: exercise[j].calorieBurnRatePerUnit};
       dictExerciseToID[exercise[j].name] = {exerciseID: exercise[j]._id}
     }
 
@@ -68,7 +62,7 @@ export default FitnessPlanner = (props) => {
     }
 
   }
- 
+
   const getLabelMsg = (item) => {
     // If one of activities or exercise is empty
     if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 || Object.keys(dictActivity) === 0) return "";
@@ -87,9 +81,7 @@ export default FitnessPlanner = (props) => {
     
   }
   const getExercise = async () => {
-      
       setExercise(await getExercises());
-  
   };
     
   const getTitle= (item) => {
@@ -100,9 +92,9 @@ export default FitnessPlanner = (props) => {
       //return " ";
   }
   
-  const removeHandler = (item) => {
-    deletePlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item);
-    getActivities();
+  const removeHandler = async (item) => {
+    await deletePlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item);
+    await getActivities();
   }
 
   useFocusEffect(
@@ -129,10 +121,10 @@ export default FitnessPlanner = (props) => {
     }
 
           
-    const switchState = (state, item) => {
+    const switchState = async (state, item) => {
       item.done = state;
-      patchPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item)
-      getActivities();
+      await patchPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item)
+      await getActivities();
     };
     const renderItem = ({ item, index }) => (
       <Layout style={tailwind("flex-col")} level="1">
@@ -142,16 +134,21 @@ export default FitnessPlanner = (props) => {
           status="primary"
           onChange={(checknext) => switchState(checknext, item)}
         >
+
+        
           <ListItem
            
+          
             //disabled = {true}
             accessoryRight={() => 
                <ButtonsStuff 
-                date = {`${props.date.year}-${props.date.month}-${props.date.date}`}
-                placement = {AAplacements()}
+                
+                date = {`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`}
+                placement = {activities.length !== 0 && exercise.length !== 0 ? AAplacements() : []}
                 activityID = {item._id}
                 getExercise = {getExercise}
                 exercise = {exercise.slice(0,8)}
+                
                 activities = {activities}
                 getActivities = {getActivities}
                 dictExercise = {activities.length !== 0 && exercise.length !== 0 ? dictExercise : []}
@@ -167,7 +164,7 @@ export default FitnessPlanner = (props) => {
         </CheckBox>
       </Layout>
 
-    );
+      );
 
 
   return (

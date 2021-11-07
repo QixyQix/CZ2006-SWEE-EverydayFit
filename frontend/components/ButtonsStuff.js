@@ -15,10 +15,11 @@ import {
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useAuth } from "../utils/auth";
 import { useFormik } from "formik";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export const ButtonsStuff = (props) => {
 
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange } = useFormik({
     initialValues: {
       sets : props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 
         ? props.dictActivity[props.dictExerciseToID[props.exerciseName].exerciseID][1] 
@@ -27,31 +28,13 @@ export const ButtonsStuff = (props) => {
         ? props.dictQuantity[props.activityID][0] 
         : null,
       done: false
-      // activityID : props.activityID,
-      // done : props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 
-      //   ? props.dictActivity[props.dictExerciseToID[props.exerciseName].exerciseID][2] 
-      //   : false,
-      // exerciseID: props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 && placement !== null ? props.dictExerciseToID[placement].exerciseID : props.dictExerciseToID[props.exerciseName].exerciseID
-      
-
-    },    
-
-    // onSubmit: (values) => {
-    //     const itemsToParse = {_id: values.activityID, exerciseID: props.dictExerciseToID[placement].exerciseID, totalQuantity: values.quantity, sets: values.sets};
-    //     patchPlan(props.date, )
-    // }
-
-    
+    },
   });
 
-  //console.log(props.dictActivity);
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
-
   const [visibleBtn, setVisibleBtn] = useState(false);
-
   const [visibleBtnA, setVisibleBtnA] = useState(false);
-
-  const [placementIndex, setPlacementIndex] = React.useState(new IndexPath(0));
+  const [placementIndex, setPlacementIndex] = useState(new IndexPath(0));
   const placement = props.placement[placementIndex.row];
   
   const onPlacementSelect = (index) => {
@@ -72,7 +55,7 @@ export const ButtonsStuff = (props) => {
       </Button>
    );
   
-   const EditHandler = (item) =>  {
+   const EditHandler = async (item) =>  {
      //console.log("NYAAA:", props.dictExerciseToID[placement].exerciseID)
      const updatedPlan = {
        _id: item, 
@@ -82,8 +65,8 @@ export const ButtonsStuff = (props) => {
        sets: values.sets, 
        done: false };
        const {getExercise, exercise, activities, getActivities} = {...props};  
-       patchPlan(props.date, updatedPlan);
-       props.getActivities();
+       await patchPlan(props.date, updatedPlan);
+       await props.getActivities();
     //console.log("TODO: Edit stuff:", updatedPlan);
 };
 
@@ -91,22 +74,54 @@ export const ButtonsStuff = (props) => {
     <SelectItem title={title} key={index} />
   );
 
-  const deleteHandler = (item) => {
+  const deleteHandler =  async (item) => {
       const {getExercise, exercise, activities, getActivities} = {...props};   
-      deletePlan(props.date, props.activityID); 
-      props.getActivities();
+      await deletePlan(props.date, props.activityID); 
+      await props.getActivities();
   };
 
   if(props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0){
     props.dictExerciseToID['Remain the same'] = {exerciseID: props.dictExerciseToID[props.exerciseName].exerciseID}  
   } 
   
-  
+  const getCalorieCount = () => {
+    // If one of activities or exercise is empty
+    if (props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0) return ""
+    if (typeof(props.dictActivity) === 'undefined') return  123;
+    
+    const choice = props.placement[placementIndex.row]
+    const newExerciseId = props.dictExerciseToID[choice].exerciseID
+    
+    const calorieUnit = props.dictExercise[newExerciseId].caloriesBurnt 
+    const numQuantity = props.dictQuantity[props.activityID][0]
+    const numSets = props.dictQuantity[props.activityID][1]
+    
+    if (numSets === null)
+    {
+      return ( (numQuantity * calorieUnit).toFixed(2) );
+    }else
+    {
+      return ( (numQuantity * numSets * calorieUnit).toFixed(2) );
+    }
+    
+  }
+
 return(
-   
+    
   <Layout >
   
-    <Layout style={tailwind("m-7 right-2")}>
+    <Layout style={tailwind("m-7 flex-row right-2 items-center")}>
+
+    <FontAwesome5
+        style={tailwind("pb-1 right-5 items-center")}
+        name="fire"
+        size={15}
+        color="red"
+      />
+   
+    <Text style={tailwind("text-xs right-3")}> {getCalorieCount()} kcal </Text>
+
+    
       <ButtonGroup  appearance = 'filled' size = 'small' >
         <Button 
           onPress = {() => setVisibleBtnA(true)}
@@ -159,7 +174,8 @@ return(
 
             {props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0 ? "" : props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "QUANTITATIVE" && (
               <>
-                <Text>Sets</Text>
+                <Text style={tailwind("font-bold")}> Sets</Text>
+                
                 <Input
                   keyboardType="numeric"
                   placeholder= {`Current: ${values.sets}`}
