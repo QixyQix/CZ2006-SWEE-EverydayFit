@@ -15,20 +15,14 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../utils/auth";
 import { getExercises } from "../utils/exercises";
-import { getAltExercises } from "../utils/altExercises";
 import ButtonsStuff from "./ButtonsStuff";
 import { FontAwesome } from "@expo/vector-icons";
 
 export default FitnessPlanner = (props) => {
 
-  //console.log("FKKK: ", props.date.weather.forecastCategory, "wet weather", props.date.weather.wetWeather );
-
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
   const [ exercise, setExercise ] = useState([]);
   const [ activities, setActivities ] = useState([]);
-  const [ visibleBtn, setVisibleBtn ] = useState(false);
-  const [ visibleBtnA, setVisibleBtnA ] = useState(false);
-  const [ altExercise, setAltExercise ] = useState([]); 
 
   const navigation = useNavigation();
   var dictExercise = {};
@@ -37,17 +31,6 @@ export default FitnessPlanner = (props) => {
   var dictExerciseToID = {"Remain the same" : {exerciseID: "6187da4fb5cccfeba574f855"}};
   var indoorExercises = [];
  
-  const getOtherExercises = async (item) => {
-      try{
-        const data = await getAltExercises(item);
-        //console.log('dingdong2:', data);
-        setAltExercise(data);
-      } catch (e) {
-        console.log(e)
-      }
-  }
-  
-  // console.log("ALTEXERCISE", altExercise.slice(0,4));
   const getActivities = async () => {
     try{
       const data = await getPlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`)
@@ -58,9 +41,16 @@ export default FitnessPlanner = (props) => {
   };
 
   if(activities.length !== 0 && exercise.length !== 0){
+    
     const theSize = 8;
     for (var j = 0; j < theSize; j++){ 
-      dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit, caloriesBurnt: exercise[j].calorieBurnRatePerUnit, outdoor: exercise[j].outdoorOnly};
+      dictExercise[exercise[j]._id] = {
+        name: exercise[j].name, 
+        exerciseType: exercise[j].quantityType, 
+        unitType: exercise[j].quantityUnit, 
+        caloriesBurnt: exercise[j].calorieBurnRatePerUnit, 
+        outdoor: exercise[j].outdoorOnly
+      };
       dictExerciseToID[exercise[j].name] = {exerciseID: exercise[j]._id}
       if(exercise[j].outdoorOnly !== true )
       {
@@ -77,12 +67,10 @@ export default FitnessPlanner = (props) => {
     for (var j = 0; j < sizeOfPlan2; j++) {
       dictQuantity[activities[j]._id] = [activities[j].totalQuantity, activities[j].sets, activities[j].done];
     }
-
-    
-    }
+  }
 
   const getLabelMsg = (item) => {
-    // If one of activities or exercise is empty
+
     if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 || Object.keys(dictActivity) === 0) return "";
     
     const quantityDescription = dictExercise[item.exerciseID].exerciseType === "QUANTITATIVE"
@@ -104,11 +92,11 @@ export default FitnessPlanner = (props) => {
   };
   
   const getTitle= (item) => {
-      //If one of activities or exercise is empty
+
       if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 ) return "";
       if(typeof(item.exerciseID) === 'undefined') removeHandler(item._id);
       return dictExercise[item.exerciseID].name;
-      //return " ";
+
   }
   
   const removeHandler = async (item) => {
@@ -140,77 +128,75 @@ export default FitnessPlanner = (props) => {
     }
   
           
-    const switchState = async (state, item) => {
-      console.log(state)
-      item.done = state;
-      await patchPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item)
-      await getActivities();
-    };
+  const switchState = async (state, item) => {
+
+    item.done = state;
+    await patchPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item)
+    await getActivities();
+
+  };
 
 
-    const renderItem = ({ item, index }) => (
-      <Layout style={tailwind("flex-col")} level="1">
-        <CheckBox
-          style={tailwind("left-3")}
-          checked={item.done}
-          status="primary"
-          onChange={(checknext) => switchState(checknext, item)}
-        >
-           
-            <ListItem
-              accessoryRight={() => 
-                <ButtonsStuff 
-                  date = {`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`}
-                  placement = {activities.length !== 0 && exercise.length !== 0 ? AAplacements() : []}
-                  activityID = {item._id}
-                  getExercise = {getExercise}
-                  exercise = {exercise.slice(0,8)}
-                  activities = {activities}
-                  getActivities = {getActivities}
-                  dictExercise = {activities.length !== 0 && exercise.length !== 0 ? dictExercise : []}
-                  dictActivity = {activities.length !== 0 && exercise.length !== 0 ? dictActivity : []}
-                  dictExerciseToID = {activities.length !== 0 && exercise.length !== 0 ? dictExerciseToID : []} 
-                  dictQuantity = {activities.length !== 0 && exercise.length !== 0 ? dictQuantity : []}
-                  exerciseName = {getTitle(item)}
-                  exerciseID = {item.exerciseID}
-                />}
-              title={getTitle(item)}
-              description={getLabelMsg(item)}
-            />
-           
-            
-        </CheckBox>
+  const renderItem = ({ item, index }) => (
 
-        <Layout style = {tailwind('flex-row items-center')}> 
+    <Layout style={tailwind("flex-col ")} level="1">
+      <CheckBox
+        style={tailwind("left-3")}
+        checked={item.done}
+        status="primary"
+        onChange={(checknext) => switchState(checknext, item)}
+      >
+        
+          <ListItem
+          
+            accessoryRight={() => 
+              <ButtonsStuff 
+                date = {`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`}
+                placement = {activities.length !== 0 && exercise.length !== 0 ? AAplacements() : []}
+                activityID = {item._id}
+                getExercise = {getExercise}
+                exercise = {exercise.slice(0,8)}
+                activities = {activities}
+                getActivities = {getActivities}
+                dictExercise = {activities.length !== 0 && exercise.length !== 0 ? dictExercise : []}
+                dictActivity = {activities.length !== 0 && exercise.length !== 0 ? dictActivity : []}
+                dictExerciseToID = {activities.length !== 0 && exercise.length !== 0 ? dictExerciseToID : []} 
+                dictQuantity = {activities.length !== 0 && exercise.length !== 0 ? dictQuantity : []}
+                exerciseName = {getTitle(item)}
+                exerciseID = {item.exerciseID}
+              />}
+            title={getTitle(item)}
+            description={getLabelMsg(item)}
+          />
+          
+      </CheckBox>
 
-        { activities.length !== 0 && exercise.length !==0 
-          ? props.date.weather.wetWeather === true && dictExercise[item.exerciseID].outdoor === true 
-            && <FontAwesome
-              style={tailwind("flex-row items-center left-2")}
-              name="warning"
-              size={20}
-              color="red" /> 
-          : <Text> </Text> }
-    
+      <Layout style = {tailwind('flex-row items-center')}> 
 
-        { activities.length !== 0 && exercise.length !==0 
-          ? props.date.weather.wetWeather === true && dictExercise[item.exerciseID].outdoor === true 
-              && <Text style = {tailwind('text-xs font-bold items-center left-3')}> 
-                Alternative exercises: 
+      { activities.length !== 0 && exercise.length !==0 
+        ? props.date.weather.wetWeather === true && dictExercise[item.exerciseID].outdoor === true 
+          && <FontAwesome
+            style={tailwind("flex-row items-center left-2")}
+            name="warning"
+            size={20}
+            color="red" /> 
+        : <Text> </Text> }
+  
+
+      { activities.length !== 0 && exercise.length !==0 
+        ? props.date.weather.wetWeather === true && dictExercise[item.exerciseID].outdoor === true 
+            && <Text style = {tailwind('text-xs font-bold items-center left-3')}> 
+              Alternative exercises: 
                 {indoorExercises[0]}, 
                 {indoorExercises[1]},
                 {indoorExercises[2]}, 
                 {indoorExercises[3]}, 
                 {indoorExercises[4]} 
-              </Text> 
-          : <Text> </Text> }
-        
-          </Layout>
-          
-     
-        
-      </Layout>  
-      );    
+            </Text> 
+        : <Text> </Text> }
+        </Layout>
+    </Layout>  
+  );    
 
   return (
     <Layout style={tailwind("flex-grow flex-initial items-center m-1")}>

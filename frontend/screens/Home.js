@@ -24,8 +24,6 @@ const getForecasts = async () => {
   }
 
 };
-
-const { patchPlan } = useAuth();
    
   useFocusEffect(
     useCallback(() => { 
@@ -37,8 +35,8 @@ const { patchPlan } = useAuth();
   const dateStuff = {year: moment().format('YYYY'), month: moment().format('MM'), date: moment().format('DD'), day: moment().format("ddd MMM DD YYYY"), weather: (forecasts.length !== 0 ? forecasts[0] : "failed")};
     
   return (
-    <Layout style={tailwind("flex-1")}>
-    
+    <Layout style={tailwind("flex-1 ")}>
+
       <HomeHeader forecast = {forecasts}/>
       <TodaysWeatherInfo forecast = {forecasts[0]}/>
       <FitnessPlanner date = {dateStuff}/>

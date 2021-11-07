@@ -28,7 +28,7 @@ export default Login = ({ navigation }) => {
       }
     },
 
-    //validationSchema: loginSchema,
+    validationSchema: loginSchema,
   });
 
   return (

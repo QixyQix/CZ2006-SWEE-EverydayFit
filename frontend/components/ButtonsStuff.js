@@ -56,18 +56,15 @@ export const ButtonsStuff = (props) => {
    );
   
    const EditHandler = async (item) =>  {
-     //console.log("NYAAA:", props.dictExerciseToID[placement].exerciseID)
      const updatedPlan = {
        _id: item, 
        exerciseID: props.dictExerciseToID[placement].exerciseID, 
        totalQuantity: values.quantity,
        sets: values.sets >= 1? values.sets: 1, 
        done: false };
-       console.log("hii",updatedPlan);
        const {getExercise, exercise, activities, getActivities} = {...props};  
        await patchPlan(props.date, updatedPlan);
        await props.getActivities();
-    //console.log("TODO: Edit stuff:", updatedPlan);
 };
 
    const renderPlacementItem = (title, index) => (
@@ -85,7 +82,6 @@ export const ButtonsStuff = (props) => {
   } 
   
   const getCalorieCount = () => {
-    // If one of activities or exercise is empty
     if (props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0) return ""
     if (typeof(props.dictActivity) === 'undefined') return  123;
     
@@ -108,9 +104,9 @@ export const ButtonsStuff = (props) => {
 
 return(
     
-  <Layout >
+  <Layout>
   
-    <Layout style={tailwind("m-1 flex-row right-10 items-center")}>
+    <Layout style={tailwind("m-1 flex-row right-10 items-center ")}>
 
     <FontAwesome5
         style={tailwind("pb-1 right-5 items-center")}
@@ -166,7 +162,6 @@ return(
             <Input
               keyboardType="numeric"
               placeholder={`Current: ${values.quantity}`}
-              //value={22}
               value={values.quantity}
               onChangeText={handleChange("quantity")}
             />
@@ -179,7 +174,6 @@ return(
                 <Input
                   keyboardType="numeric"
                   placeholder= {`Current: ${values.sets}`}
-                  //value={23}
                   value = {values.sets}
                   onChangeText={handleChange("sets")}
                 />
@@ -187,9 +181,6 @@ return(
             )}
             </Layout>  
 
-
-
-              {/* This is for edit */}
               <Layout style={tailwind("flex-row justify-center items-center ")}>
                 <Button
                   onPress={() => {
@@ -200,7 +191,6 @@ return(
                 </Button>
                 <Button
                   onPress={() => {
-                   // handleSubmit;
                     EditHandler(props.activityID);
                     setVisibleBtnA(false);
                   }}>
@@ -217,7 +207,7 @@ return(
           <Modal visible={visibleBtn}>
           <Card disabled={true}>
             <Text> Are you sure you want to delete this activity? </Text>
-            <Layout style={tailwind("flex-row justify-center items-center ")}>
+            <Layout style={ tailwind("flex-row justify-center items-center ") }>
               <Button
                 onPress={() => {
                   setVisibleBtn(false);
@@ -236,7 +226,6 @@ return(
             </Layout>
           </Card>
         </Modal>
-        
       </Layout>
       
     )

@@ -4,7 +4,6 @@ import { Layout, Text, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import { bmiSchema }  from "../utils/validationSchemas";
 
 /* 
 TODO Show error message for leading zeros (e.g. 007)
@@ -42,7 +41,6 @@ export default Bmi = () => {
         bmiCategory: "",
       },
       onSubmit: (values) => {
-        // TODO Should round BMI off by 2 decimal places, not truncate (e.g. 2.007 -> 2.01, not 2.00)
         values.bmi = (
           parseFloat(values.weight) / Math.pow(parseFloat(values.height), 2)
         ).toFixed(2);

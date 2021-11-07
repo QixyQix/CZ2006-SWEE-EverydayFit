@@ -21,7 +21,7 @@ export default DateWeatherButton = ({ forecast }) => {
     <TouchableOpacity
       style={tailwind("items-center")}
       title="THE DATE"
-      onPress={() => navigation.navigate("FITNESS_PLAN", {year: dateYear, month: moment(date).format('MM'), date: moment(date).format('DD'), day: dayFormat, weather : ''})}
+      onPress={() => navigation.navigate("FITNESS_PLAN", {year: dateYear, month: moment(date).format('MM'), date: moment(date).format('DD'), day: dayFormat, weather : forecast ? forecast : ''})}
     >
       <MaterialCommunityIcons
         size={35}
