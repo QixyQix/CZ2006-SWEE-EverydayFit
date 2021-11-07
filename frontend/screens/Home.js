@@ -26,18 +26,21 @@ const getForecasts = async () => {
 };
 
 const { patchPlan } = useAuth();
-const test = async () => {
-  patchPlan('2021-11-06', {
-    _id: '6185594bafc0a72931edbd75', 
-    exerciseID: '61741aa88ddc3fb8db166bca', 
-    totalQuantity: '231', sets: '555', 
-    done: false});
-}
 
+
+// const test = async () => {
+//   patchPlan('2021-11-06', {
+//     _id: '6185594bafc0a72931edbd75', 
+//     exerciseID: '61741aa88ddc3fb8db166bca', 
+//     totalQuantity: '231', sets: '555', 
+//     done: false});
+// }
+      // test();
+      
   useFocusEffect(
     useCallback(() => { 
       getForecasts();
-      test();
+
     }, [])
   )
   

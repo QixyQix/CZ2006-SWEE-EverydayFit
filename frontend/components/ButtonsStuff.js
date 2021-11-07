@@ -62,8 +62,9 @@ export const ButtonsStuff = (props) => {
        exerciseID: props.dictExerciseToID[placement].exerciseID, 
        //totalQuantity: values.quantity, 
        totalQuantity: values.quantity,
-       sets: values.sets, 
+       sets: values.sets >= 1? values.sets: 1, 
        done: false };
+       console.log("hii",updatedPlan);
        const {getExercise, exercise, activities, getActivities} = {...props};  
        await patchPlan(props.date, updatedPlan);
        await props.getActivities();

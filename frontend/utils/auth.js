@@ -115,7 +115,13 @@ export const AuthProvider = ({ children }) => {
   };
   const patchPlan = async (date, values) => {
     const token = auth.token;
-    console.log(date, values);
+    
+    console.log("VALUES PATCH -->", date, {activityID: values._id,
+    exerciseID: values.exerciseID,
+    quantity: values.totalQuantity,
+    sets: values.sets,
+    done: values.done});
+
     try {
       const res = await axios.patch(
         `${API_URL}/plan/${date}/activity/`,
@@ -132,6 +138,7 @@ export const AuthProvider = ({ children }) => {
           },
         }
       );
+      console.log("RES:", res);
     } catch (e) {
       console.log("An error: patching");
     }
