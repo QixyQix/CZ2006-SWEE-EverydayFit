@@ -44,7 +44,7 @@ const { patchPlan } = useAuth();
     }, [])
   )
   
-  const dateStuff = {year: moment().format('YYYY'), month: moment().format('MM'), date: moment().format('DD'), day: moment().format("ddd MMM DD YYYY")};
+  const dateStuff = {year: moment().format('YYYY'), month: moment().format('MM'), date: moment().format('DD'), day: moment().format("ddd MMM DD YYYY"), weather: forecasts[0]};
     
   return (
     <Layout style={tailwind("flex-1")}>

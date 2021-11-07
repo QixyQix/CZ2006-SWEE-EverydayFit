@@ -15,17 +15,20 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../utils/auth";
 import { getExercises } from "../utils/exercises";
+import { getAltExercises } from "../utils/altExercises";
 import ButtonsStuff from "./ButtonsStuff";
 
 
 export default FitnessPlanner = (props) => {
 
+  //console.log("FKKK: ", props.date.weather.forecastCategory, "wet weather", props.date.weather.wetWeather );
+
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
   const [ exercise, setExercise ] = useState([]);
   const [ activities, setActivities ] = useState([]);
   const [ visibleBtn, setVisibleBtn ] = useState(false);
-
-  const [visibleBtnA, setVisibleBtnA] = useState(false);
+  const [ visibleBtnA, setVisibleBtnA ] = useState(false);
+  const [ altExercise, setAltExercise ] = useState([]); 
 
   const navigation = useNavigation();
   var dictExercise = {};
@@ -33,6 +36,19 @@ export default FitnessPlanner = (props) => {
   var dictQuantity = {};
   var dictExerciseToID = {"Remain the same" : {exerciseID: "61741aa88ddc3fb8db166bc6"}};
 
+  var indoorExercises = [];
+ 
+  const getOtherExercises = async (item) => {
+      try{
+        const data = await getAltExercises(item);
+        //console.log('dingdong2:', data);
+        setAltExercise(data);
+      } catch (e) {
+        console.log(e)
+      }
+  }
+  
+  // console.log("ALTEXERCISE", altExercise.slice(0,4));
   const getActivities = async () => {
     try{
       const data = await getPlan(`${props.date.year}-${('0' +props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`)
@@ -47,8 +63,12 @@ export default FitnessPlanner = (props) => {
     //const theSize = exercise ? exercise.length : 0;
     const theSize = 8;
     for (var j = 0; j < theSize; j++){ 
-      dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit, caloriesBurnt: exercise[j].calorieBurnRatePerUnit};
+      dictExercise[exercise[j]._id] = {name: exercise[j].name, exerciseType: exercise[j].quantityType, unitType: exercise[j].quantityUnit, caloriesBurnt: exercise[j].calorieBurnRatePerUnit, outdoor: exercise[j].outdoorOnly};
       dictExerciseToID[exercise[j].name] = {exerciseID: exercise[j]._id}
+      if(exercise[j].outdoorOnly !== true )
+      {
+        indoorExercises.push(exercise[j].name);
+      }
     }
 
     const sizeOfPlan = activities ? activities.length : 0;
@@ -61,7 +81,8 @@ export default FitnessPlanner = (props) => {
       dictQuantity[activities[j]._id] = [activities[j].totalQuantity, activities[j].sets, activities[j].done];
     }
 
-  }
+    
+    }
 
   const getLabelMsg = (item) => {
     // If one of activities or exercise is empty
@@ -82,8 +103,9 @@ export default FitnessPlanner = (props) => {
   }
   const getExercise = async () => {
       setExercise(await getExercises());
+      
   };
-    
+  
   const getTitle= (item) => {
       //If one of activities or exercise is empty
       if (activities.length === 0 || exercise.length === 0 || Object.keys(dictExercise) === 0 ) return "";
@@ -101,7 +123,7 @@ export default FitnessPlanner = (props) => {
       useCallback(() => {
         getActivities();
         getExercise();
-       
+        getOtherExercises("61741aa88ddc3fb8db166bcc")
       }, [])
   )
 
@@ -119,13 +141,15 @@ export default FitnessPlanner = (props) => {
       }
       return exercisesArray;
     }
-
+  
           
     const switchState = async (state, item) => {
       item.done = state;
       await patchPlan(`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`, item)
       await getActivities();
     };
+
+
     const renderItem = ({ item, index }) => (
       <Layout style={tailwind("flex-col")} level="1">
         <CheckBox
@@ -134,15 +158,10 @@ export default FitnessPlanner = (props) => {
           status="primary"
           onChange={(checknext) => switchState(checknext, item)}
         >
-
-        
-          <ListItem
-           
           
-            //disabled = {true}
+            <ListItem
             accessoryRight={() => 
                <ButtonsStuff 
-                
                 date = {`${props.date.year}-${('0' + props.date.month).slice(-2)}-${('0' + props.date.date).slice(-2)}`}
                 placement = {activities.length !== 0 && exercise.length !== 0 ? AAplacements() : []}
                 activityID = {item._id}
@@ -161,11 +180,15 @@ export default FitnessPlanner = (props) => {
               //{...console.log("EXERCISE TITLE:", getTitle(item))}
               description={getLabelMsg(item)}
             />
-        </CheckBox>
-      </Layout>
 
-      );
-
+            
+        </CheckBox>cos situp is hybrid theres only true or false
+        { activities.length !== 0 && exercise.length !==0                                                                      
+            ? ( (props.date.weather.forecastCategory === 'THUNDERY_SHOWERS' || props.date.weather.wetWeather === true) && item.outdoorOnly !== false ) &&
+            <Text style = {tailwind('font-bold')}> Alternative exercises: {indoorExercises[0]}, {indoorExercises[1]}, {indoorExercises[2]}, {indoorExercises[3]}, {indoorExercises[4]} </Text> 
+            : <Text> </Text> } 
+      </Layout>  
+      );   
 
   return (
     <Layout style={tailwind("flex-grow flex-initial items-center m-1")}>
@@ -188,4 +211,5 @@ export default FitnessPlanner = (props) => {
 
     </Layout>
   );
+  
 };

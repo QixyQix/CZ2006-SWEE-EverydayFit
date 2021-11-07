@@ -5,3 +5,4 @@ export const getExercises = async () => {
   const res = await axios.get(`${API_URL}/exercise`);
   return res.data;
 };
+
