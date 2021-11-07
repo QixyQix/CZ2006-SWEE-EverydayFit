@@ -105,10 +105,10 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
         } else if (!exerciseID) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: exerciseID detail is null');
             throw new Error('An error occured while trying to add activity');
-        } else if (!quantity) {
+        } else if (quantity == null) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: quantity detail is null');
             throw new Error('An error occured while trying to add activity');
-        } else if (!sets) {
+        } else if (sets == null) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: sets detail is null');
             throw new Error('An error occured while trying to add activity');
         } else if (done == null) {
