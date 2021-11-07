@@ -22,7 +22,6 @@ const GetExerciseByID = async (exerciseID: string) => {
             console.error(`ExerciseRepo: GetExerciseByID: Invalid exercise ID: ${exerciseID}`);
             throw new Error(`Invalid exerciseID`);
         }
-
         const exercise = await Exercise.findById(exerciseID);
         return exercise;
     } catch (err) {
