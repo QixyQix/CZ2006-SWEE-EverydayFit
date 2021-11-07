@@ -110,7 +110,6 @@ describe('FITNESSPLAN: Post activity', () => {
                 quantity: 15,
                 sets: 1
             }).expect((res) => {
-                console.log(res.body);
                 expect(res.body).toMatchSnapshot({
                     _id: expect.any(String),
                     activities: expect.any(Array),
@@ -131,4 +130,32 @@ describe('FITNESSPLAN: Post activity', () => {
                 }
             }).expect(200);
     })
+
+    it('Returns all of the users fitness plans', async () => {
+        await request(app).get('/plan')
+            .set('Authorization', token).expect((res) => {
+                for (const fitnessPlan of res.body) {
+                    if (fitnessPlan) {
+                        expect(fitnessPlan).toMatchSnapshot({
+                            _id: expect.any(String),
+                            activities: expect.any(Array),
+                            date: expect.any(String),
+                            owner: expect.any(String)
+                        });
+
+                        for (const activity of fitnessPlan.activities) {
+                            if (activity) {
+                                expect(activity).toMatchSnapshot({
+                                    exerciseID: expect.any(String),
+                                    totalQuantity: expect.any(Number),
+                                    sets: expect.any(Number),
+                                    done: expect.any(Boolean),
+                                    _id: expect.any(String)
+                                })
+                            }
+                        }
+                    }
+                }
+            }).expect(200);
+    });
 })

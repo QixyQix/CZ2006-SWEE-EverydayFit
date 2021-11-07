@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`FITNESSPLAN: Post activity Returns all of the users fitness plans 1`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "activities": Any<Array>,
+  "date": Any<String>,
+  "owner": Any<String>,
+}
+`;
+
+exports[`FITNESSPLAN: Post activity Returns all of the users fitness plans 2`] = `
+Object {
+  "_id": Any<String>,
+  "done": Any<Boolean>,
+  "exerciseID": Any<String>,
+  "sets": Any<Number>,
+  "totalQuantity": Any<Number>,
+}
+`;
+
 exports[`FITNESSPLAN: Post activity Returns status 200 and the fitness plan 1`] = `
 Object {
   "__v": 0,
