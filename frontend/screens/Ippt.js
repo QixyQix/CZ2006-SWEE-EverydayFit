@@ -7,6 +7,7 @@ import { calculateIppt } from "../utils/ippt";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import * as Yup from "yup";
 import { ipptSchema }  from "../utils/validationSchemas";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const isTwoDigit = (value) => /^[1-9]?\d$/.test(value);
 const isSeconds = (value) => /^[1-5]?[0-9]$/.test(value);
@@ -154,15 +155,40 @@ export default Ippt = () => {
         (errors.runTimeSeconds && touched.runTimeSeconds) ? (
           <Text style={tailwind("text-red-600")}>Must be a valid duration</Text>
         ) : null}
-        <Layout style={tailwind("flex-row flex-initial items-center")}>
+        <Layout style={tailwind("flex-initial items-center flex-col")}>
           <Button onPress={handleSubmit}>CALCULATE</Button>
 
           {/* TODO Add medal icon according to grade */}
           {values.ipptPoints && values.grade ? (
-            <Text>
-              {values.ipptPoints} pts / {values.grade}
-            </Text>
+            <Layout style={tailwind("flex-row items-center")}>
+              
+              <Text>
+                {values.ipptPoints} pts / {values.grade} 
+              </Text>
+                {values.ipptPoints >= 85 && 
+                <FontAwesome5
+                  style={tailwind("flex-row items-center left-2")}
+                  name="medal"
+                  size={15}
+                  color="gold"
+                />}
+                {values.ipptPoints >= 75 && values.ipptPoints < 85 && 
+                <FontAwesome5
+                  style={tailwind("flex-row items-center left-2")}
+                  name="medal"
+                  size={15}
+                  color="silver"
+                />}
+                {values.ipptPoints >= 61 && values.ipptPoints < 75 && 
+                <FontAwesome5
+                  style={tailwind("flex-row items-center left-2")}
+                  name="medal"
+                  size={15}
+                  color="brown"
+                />}
+            </Layout>
           ) : null}
+          
         </Layout>
       </Layout>
     </TouchableWithoutFeedback>
