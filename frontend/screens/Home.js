@@ -32,17 +32,17 @@ export default Home = () => {
   // }
   // test();
 
-  const [forecasts, setForecasts] = useState([]);
+  // const [forecasts, setForecasts] = useState([]);
 
-  // TODO handle server error
-  const getForecasts = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/forecasts`);
-      setForecasts(res.data);
-    } catch {
-      //setForecasts()
-    }
-  };
+  // // TODO handle server error
+  // const getForecasts = async () => {
+  //   try {
+  //     const res = await axios.get(`${API_URL}/forecasts`);
+  //     setForecasts(res.data);
+  //   } catch {
+  //     //setForecasts()
+  //   }
+  // };
 
   useFocusEffect(
     useCallback(() => {
