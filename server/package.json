@@ -11,14 +11,18 @@
     "copy-assets": "ts-node tools/copyAssets",
     "tsc": "tsc",
     "clean": "rimraf dist/*",
-    "lint": "tslint -c tslint.json -p tsconfig.json"
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "test": "jest --testEnvironment=node --runInBand --testTimeout=20000 -c ./jest.unit.json",
+    "test:coverage": "jest --coverage --testEnvironment=node --runInBand --testTimeout=20000 -c ./jest.unit.json"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cron": "^1.7.3",
     "@types/events": "^3.0.0",
+    "@types/jest": "^27.0.2",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/mongoose": "^5.11.97",
+    "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "axios": "^0.23.0",
@@ -32,8 +36,12 @@
     "events": "^3.3.0",
     "expo-server-sdk": "^3.6.0",
     "express": "^4.17.1",
+    "jest": "^27.3.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.10"
+    "mongodb-memory-server": "^8.0.1",
+    "mongoose": "^6.0.10",
+    "supertest": "^6.1.6",
+    "ts-jest": "^27.0.7"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
