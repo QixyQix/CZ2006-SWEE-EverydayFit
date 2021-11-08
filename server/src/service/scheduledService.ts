@@ -44,8 +44,10 @@ const RetrieveForecastsFromAPI = async () => {
             existingForecast.lowTemp = lowTemp;
             existingForecast.forecast = forecastDesc;
             existingForecast.forecastCategory = forecastCategory;
-            if (!existingForecast.wetWeather && wetWeather)
+            if (!existingForecast.wetWeather && wetWeather) {
+                console.info(`Found Date to notify: ${date}`);
                 datesToNotify.push(date);
+            }
             existingForecast.wetWeather = wetWeather;
 
             await existingForecast.save();
