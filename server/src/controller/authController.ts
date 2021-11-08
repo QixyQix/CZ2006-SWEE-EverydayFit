@@ -79,11 +79,22 @@ const SetExpoToken = async (req: Request, res: Response) => {
   }
 }
 
+const Logout = async(req:Request, res:Response)=>{
+  const userID = req.params.user;
+  try{
+    const result = await AuthService.Logout(userID);
+    res.json(result);
+  }catch(err){
+    res.status(500).json({ message: err.message });
+  }
+}
+
 const AuthController = {
   Register,
   Login,
   Refresh,
-  SetExpoToken
+  SetExpoToken,
+  Logout
 };
 
 export { AuthController as default };

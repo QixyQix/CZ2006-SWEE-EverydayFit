@@ -2,6 +2,10 @@ import testDB from "./mongoTestDB";
 import app from '../app';
 import request from "supertest";
 
+const invalidRefresh = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2MTg3YTM0Nzg1MTAzNzQ4Mzg1ZTJjMDYiLCJnZW5lcmF0ZWRBdCI6MTYzNjM0OTA1OTUwNywiaWF0IjoxNjM2MzQ5MDU5LCJleHAiOjE2MzYzNTI2NTl9.V82IKKmp9JilNIs8bCA5EEg0rNhj28v6rCUdbmQ4na8";
+let refreshToken = "";
+let token = "";
+
 beforeAll(async () => {
     await testDB.connect();
 });
@@ -92,7 +96,7 @@ describe('AUTH: Login an account', () => {
             .expect(200)
     });
 
-    it('Returns status code 200 with property success = false when logging in', async () => {
+    it('Returns status code 200 with property success = true when successful logging in', async () => {
         await request(app).post('/auth/login').send({
             email: "qixyqix@Outlook.com",
             name: "Qi Xiang",
@@ -108,7 +112,65 @@ describe('AUTH: Login an account', () => {
             expect(res.body.refreshToken).not.toEqual(undefined);
             expect(res.body.message).not.toEqual(undefined);
             expect(res.body.success).toEqual(true);
+            token = res.body.token;
+            refreshToken = res.body.refreshToken;
         })
             .expect(200)
     });
 });
+
+describe('AUTH: Refresh token', () => {
+    it('Returns status code 401 when no refresh token is provided', async () => {
+        await request(app).post('/auth/refresh').expect(401);
+    });
+
+    it('Returns status code 401 when invalid refresh token is provided', async () => {
+        await request(app).post('/auth/refresh')
+            .set('Authorization', invalidRefresh)
+            .expect(401);
+    });
+
+    it('Returns status code 200 with new general token when refresh called with valiud refreshToken', async () => {
+        console.log(`TOKEN: ${refreshToken}`);
+        await request(app).post('/auth/refresh')
+            .set('Authorization', refreshToken)
+            .expect((res) => {
+                expect(res.body).toHaveProperty('token');
+                expect(res.body.token).not.toEqual(undefined);
+                expect(res.body.token).not.toEqual('');
+            })
+            .expect(200);
+    });
+})
+
+describe('AUTH: ExpoToken', () => {
+    it('Returns status code 401 when no Authorization token is provided', async () => {
+        await request(app).post('/auth/expotoken')
+            .send({ expoToken: "expoToken" })
+            .expect(401);
+    });
+
+    it('Returns status code 200 when expoToken is set', async () => {
+        console.log(`TOKEN: ${token}`);
+
+        await request(app).post('/auth/expotoken')
+            .set('Authorization', token)
+            .send({ expoToken: "expoToken" })
+            .expect(200);
+    });
+})
+
+describe('AUTH: Logout', () => {
+    it('Returns status code 401 when no Authorization token is provided', async () => {
+        await request(app).post('/auth/logout')
+            .expect(401);
+    })
+
+    it('Returns status code 200 when logged out', async () => {
+        console.log(`TOKEN: ${token}`);
+
+        await request(app).post('/auth/logout')
+            .set('Authorization', token)
+            .expect(200);
+    })
+})
