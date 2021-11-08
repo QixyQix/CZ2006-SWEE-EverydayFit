@@ -23,27 +23,6 @@ export default Home = () => {
     }
   };
 
-  // console.log("GAE", forecasts[0].date.slice(0,10))
-  // const test = async () => {
-  //   patchPlan('2021-11-06', {
-  //     _id: '6185594bafc0a72931edbd75',
-  //     exerciseID: '61741aa88ddc3fb8db166bca',
-  //     totalQuantity: '231', sets: '555',
-  //     done: false});
-  // }
-  // test();
-
-  // const [forecasts, setForecasts] = useState([]);
-
-  // // TODO handle server error
-  // const getForecasts = async () => {
-  //   try {
-  //     const res = await axios.get(`${API_URL}/forecasts`);
-  //     setForecasts(res.data);
-  //   } catch {
-  //     //setForecasts()
-  //   }
-  // };
 
   useFocusEffect(
     useCallback(() => {

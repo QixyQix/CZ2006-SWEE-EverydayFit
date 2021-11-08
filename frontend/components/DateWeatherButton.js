@@ -8,7 +8,6 @@ import { weatherConditions } from "../constants";
 import moment from "moment";
 export default DateWeatherButton = ({ forecast }) => {
 
-  console.log("GISOSS", forecast ? forecast : 'as');
   const navigation = useNavigation();
   const weather = forecast ? forecast.forecastCategory: "";
 

@@ -42,46 +42,39 @@ export const MyCalendar = () => {
 
   const [date, setDate] = React.useState(new Date());
   const displayDate = () =>{
-    
-    console.log(forecasts)
 
-    if (forecasts == null)
+    if (forecasts == null || forecasts.length < 4)
     {
       return "";
     }
-    if (forecasts.length < 4)
-    {
-      return "";
-    }
+
       const date1 = forecasts.length !== 0 ? forecasts[0].date.slice(0,10) : ""
       const date2 = forecasts.length !== 0 ? forecasts[1].date.slice(0,10) : ""
       const date3 = forecasts.length !== 0 ? forecasts[2].date.slice(0,10) : ""
       const date4 = forecasts.length !== 0 ? forecasts[3].date.slice(0,10) : ""
 
       const dateGotten = date ? `${date.getFullYear()}-${('0' + (date.getMonth()+1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`: '';
-      //const dateGotten = date ? `${date.getFullYear()}-${('0' +date.getMonth()+1).slice(-2)}-${('0' + date.getDate()).slice(-2)}`: '';
-      console.log("aaa:", dateGotten, "bbb", date1);
+
       if (date1 == dateGotten){
         const weather = forecasts[0] ? forecasts[0].forecastCategory: "";
-        console.log("FIOSSSS", forecasts[0])
         return forecasts[0];
       }
       else if (date2 == dateGotten){
         const weather = forecasts[1] ? forecasts[1].forecastCategory: "";
-        console.log(weather)
+
         return forecasts[1];
       }
       else if (date3 == dateGotten){
         const weather = forecasts[2] ? forecasts[2].forecastCategory: "";
-        console.log(weather)
+
         return forecasts[2];
       }
     else if (date4 == dateGotten){
       const weather = forecasts[3] ? forecasts[3].forecastCategory: "";
-      console.log(weather)
+
       return forecasts[3];
     }
-    console.log("death")
+
     return "";
   };
   displayDate();
