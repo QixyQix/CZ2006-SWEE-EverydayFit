@@ -23,6 +23,8 @@ export default FitnessPlanner = (props) => {
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
   const [ exercise, setExercise ] = useState([]);
   const [ activities, setActivities ] = useState([]);
+  
+  
 
   const navigation = useNavigation();
   var dictExercise = {};
@@ -136,6 +138,20 @@ export default FitnessPlanner = (props) => {
 
   };
 
+  const printRecommendedExercises = () => {
+    var stringExercises = ""
+    for (var i=0; i < indoorExercises; i++){
+      if( i !== indoorExercises-1){
+        console.log(indoorExercises[i]);
+        stringExercises =  stringExercises + `${indoorExercises[i]},`
+      } else {
+        stringExercises = stringExercises + `${indoorExercises[i]}`
+      }
+    }
+    console.log('hello', stringExercises)
+    return stringExercises;
+
+  }
 
   const renderItem = ({ item, index }) => (
 
@@ -188,11 +204,7 @@ export default FitnessPlanner = (props) => {
             && <Text style = {tailwind('text-xs font-bold items-center left-3')}> 
               Alternative exercises: 
             {"\n"}
-                {indoorExercises[0]}, 
-                {indoorExercises[1]},
-                {indoorExercises[2]}, 
-                {indoorExercises[3]}, 
-                {indoorExercises[4]} 
+              {printRecommendedExercises()}
             </Text> 
         : <Text> </Text> }
         </Layout>

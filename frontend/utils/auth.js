@@ -1,4 +1,5 @@
 import React, { useContext, useState, createContext, useEffect } from "react";
+import { Alert } from "react-native";
 import { API_URL } from "@env";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -97,7 +98,21 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (e) {
       console.log(e);
+      Alert.alert(
+        "An error has occured...",
+        e.message,
+        [
+          {
+            text: "Dismiss",
+            style: "cancel",
+          }
+        ],
+        {
+          cancelable: true,
+        }
+      );      
     }
+    
   };
   const setPlan = async (props, values) => {
     try {
@@ -121,7 +136,21 @@ export const AuthProvider = ({ children }) => {
       );
     } catch (e) {
       console.log(e);
+      Alert.alert(
+        "An error has occured...",
+        e.message,
+        [
+          {
+            text: "Dismiss",
+            style: "cancel",
+          }
+        ],
+        {
+          cancelable: true,
+        }
+      );      
     }
+    
   };
   const patchPlan = async (date, values) => {
     try {
@@ -143,7 +172,20 @@ export const AuthProvider = ({ children }) => {
         }
       );
     } catch (e) {
-      console.log("An error: patching");
+      console.log(e.message);
+      Alert.alert(
+        "An error has occured...",
+        e.message,
+        [
+          {
+            text: "Dismiss",
+            style: "cancel",
+          }
+        ],
+        {
+          cancelable: true,
+        }
+      );      
     }
   };
   const deletePlan = async (date, exerciseInfo) => {
@@ -161,7 +203,21 @@ export const AuthProvider = ({ children }) => {
       });
     } catch (e) {
       console.log("An error: delete");
+      Alert.alert(
+        "An error has occured...",
+        e.message,
+        [
+          {
+            text: "Dismiss",
+            style: "cancel",
+          }
+        ],
+        {
+          cancelable: true,
+        }
+      );      
     }
+    
   };
   const login = (email, password) => base("login", { email, password });
   const register = (email, name, password) =>
