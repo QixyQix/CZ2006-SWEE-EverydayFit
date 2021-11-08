@@ -3,7 +3,7 @@
   "scripts": {
     "start": "NODE_ENV=development expo start",
     "start:rc": "NODE_ENV=development expo r -c && expo start",
-    "start:prod": "NODE_ENV=production expo r -c && expo start",
+    "start:prod": "NODE_ENV=production expo r -c && expo start --no-dev --minify",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
