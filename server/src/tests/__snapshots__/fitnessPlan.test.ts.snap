@@ -170,6 +170,16 @@ Object {
 }
 `;
 
+exports[`FITNESSPLAN: Post activity Returns status 200 and the fitness plan adding a new activity to an existing fitness plan 3`] = `
+Object {
+  "_id": Any<String>,
+  "done": Any<Boolean>,
+  "exerciseID": Any<String>,
+  "sets": Any<Number>,
+  "totalQuantity": Any<Number>,
+}
+`;
+
 exports[`FITNESSPLAN: Post activity Returns status 200 and the fitness plan when creating a new activity 1`] = `
 Object {
   "__v": 0,
