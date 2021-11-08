@@ -267,6 +267,11 @@ export const AuthProvider = ({ children }) => {
       refreshToken: null,
     });
     await AsyncStorage.removeItem("auth");
+    await axios.post(
+      `${API_URL}/auth/logout/`,
+      {},
+      { headers: { Authorization: `${auth.token}` } }
+    );
   };
 
   const refreshToken = async () => {
