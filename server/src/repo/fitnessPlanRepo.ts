@@ -108,7 +108,7 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
                 item.done = done;
             }
         });
-        fitnessPlan.save();
+        await fitnessPlan.save();
         return fitnessPlan;
     } catch (err) {
         console.error(err.message);
