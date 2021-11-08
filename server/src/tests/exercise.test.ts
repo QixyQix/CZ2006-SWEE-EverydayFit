@@ -2,8 +2,6 @@ import testDB from "./mongoTestDB";
 import app from '../app';
 import request from "supertest";
 import SeedDatabase from '../data/seed';
-import mongoose from 'mongoose';
-import { EExerciseCategory, EQuantityType } from '../models/constants';
 
 let exercises: any[] = [];
 let createdExerciseID: string = "";

@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EXERCISE: Get all exercises Returns status 200 and all fitness details 1`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get all exercises Returns status 200 and all fitness details 2`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get all exercises Returns status 200 and all fitness details 3`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get all exercises Returns status 200 and all fitness details 4`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get all exercises Returns status 200 and all fitness details 5`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get all exercises Returns status 200 and all fitness details 6`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get all exercises Returns status 200 and all fitness details 7`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get all exercises Returns status 200 and all fitness details 8`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get alternatives for exercise ID Returns status 200 and all fitness details 1`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get alternatives for exercise ID Returns status 200 and all fitness details 2`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get alternatives for exercise ID Returns status 200 and all fitness details 3`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get alternatives for exercise ID Returns status 200 and all fitness details 4`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get alternatives for exercise ID Returns status 200 and all fitness details 5`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get alternatives for exercise ID Returns status 200 and all fitness details 6`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get alternatives for exercise ID Returns status 200 and all fitness details 7`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get alternatives for exercise ID Returns status 200 and all fitness details 8`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
+
+exports[`EXERCISE: Get exercise by name Returns status 200 and details of exercise of exercise name 1`] = `
+Object {
+  "__v": 0,
+  "_id": Any<String>,
+  "calorieBurnRatePerUnit": Any<Number>,
+  "category": Any<String>,
+  "name": Any<String>,
+  "outdoorOnly": Any<Boolean>,
+  "quantityType": Any<String>,
+  "quantityUnit": Any<String>,
+}
+`;
