@@ -176,7 +176,7 @@ export default FitnessPlanner = (props) => {
       { activities.length !== 0 && exercise.length !==0 
         ? props.date.weather.wetWeather === true && dictExercise[item.exerciseID].outdoor === true 
           && <FontAwesome
-            style={tailwind("flex-row items-center left-2")}
+            style={tailwind("flex-row items-center left-2 mr-2")}
             name="warning"
             size={20}
             color="red" /> 
@@ -187,6 +187,7 @@ export default FitnessPlanner = (props) => {
         ? props.date.weather.wetWeather === true && dictExercise[item.exerciseID].outdoor === true 
             && <Text style = {tailwind('text-xs font-bold items-center left-3')}> 
               Alternative exercises: 
+            {"\n"}
                 {indoorExercises[0]}, 
                 {indoorExercises[1]},
                 {indoorExercises[2]}, 
