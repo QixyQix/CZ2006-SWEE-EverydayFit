@@ -136,6 +136,22 @@ export default FitnessPlanner = (props) => {
 
   };
 
+  const printRecommendedExercises = () => {
+    
+    var stringExercises = ""
+
+    for (var i=0; i < indoorExercises.length; i++){
+      if( i !== indoorExercises.length-1){
+        stringExercises =  stringExercises + `${indoorExercises[i]},`
+      } else {
+        stringExercises = stringExercises + `${indoorExercises[i]}`
+      }
+    }
+
+    return stringExercises;
+
+  }
+
 
   const renderItem = ({ item, index }) => (
 
@@ -188,11 +204,7 @@ export default FitnessPlanner = (props) => {
             && <Text style = {tailwind('text-xs font-bold items-center left-3')}> 
               Alternative exercises: 
             {"\n"}
-                {indoorExercises[0]}, 
-                {indoorExercises[1]},
-                {indoorExercises[2]}, 
-                {indoorExercises[3]}, 
-                {indoorExercises[4]} 
+              {printRecommendedExercises()}
             </Text> 
         : <Text> </Text> }
         </Layout>
