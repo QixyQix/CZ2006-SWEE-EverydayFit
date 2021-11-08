@@ -2,6 +2,7 @@ import testDB from "./mongoTestDB";
 import app from '../app';
 import request from "supertest";
 import SeedDatabase from '../data/seed';
+import ExerciseRepo from "../repo/exerciseRepo";
 
 let exercises: any[] = [];
 let createdExerciseID: string = "";
