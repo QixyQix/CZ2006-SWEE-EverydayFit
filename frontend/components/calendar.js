@@ -28,8 +28,9 @@ export const MyCalendar = () => {
   try {
     const res = await axios.get(`${API_URL}/forecasts`);
     setForecasts(res.data);
-  } catch {
+  } catch (e) {
     //setForecasts()
+    console.log(e);
   }
   };
 
@@ -44,6 +45,14 @@ export const MyCalendar = () => {
     
     console.log(forecasts)
 
+    if (forecasts == null)
+    {
+      return "";
+    }
+    if (forecasts.length < 4)
+    {
+      return "";
+    }
       const date1 = forecasts.length !== 0 ? forecasts[0].date.slice(0,10) : ""
       const date2 = forecasts.length !== 0 ? forecasts[1].date.slice(0,10) : ""
       const date3 = forecasts.length !== 0 ? forecasts[2].date.slice(0,10) : ""
