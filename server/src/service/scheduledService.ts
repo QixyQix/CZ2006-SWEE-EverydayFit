@@ -21,8 +21,8 @@ const RetrieveForecastsFromAPI = async () => {
 
     for (const forecast of forecastObjs) {
         const date = new Date(forecast.date);
-        date.setHours(0,0,0,0);
-        date.setUTCHours(0,0,0,0);
+        date.setHours(0,0,0);
+        date.setUTCHours(0,0,0);
 
         const highTemp = forecast.temperature.high;
         const lowTemp = forecast.temperature.low;
@@ -46,7 +46,6 @@ const RetrieveForecastsFromAPI = async () => {
             existingForecast.forecast = forecastDesc;
             existingForecast.forecastCategory = forecastCategory;
             if (!existingForecast.wetWeather && wetWeather) {
-                console.info(`Found Date to notify: ${date}`);
                 datesToNotify.push(date);
             }
             existingForecast.wetWeather = wetWeather;

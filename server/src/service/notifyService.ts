@@ -10,9 +10,12 @@ const NotifyUsersOfBadWeather = async (datesToNotify: Date[]) => {
     try {
         for (const currDate of datesToNotify) {
             currDate.setHours(0, 0, 0);
+            currDate.setUTCHours(0,0,0);
             const fitnessPlans = await FitnessPlanRepo.GetFitnessPlansForDate(currDate);
+            console.info(fitnessPlans);
             for (const plan of fitnessPlans) {
                 if (plan.owner) {
+                    console.info(`NotifyService: to notify user ${plan.owner}`);
                     userIDs.push(plan.owner);
                 }
             }
@@ -21,6 +24,7 @@ const NotifyUsersOfBadWeather = async (datesToNotify: Date[]) => {
         const users = await UserRepo.GetUsersByMultipleIDs(userIDs);
         for (const user of users) {
             if (user.expoToken && Expo.isExpoPushToken(user.expoToken)) {
+                console.info(`NotifyService: expoToken ${user.expoToken}`);
                 expoTokens.push(user.expoToken);
             } else {
                 console.info(`NotifyService: NotifyUsersOfBadWeather: ${user._id} has no/invalid expo token`);
