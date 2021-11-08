@@ -24,9 +24,9 @@ const GetDateFitnessPlanForUser = async (userID: string, date: Date) => {
 
 const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: string, quantity: number, sets: number) => {
     try {
-        if (!quantity || quantity < 1) {
+        if (quantity == null || quantity < 1 || quantity === undefined) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: quantity detail is null');
-            throw new Error('Invalid Input: Quantity must be more than 1 ');
+            throw new Error('Invalid Input: Quantity must be more than or equal to 1 ');
         }
 
         const exercise = await ExerciseRepo.GetExerciseByID(exerciseID);
@@ -40,7 +40,7 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
                 console.error('FitnessPlanService: AddActivityToFitnessPlan: Exercise is quantitative and has sets < 1');
                 throw new Error('Invalid Input: Sets must be 1 or more for quantitative exercise');
             }
-        }else{
+        } else {
             sets = 0;
         }
 
@@ -101,33 +101,48 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
     try {
         if (!activityID) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: activityID detail is null');
-            throw new Error('An error occured while trying to add activity');
+            throw new Error('Invalid Input: No Activity ID');
         } else if (!exerciseID) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: exerciseID detail is null');
-            throw new Error('An error occured while trying to add activity');
-        } else if (quantity == null) {
+            throw new Error('Invalid Input: No Exercise ID');
+        } else if (quantity == null || quantity < 1 || quantity === undefined) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: quantity detail is null');
-            throw new Error('An error occured while trying to add activity');
-        } else if (sets == null) {
+            throw new Error('Invalid Input: Quantity must be more than or equal to 1');
+        } else if (sets == null || sets === undefined) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: sets detail is null');
-            throw new Error('An error occured while trying to add activity');
-        } else if (done == null) {
+            throw new Error('Invalid Input: Sets is null');
+        } else if (done == null || done === undefined) {
             console.error('FitnessPlanService: AddActivityToFitnessPlan: done status detail is null');
-            throw new Error('An error occured while trying to add activity');
+            throw new Error('Invalid Input: Done is null');
         }
+
+        const exercise = await ExerciseRepo.GetExerciseByID(exerciseID);
+        if (!exercise) {
+            throw new Error('Exercise ID not found');
+        } else if (exercise.quantityType === EQuantityType.QUANTITATIVE) {
+            if (sets < 1) {
+                console.error('FitnessPlanService: EditActivityFromFitnessPlan: Exercise is quantitative and has sets < 1');
+                throw new Error('Sets must be > 1 for quantitative based exercise');
+            }
+        }
+
         const fitnessPlan = await FitnessPlanRepo.GetDateFitnessPlanForUser(userID, date);
         if (!fitnessPlan) {
             console.error(`FitnessPlanService: EditActivityFromFitnessPlan: Fitness Plan for ${userID} on ${date} is empty`);
-            throw new Error('An error occured while trying to edit activity');
-        } else {
-            if (fitnessPlan.owner.toString() !== userID) {
-                console.error(`FitnessPlanService: EditActivityFromFitnessPlan: User ${userID} attempted to modify fitness plan belonging to ${fitnessPlan.owner}`);
-                throw new Error('You do not own this fitness plan!');
-            }
-
-            const result = await FitnessPlanRepo.EditActivityFromFitnessPlan(userID, date, activityID, exerciseID, quantity, sets, done);
-            return result;
+            throw new Error('No fitnessPlan found for the given date');
         }
+
+        if (fitnessPlan.owner.toString() !== userID) {
+            console.error(`FitnessPlanService: EditActivityFromFitnessPlan: User ${userID} attempted to modify fitness plan belonging to ${fitnessPlan.owner}`);
+            throw new Error('You do not own this fitness plan!');
+        }
+
+        if (!(fitnessPlan.activities.find(activity => { return activity._id === activityID }))) {
+            throw new Error('Activity does not exist')
+        }
+
+        const result = await FitnessPlanRepo.EditActivityFromFitnessPlan(userID, date, activityID, exerciseID, quantity, sets, done);
+        return result;
     } catch (err) {
         console.error(`FitnessPlanService: EditActivityFromFitnessPlan: An error occured while editing activity to fitness plan for ${userID} on ${date.toDateString()}`);
         throw new Error('An error occured while trying to edit activity');
