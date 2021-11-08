@@ -318,15 +318,41 @@ describe('FITNESSPLAN: Edit Activity', () => {
             }).expect(500);
     })
 
-    it('Returns status 500 when done is not included', async () => {
+    it('Returns status 200 and the fitness plan with the updated activity', async () => {
         await request(app).patch('/plan/2021-11-10/activity')
             .set('Authorization', token)
             .send({
                 activityID: createdActivityID,
-                exerciseID: quantitativeBaseExercise._id,
+                exerciseID: distanceBaseExercise._id,
                 quantity: 15,
                 sets: 0,
                 done: true,
-            }).expect(500);
+            }).expect((res) => {
+                expect(res.body).toMatchSnapshot({
+                    _id: expect.any(String),
+                    activities: expect.any(Array),
+                    date: expect.any(String),
+                    owner: expect.any(String)
+                });
+
+                for (const activity of res.body.activities) {
+                    if (activity) {
+                        expect(activity).toMatchSnapshot({
+                            exerciseID: expect.any(String),
+                            totalQuantity: expect.any(Number),
+                            sets: expect.any(Number),
+                            done: expect.any(Boolean),
+                            _id: expect.any(String)
+                        });
+
+                        if (activity._id === createdActivityID) {
+                            expect(activity.done).toBe(true);
+                            expect(activity.sets).toBe(0);
+                            expect(activity.totalQuantity).toBe(15);
+                            expect(activity.exerciseID).toBe(distanceBaseExercise._id);
+                        }
+                    }
+                }
+            }).expect(200);
     })
 });
