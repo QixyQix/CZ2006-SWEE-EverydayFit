@@ -227,11 +227,11 @@ describe('FITNESSPLAN: Edit Activity', () => {
     it('Returns status 401 when no Authorization token is provided', async () => {
         await request(app).patch('/plan/2021-11-10/activity')
             .send({
-                "activityID": createdActivityID,
-                "exerciseID": distanceBaseExercise._id,
-                "quantity": 15,
-                "sets": 0,
-                "done": true
+                activityID: createdActivityID,
+                exerciseID: distanceBaseExercise._id,
+                quantity: 15,
+                sets: 0,
+                done: true
             }).expect(401);
     })
 
@@ -239,11 +239,11 @@ describe('FITNESSPLAN: Edit Activity', () => {
         await request(app).patch('/plan/2021-11-10/activity')
             .set('Authorization', expiredToken)
             .send({
-                "activityID": createdActivityID,
-                "exerciseID": distanceBaseExercise._id,
-                "quantity": 15,
-                "sets": 0,
-                "done": true
+                activityID: createdActivityID,
+                exerciseID: distanceBaseExercise._id,
+                quantity: 15,
+                sets: 0,
+                done: true
             }).expect(401);
     })
 
@@ -251,11 +251,11 @@ describe('FITNESSPLAN: Edit Activity', () => {
         await request(app).patch('/plan/2021-11-1/activity')
             .set('Authorization', token)
             .send({
-                "activityID": createdActivityID,
-                "exerciseID": distanceBaseExercise._id,
-                "quantity": 15,
-                "sets": 0,
-                "done": true
+                activityID: createdActivityID,
+                exerciseID: distanceBaseExercise._id,
+                quantity: 15,
+                sets: 0,
+                done: true
             }).expect(500);
     })
 
@@ -263,11 +263,11 @@ describe('FITNESSPLAN: Edit Activity', () => {
         await request(app).patch('/plan/2021-11-10/activity')
             .set('Authorization', token)
             .send({
-                "activityID": "asdf",
-                "exerciseID": distanceBaseExercise._id,
-                "quantity": 15,
-                "sets": 0,
-                "done": true
+                activityID: "asdf",
+                exerciseID: distanceBaseExercise._id,
+                quantity: 15,
+                sets: 0,
+                done: true
             }).expect(500);
     })
 
@@ -275,11 +275,11 @@ describe('FITNESSPLAN: Edit Activity', () => {
         await request(app).patch('/plan/2021-11-10/activity')
             .set('Authorization', token)
             .send({
-                "activityID": new mongoose.Types.ObjectId().toString(),
-                "exerciseID": distanceBaseExercise._id,
-                "quantity": 15,
-                "sets": 0,
-                "done": true
+                activityID: new mongoose.Types.ObjectId().toString(),
+                exerciseID: distanceBaseExercise._id,
+                quantity: 15,
+                sets: 0,
+                done: true
             }).expect(500);
     })
 
@@ -287,11 +287,11 @@ describe('FITNESSPLAN: Edit Activity', () => {
         await request(app).patch('/plan/2021-11-10/activity')
             .set('Authorization', token)
             .send({
-                "activityID": createdActivityID,
-                "exerciseID": distanceBaseExercise._id,
-                "quantity": 0,
-                "sets": 0,
-                "done": true
+                activityID: createdActivityID,
+                exerciseID: distanceBaseExercise._id,
+                quantity: 0,
+                sets: 0,
+                done: true
             }).expect(500);
     })
 
@@ -299,11 +299,11 @@ describe('FITNESSPLAN: Edit Activity', () => {
         await request(app).patch('/plan/2021-11-10/activity')
             .set('Authorization', token)
             .send({
-                "activityID": createdActivityID,
-                "exerciseID": quantitativeBaseExercise._id,
-                "quantity": 15,
-                "sets": 0,
-                "done": true
+                activityID: createdActivityID,
+                exerciseID: quantitativeBaseExercise._id,
+                quantity: 15,
+                sets: 0,
+                done: true
             }).expect(500);
     })
 
@@ -311,10 +311,22 @@ describe('FITNESSPLAN: Edit Activity', () => {
         await request(app).patch('/plan/2021-11-10/activity')
             .set('Authorization', token)
             .send({
-                "activityID": createdActivityID,
-                "exerciseID": quantitativeBaseExercise._id,
-                "quantity": 15,
-                "sets": 0
+                activityID: createdActivityID,
+                exerciseID: quantitativeBaseExercise._id,
+                quantity: 15,
+                sets: 0
+            }).expect(500);
+    })
+
+    it('Returns status 500 when done is not included', async () => {
+        await request(app).patch('/plan/2021-11-10/activity')
+            .set('Authorization', token)
+            .send({
+                activityID: createdActivityID,
+                exerciseID: quantitativeBaseExercise._id,
+                quantity: 15,
+                sets: 0,
+                done: true,
             }).expect(500);
     })
 });
