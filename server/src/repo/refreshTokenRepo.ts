@@ -31,9 +31,19 @@ const GetRefreshTokenByToken = async (token: string) => {
     }
 }
 
+const DeleteRefreshTokensForUser = async (userID: string) => {
+    try {
+        await RefreshToken.deleteMany({ user: userID });
+    } catch (err) {
+        console.error(`RefreshTokenRepo: DeleteRefreshTokensForUser: An error occured while deleting token for ${userID}`);
+        throw new Error('An error occured while retrieving refresh token');
+    }
+}
+
 const RefreshTokenRepo = {
     CreateRefreshToken,
     GetRefreshTokenByToken,
+    DeleteRefreshTokensForUser
 }
 
 export { RefreshTokenRepo as default };

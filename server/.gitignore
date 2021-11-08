@@ -1,6 +1,7 @@
 .cache/
 dist/
 node_modules/
+coverage/
 .env
 .DS_Store
 *.log
