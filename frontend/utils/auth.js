@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 
   const registerForPushNotifications = async () => {
     try {
-      if (Constants.isDevice) {
+      // if (Constants.isDevice) {
         // Get the token that identifies this device
         let pushToken = await Notifications.getExpoPushTokenAsync();
 
@@ -80,9 +80,9 @@ export const AuthProvider = ({ children }) => {
         );
 
         console.log("Registered for push notifs");
-      } else {
-        console.log("Must use physical device for Push Notifications");
-      }
+      // } else {
+      //   console.log("Must use physical device for Push Notifications");
+      // }
     } catch (e) {
       console.log(e.message);
     }
