@@ -1,11 +1,11 @@
 export const weatherConditions = {
-  rainy: {
+  "SHOWERS": {
     color: "#005BEA",
     title: "Raining",
     icon: "weather-rainy",
     text: "Rainy"
   },
-  sunny: {
+  "CLEAR": {
     color: "#f7b733",
     title: "So Sunny",
     icon: "weather-sunny",
@@ -16,11 +16,5 @@ export const weatherConditions = {
     title: "A Storm is coming",
     icon: "weather-lightning",
     text: "Thundery Showers"
-  },
-  cloudy: {
-    color: "#1F1C2C",
-    title: "Clouds",
-    icon: "weather-cloudy",
-    text: "Cloudy"
   },
 };

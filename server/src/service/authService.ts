@@ -133,11 +133,33 @@ const SetUserExpoToken = async (userID: string, expoToken: string) => {
     return { message: 'Successfully set expo token for user' };
 }
 
+const Logout = async (userID: string) => {
+    if (!userID) {
+        throw new Error('No user ID');
+    }
+
+    const user = await UserRepo.GetUserByID(userID)
+    if (!user) {
+        throw new Error(`User of ID ${userID} not found`);
+    }
+
+    try {
+        user.expoToken = null;
+        await user.save();
+        await RefreshTokenRepo.DeleteRefreshTokensForUser(userID);
+    } catch (err) {
+        console.error(`AuthService: Logout: ${err.message}`);
+        throw new Error('An error occured while logging out')
+    }
+    return { message: 'Successfully logged out' }
+}
+
 const AuthService = {
     Register,
     Login,
     RefreshToken,
     SetUserExpoToken,
+    Logout,
 }
 
 export { AuthService as default };

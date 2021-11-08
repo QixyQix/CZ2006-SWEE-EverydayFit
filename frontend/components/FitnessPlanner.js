@@ -23,6 +23,8 @@ export default FitnessPlanner = (props) => {
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
   const [ exercise, setExercise ] = useState([]);
   const [ activities, setActivities ] = useState([]);
+  
+  
 
   const navigation = useNavigation();
   var dictExercise = {};

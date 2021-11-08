@@ -1,9 +1,27 @@
-import React, { useContext, useState, createContext, useEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  createContext,
+  useEffect,
+  useRef,
+} from "react";
+import { Alert } from "react-native";
 import { API_URL } from "@env";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import Constants from "expo-constants";
+
 const AuthContext = createContext({});
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     lastFetched: null,
@@ -12,6 +30,8 @@ export const AuthProvider = ({ children }) => {
   });
   // TODO Add a loading screen while fetching the stored data
   const [isLoading, setIsLoading] = useState(true);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   // Load auth values once the app is opened
   useEffect(() => {
@@ -22,26 +42,47 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (auth.token) {
       registerForPushNotifications();
+
+      notificationListener.current =
+        Notifications.addNotificationReceivedListener(() => {});
+
+      responseListener.current =
+        Notifications.addNotificationResponseReceivedListener((response) => {
+          console.log(response);
+        });
+
+      return () => {
+        Notifications.removeNotificationSubscription(
+          notificationListener.current
+        );
+        Notifications.removeNotificationSubscription(responseListener.current);
+      };
     }
   }, [auth]);
 
   const registerForPushNotifications = async () => {
     try {
-      // Get the token that identifies this device
-      let pushToken = await Notifications.getExpoPushTokenAsync();
+      if (Constants.isDevice) {
+        // Get the token that identifies this device
+        let pushToken = await Notifications.getExpoPushTokenAsync();
 
-      // POST the token
-      await axios.post(
-        `${API_URL}/auth/expoToken`,
-        {
-          expoToken: pushToken.data.slice(18, 40),
-        },
-        {
-          headers: {
-            Authorization: `${auth.token}`,
+        // POST the token
+        await axios.post(
+          `${API_URL}/auth/expoToken`,
+          {
+            expoToken: pushToken.data,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `${auth.token}`,
+            },
+          }
+        );
+
+        console.log("Registered for push notifs");
+      } else {
+        console.log("Must use physical device for Push Notifications");
+      }
     } catch (e) {
       console.log(e.message);
     }
@@ -97,6 +138,19 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (e) {
       console.log(e);
+      Alert.alert(
+        "An error has occured...",
+        e.message,
+        [
+          {
+            text: "Dismiss",
+            style: "cancel",
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
     }
   };
   const setPlan = async (props, values) => {
@@ -121,6 +175,19 @@ export const AuthProvider = ({ children }) => {
       );
     } catch (e) {
       console.log(e);
+      Alert.alert(
+        "An error has occured...",
+        e.message,
+        [
+          {
+            text: "Dismiss",
+            style: "cancel",
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
     }
   };
   const patchPlan = async (date, values) => {
@@ -143,7 +210,20 @@ export const AuthProvider = ({ children }) => {
         }
       );
     } catch (e) {
-      console.log("An error: patching");
+      console.log(e.message);
+      Alert.alert(
+        "An error has occured...",
+        e.message,
+        [
+          {
+            text: "Dismiss",
+            style: "cancel",
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
     }
   };
   const deletePlan = async (date, exerciseInfo) => {
@@ -161,6 +241,19 @@ export const AuthProvider = ({ children }) => {
       });
     } catch (e) {
       console.log("An error: delete");
+      Alert.alert(
+        "An error has occured...",
+        e.message,
+        [
+          {
+            text: "Dismiss",
+            style: "cancel",
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
     }
   };
   const login = (email, password) => base("login", { email, password });

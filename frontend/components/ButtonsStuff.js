@@ -29,12 +29,14 @@ export const ButtonsStuff = (props) => {
         : null,
       done: false
     },
+
   });
 
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
   const [visibleBtn, setVisibleBtn] = useState(false);
   const [visibleBtnA, setVisibleBtnA] = useState(false);
   const [placementIndex, setPlacementIndex] = useState(new IndexPath(0));
+  const [ errorMsg , setErrorMsg ] = useState('')
   const placement = props.placement[placementIndex.row];
   
   const onPlacementSelect = (index) => {
