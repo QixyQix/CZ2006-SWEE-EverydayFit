@@ -60,7 +60,8 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
     try {
         const result = await FitnessPlan.findOneAndUpdate(
             { owner: userID, date },
-            { $push: { activities: activity } }
+            { $push: { activities: activity } },
+            { new: true }
         );
         return result;
     } catch (err) {
@@ -78,7 +79,8 @@ const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, activit
     try {
         const result = await FitnessPlan.findOneAndUpdate(
             { owner: userID, date },
-            { $pull: { activities: { _id: activityID } } }
+            { $pull: { activities: { _id: activityID } } },
+            { new: true }
         );
         return result;
     } catch (err) {
@@ -103,9 +105,9 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
         fitnessPlan.activities.some(item => {
             if (item._id.toString() === activityID) {
                 item.exerciseID = exerciseID,
-                item.totalQuantity = quantity,
-                item.sets = sets,
-                item.done = done;
+                    item.totalQuantity = quantity,
+                    item.sets = sets,
+                    item.done = done;
             }
         });
         fitnessPlan.save();
