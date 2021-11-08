@@ -82,15 +82,19 @@ const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, activit
         if (!fitnessPlan) {
             console.error(`FitnessPlanService: DeleteActivityFromFitnessPlan: Fitness Plan for ${userID} on ${date} is already empty`);
             throw new Error('An error occured while trying to delete activity');
-        } else {
-            if (fitnessPlan.owner.toString() !== userID) {
-                console.error(`FitnessPlanService: DeleteActivityFromFitnessPlan: User ${userID} attempted to modify fitness plan belonging to ${fitnessPlan.owner}`);
-                throw new Error('You do not own this fitness plan!');
-            }
-
-            const result = await FitnessPlanRepo.DeleteActivityFromFitnessPlan(userID, date, activityID);
-            return result;
         }
+
+        if (fitnessPlan.owner.toString() !== userID) {
+            console.error(`FitnessPlanService: DeleteActivityFromFitnessPlan: User ${userID} attempted to modify fitness plan belonging to ${fitnessPlan.owner}`);
+            throw new Error('You do not own this fitness plan!');
+        }
+
+        if (!(fitnessPlan.activities.find(activity => { return activity._id.toString() === activityID }))) {
+            throw new Error('Activity does not exist')
+        }
+
+        const result = await FitnessPlanRepo.DeleteActivityFromFitnessPlan(userID, date, activityID);
+        return result;
     } catch (err) {
         console.error(`FitnessPlanService: DeleteActivityFromFitnessPlan: An error occured while deleting activity to fitness plan for ${userID} on ${date.toDateString()}`);
         throw new Error('An error occured while trying to delete activity');
@@ -137,7 +141,7 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
             throw new Error('You do not own this fitness plan!');
         }
 
-        if (!(fitnessPlan.activities.find(activity => { return activity._id === activityID }))) {
+        if (!(fitnessPlan.activities.find(activity => { return activity._id.toString() === activityID }))) {
             throw new Error('Activity does not exist')
         }
 
@@ -145,7 +149,7 @@ const EditActivityFromFitnessPlan = async (userID: string, date: Date, activityI
         return result;
     } catch (err) {
         console.error(`FitnessPlanService: EditActivityFromFitnessPlan: An error occured while editing activity to fitness plan for ${userID} on ${date.toDateString()}`);
-        throw new Error('An error occured while trying to edit activity');
+        throw new Error(err.message);
     }
 }
 
