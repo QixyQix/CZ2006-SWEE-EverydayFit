@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }) => {
         },
         {
           headers: {
-            authorization: `${token}`,
+            Authorization: `${token}`,
           },
         }
       );
@@ -142,7 +142,6 @@ export const AuthProvider = ({ children }) => {
           },
         }
       );
-      console.log("RES:", res);
     } catch (e) {
       console.log("An error: patching");
     }
@@ -161,7 +160,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
     } catch (e) {
-      console.log("An error: AUTISM");
+      console.log("An error: delete");
     }
   };
   const login = (email, password) => base("login", { email, password });

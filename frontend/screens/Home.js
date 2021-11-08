@@ -32,6 +32,18 @@ export default Home = () => {
   // }
   // test();
 
+  const [forecasts, setForecasts] = useState([]);
+
+  // TODO handle server error
+  const getForecasts = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/forecasts`);
+      setForecasts(res.data);
+    } catch {
+      //setForecasts()
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       getForecasts();
@@ -43,10 +55,11 @@ export default Home = () => {
     month: moment().format("MM"),
     date: moment().format("DD"),
     day: moment().format("ddd MMM DD YYYY"),
+    weather: forecasts.length !== 0 ? forecasts[0] : "failed",
   };
 
   return (
-    <Layout style={tailwind("flex-1")}>
+    <Layout style={tailwind("flex-1 ")}>
       <HomeHeader forecast={forecasts} />
       <TodaysWeatherInfo forecast={forecasts[0]} />
       <FitnessPlanner date={dateStuff} />

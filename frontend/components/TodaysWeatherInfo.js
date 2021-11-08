@@ -6,7 +6,6 @@ import { weatherConditions } from "../constants";
 import { FontAwesome5 } from "@expo/vector-icons";
 import moment from "moment";
 export default TodaysWeatherInfo = ({ forecast }) => {
-  // Capitalize first character
 
   const weather = forecast ? forecast.forecastCategory: "";
   let weatherText = forecast ? weatherConditions[weather].text : "";
