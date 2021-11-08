@@ -4,7 +4,6 @@ import ForecastRouter from './routes/forecastRouter';
 import FitnessPlanRouter from './routes/fitnessPlanRouter';
 import ExerciseRouter from './routes/exerciseRouter';
 import path from 'path';
-import * as routes from './routes';
 
 const app = express();
 app.use(express.json());
@@ -18,7 +17,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', AuthRouter);
 app.use('/forecasts', ForecastRouter);
 app.use('/plan', FitnessPlanRouter);
-app.use('/exercise', ExerciseRouter)
-routes.register(app);
+app.use('/exercise', ExerciseRouter);
 
 export {app as default};
