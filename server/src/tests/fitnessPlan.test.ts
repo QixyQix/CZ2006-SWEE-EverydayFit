@@ -107,6 +107,16 @@ describe('FITNESSPLAN: Post activity', () => {
             }).expect(500);
     });
 
+    it('Returns status 500 if posted schema does not match', async () => {
+        await request(app).post('/plan/2021-11-10/activity')
+            .set('Authorization', token)
+            .send({
+                exerciseID: quantitativeBaseExercise._id,
+                quantity: "...",
+                sets: 0
+            }).expect(500);
+    });
+
     it('Returns status 200 and the fitness plan when creating a new activity', async () => {
         await request(app).post('/plan/2021-11-10/activity')
             .set('Authorization', token)
@@ -305,7 +315,7 @@ describe('FITNESSPLAN: Edit Activity', () => {
                 sets: 0,
                 done: true
             }).expect(500);
-    })
+    });
 
     it('Returns status 500 when done is not included', async () => {
         await request(app).patch('/plan/2021-11-10/activity')
@@ -316,7 +326,18 @@ describe('FITNESSPLAN: Edit Activity', () => {
                 quantity: 15,
                 sets: 0
             }).expect(500);
-    })
+    });
+
+    it('Returns status 500 when posted schema does not match', async () => {
+        await request(app).patch('/plan/2021-11-10/activity')
+            .set('Authorization', token)
+            .send({
+                activityID: createdActivityID,
+                exerciseID: quantitativeBaseExercise._id,
+                quantity: "...",
+                sets: 0
+            }).expect(500);
+    });
 
     it('Returns status 200 and the fitness plan with the updated activity', async () => {
         await request(app).patch('/plan/2021-11-10/activity')
@@ -385,6 +406,14 @@ describe('FITNESSPLAN: Delete Activity', () => {
             .set('Authorization', token)
             .send({
                 activityID: new mongoose.Types.ObjectId().toString()
+            }).expect(500);
+    });
+
+    it('Returns status 500 if activity not found', async () => {
+        await request(app).delete('/plan/2021-11-10/activity')
+            .set('Authorization', token)
+            .send({
+                activityID: "..."
             }).expect(500);
     });
 

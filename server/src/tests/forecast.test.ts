@@ -1,21 +1,40 @@
-import testDB from "./mongoTestDB";
 import app from '../app';
 import request from "supertest";
-import SeedDatabase from '../data/seed';
-import mongoose from 'mongoose';
+import testDB from "./mongoTestDB";
+import GetForecasts from '../service/forecastService';
+import scheduledService from '../service/scheduledService';
 
-describe('FORECASTS: Get Forecasts', () => {
-    it('Returns status 200 and details of weather forecasts', async () => {
-        await request(app).get('/forecasts/').expect((res) => {
-            expect(res.body).toMatchSnapshot({
-                _id: expect.any(String),
-                date: expect.any(Date),
-                highTemp: expect.any(Number),
-                lowTemp: expect.any(Number),
-                forecast: expect.any(String),
-                forecastCategory: expect.any(String),
-                wetWeather: expect.any(Boolean)
-            })
-        }).expect(200);
+beforeAll( async() =>{
+    await testDB.connect();
+    await scheduledService.RetrieveForecastsFromAPI();
+});
+
+afterEach(async () => {
+    // await testDB.clearDatabase()
+});
+
+afterAll(async () => {
+    await testDB.clearDatabase()
+    await testDB.closeDatabase()
+});
+
+describe ("FORECASTS Forecast services", () => {
+
+    it('Returns status 200 and weather forecasts' ,async()=>{
+        await request(app).get("/forecasts/").expect((res)=>{
+            for (const forecast of res.body){
+                if (forecast){
+                    expect(forecast).toMatchSnapshot({
+                        _id: expect.any(String),
+                        date: expect.any(String),
+                        highTemp: expect.any(Number),
+                        lowTemp: expect.any(Number),
+                        forecast: expect.any(String),
+                        forecastCategory: expect.any(String),
+                        wetWeather: expect.any(Boolean)
+                    })
+                }
+            }
+        });
     });
 });
