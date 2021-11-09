@@ -4,11 +4,13 @@
 
 ### Frontend
 
-```bash
-cd frontend
-npm i       # install dependencies
-expo start
-```
+1. Go to the frontend folder `cd frontend`
+1. Install dependencies `npm i`
+1. Make a copy of the `.env.sample` and name it as `.env` and `.env.development`, and change the `API_URL` to your IP address indicated from `npm start`
+1. Run app
+   - Development mode: `npm start`
+   - Production mode: `npm run start:prod`
+   - Development mode (refresh env variables and clears cache): `npm run start:rc`
 
 ### Backend
 
