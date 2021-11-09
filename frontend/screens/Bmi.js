@@ -4,6 +4,7 @@ import { Layout, Text, Input, Button } from "@ui-kitten/components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import { bmiSchema }  from "../utils/validationSchemas";
 
 /* 
 TODO Show error message for leading zeros (e.g. 007)
@@ -48,7 +49,7 @@ export default Bmi = () => {
 
         values.bmiCategory = getBmiCategory(values.bmi);
       },
-      validationSchema: schema,
+      validationSchema: bmiSchema,
     });
 
   return (

@@ -87,6 +87,11 @@ export default Ippt = () => {
           style={tailwind("mx-1")}
         />
       </Layout>
+
+      {errors.age && touched.age ? (
+          <Text style={tailwind("text-red-600")}>{errors.age}</Text>
+        ) : null}
+
       <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
         <Text>2.4 km run: </Text>
         <Input
@@ -106,6 +111,12 @@ export default Ippt = () => {
         />
         <Text>s</Text>
       </Layout>
+
+      {(errors.runTimeMinutes && touched.runTimeMinutes) ||
+        (errors.runTimeSeconds && touched.runTimeSeconds) ? (
+          <Text style={tailwind("text-red-600")}>Must be a valid duration</Text>
+        ) : null}
+
       <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
         <Text>Push-ups: </Text>
         <Input
@@ -116,6 +127,11 @@ export default Ippt = () => {
           style={tailwind("mx-1")}
         />
       </Layout>
+
+      {errors.pushUpCount && touched.pushUpCount ? (
+          <Text style={tailwind("text-red-600")}>{errors.pushUpCount}</Text>
+        ) : null}
+
       <Layout style={tailwind("flex-row flex-initial items-center m-1")}>
         <Text>Sit-ups: </Text>
         <Input
@@ -126,13 +142,11 @@ export default Ippt = () => {
           style={tailwind("mx-1")}
         />
       </Layout>
-        {errors.age && touched.age ? (
-          <Text style={tailwind("text-red-600")}>{errors.age}</Text>
+
+      {errors.sitUpCount && touched.sitUpCount ? (
+          <Text style={tailwind("text-red-600")}>{errors.sitUpCount}</Text>
         ) : null}
-        {(errors.runTimeMinutes && touched.runTimeMinutes) ||
-        (errors.runTimeSeconds && touched.runTimeSeconds) ? (
-          <Text style={tailwind("text-red-600")}>Must be a valid duration</Text>
-        ) : null}
+        
         <Layout style={tailwind("flex-initial items-center flex-col")}>
           <Button onPress={handleSubmit}>CALCULATE</Button>
 

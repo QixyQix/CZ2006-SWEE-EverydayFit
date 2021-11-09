@@ -17,7 +17,7 @@ export default function SetQuantity({ route }) {
   const { getPlan, setPlan } = useAuth();
 
   const exercise = route.params;
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       quantity: "",
       sets: 0,
@@ -26,6 +26,12 @@ export default function SetQuantity({ route }) {
       setPlan(route.params, values);
       navigation.pop(2);
     },
+
+    validationSchema :  (exercise.quantityType === "QUANTITATIVE"
+                        ? quantitativeSchema
+                        : exercise.quantityType === "TIME"
+                        ? timeSchema
+                        : distanceSchema)
   });
 
   return (
@@ -49,7 +55,12 @@ export default function SetQuantity({ route }) {
           placeholder="e.g. 10"
           value={values.quantity}
           onChangeText={handleChange("quantity")}
+          maxLength={5}
         />
+
+          {errors.quantity && touched.quantity ? (
+          <Text style={tailwind("text-red-600")}>{errors.quantity}</Text>
+           ) : null}
 
         {/* Show Sets field if quantitative */}
         {exercise.quantityType === "QUANTITATIVE" && (
@@ -60,9 +71,14 @@ export default function SetQuantity({ route }) {
               placeholder="e.g. 3"
               value={values.sets}
               onChangeText={handleChange("sets")}
+              maxLength={3}
             />
           </>
         )}
+
+        {errors.sets && touched.sets ? (
+          <Text style={tailwind("text-red-600")}>{errors.sets}</Text>
+           ) : null}
 
         <Button
           accessoryLeft={
