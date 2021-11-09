@@ -15,6 +15,7 @@ import {
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useAuth } from "../utils/auth";
 import { useFormik } from "formik";
+import { isNumeric, quantitativeSchema, timeSchema, distanceSchema }  from "../utils/validationSchemas";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 export const ButtonsStuff = (props) => {
@@ -29,6 +30,14 @@ export const ButtonsStuff = (props) => {
         : null,
       done: false
     },
+
+    validationSchema : (props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0
+                        ? "" 
+                        : props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "QUANTITATIVE"
+                        ? quantitativeSchema
+                        : props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "TIME"
+                        ? timeSchema
+                        : distanceSchema)
   });
 
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
@@ -164,7 +173,11 @@ return(
               placeholder={`Current: ${values.quantity}`}
               value={values.quantity}
               onChangeText={handleChange("quantity")}
+              maxLength={5}
             />
+            {errors.quantity && touched.quantity ? (
+                  <Text style={tailwind("text-red-600")}>{errors.quantity}</Text>
+                  ) : null}
             
 
             {props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0 ? "" : props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "QUANTITATIVE" && (
@@ -176,9 +189,16 @@ return(
                   placeholder= {`Current: ${values.sets}`}
                   value = {values.sets}
                   onChangeText={handleChange("sets")}
+                  maxLength={5}
                 />
+                
               </>
             )}
+
+
+            {errors.sets && touched.sets ? (
+                  <Text style={tailwind("text-red-600")}>{errors.sets}</Text>
+                  ) : null}
             </Layout>  
 
               <Layout style={tailwind("flex-row justify-center items-center ")}>

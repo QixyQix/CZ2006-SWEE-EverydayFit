@@ -140,7 +140,7 @@ export const AuthProvider = ({ children }) => {
       console.log(e);
       Alert.alert(
         "An error has occured...",
-        e.message,
+        e.response.data.message,
         [
           {
             text: "Dismiss",
@@ -176,8 +176,8 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       console.log(e);
       Alert.alert(
-        "An error has occured...",
-        e.message,
+        "An error has occured ...",
+        e.response.data.message,
         [
           {
             text: "Dismiss",
@@ -213,7 +213,7 @@ export const AuthProvider = ({ children }) => {
       console.log(e.message);
       Alert.alert(
         "An error has occured...",
-        e.message,
+        e.response.data.message,
         [
           {
             text: "Dismiss",
@@ -243,7 +243,7 @@ export const AuthProvider = ({ children }) => {
       console.log("An error: delete");
       Alert.alert(
         "An error has occured...",
-        e.message,
+        e.response.data.message,
         [
           {
             text: "Dismiss",
