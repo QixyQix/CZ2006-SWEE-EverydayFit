@@ -6,6 +6,7 @@ import { EForecastCategory } from "../models/constants";
 const RetrieveForecastsFromAPI = async () => {
     console.info('ForecastRepo: RetrieveForecastsFromAPI: Retrieving forecast from NEA API...');
     let apiData: any = null;
+    let successCall = true;
     try {
         const res = await axios.get('https://api.data.gov.sg/v1/environment/4-day-weather-forecast');
         if (res.status !== 200) return;
@@ -14,6 +15,11 @@ const RetrieveForecastsFromAPI = async () => {
     } catch (err) {
         console.error('ForecastRepo: RetrieveForecastsFromAPI: Error occured whiile retrieving forecast');
         console.error(err.message);
+        successCall = false;
+    }
+
+    if(!successCall){
+        return;
     }
 
     const datesToNotify: Date[] = [];
