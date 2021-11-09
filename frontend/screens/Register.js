@@ -3,10 +3,8 @@ import tailwind from "tailwind-rn";
 import { Layout, Text, Card, Input, Button } from "@ui-kitten/components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useAuth } from "../utils/auth";
-import { registerSchema }  from "../utils/validationSchemas";
-
+import { registerSchema } from "../utils/validationSchemas";
 
 export default Register = ({ navigation }) => {
   const { register } = useAuth();
@@ -26,7 +24,7 @@ export default Register = ({ navigation }) => {
         // Remove error messages and proceed to homepage
         setRegisterError("");
       } catch (e) {
-        setRegisterError(e.message);
+        setRegisterError(e.response.data.message);
       }
     },
 
@@ -34,7 +32,6 @@ export default Register = ({ navigation }) => {
   });
 
   return (
-    // TODO Improve styling
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
