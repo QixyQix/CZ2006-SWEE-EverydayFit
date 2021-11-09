@@ -55,7 +55,7 @@ export default function SetQuantity({ route }) {
           placeholder="e.g. 10"
           value={values.quantity}
           onChangeText={handleChange("quantity")}
-          maxLength={5}
+          maxLength={3}
         />
 
           {errors.quantity && touched.quantity ? (

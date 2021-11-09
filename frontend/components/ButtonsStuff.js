@@ -17,27 +17,44 @@ import { useAuth } from "../utils/auth";
 import { useFormik } from "formik";
 import { isNumeric, quantitativeSchema, timeSchema, distanceSchema }  from "../utils/validationSchemas";
 import { FontAwesome5 } from "@expo/vector-icons";
+import * as Yup from "yup";
 
 export const ButtonsStuff = (props) => {
 
-  const { values, handleChange } = useFormik({
+  
+  const { values, handleChange, errors, touched, handleSubmit } = useFormik({
     initialValues: {
       sets : props.dictExercise.length !== 0 && props.dictActivity.length !== 0  && props.dictExerciseToID.length !== 0 
-        ? props.dictActivity[props.dictExerciseToID[props.exerciseName].exerciseID][1] 
-        : 0 ,
+             ? props.dictActivity[props.dictExerciseToID[props.exerciseName].exerciseID][1] 
+             : "" ,
       quantity: props.dictExercise.length !== 0 && props.dictActivity.length !== 0  
-        ? props.dictQuantity[props.activityID][0] 
-        : null,
+                ? props.dictQuantity[props.activityID][0] 
+                : "",
       done: false
     },
 
-    validationSchema : (props.dictExercise.length === 0 || props.dictActivity.length === 0  || props.dictExerciseToID.length === 0
-                        ? "" 
-                        : props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "QUANTITATIVE"
-                        ? quantitativeSchema
-                        : props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "TIME"
-                        ? timeSchema
-                        : distanceSchema)
+    onSubmit: () => {
+      console.log("SUBMITTING")
+      EditHandler(props.activityID);
+      setVisibleBtnA(false);
+    },
+
+    validationSchema: Yup.object().shape({
+      quantity: Yup.string()
+          .required("Required")
+          .test("Number", "Must be a positive number", (value)=> {
+            if (props.dictExercise[props.dictExerciseToID[placement].exerciseID].exerciseType === "DISTANCE") {
+              return /^([0-9]\.[1-9]+|[1-9][0-9]*\.[1-9]|[1-9][0-9]*)$/.test(value);
+            }
+            return /^([1-9][0-9]{0,100}|100)$/.test(value)
+          }),
+      sets: Yup.string()
+          .nullable()
+          .required("Required")
+          .test("Number", "Must be an integer greater than 0", (value) => /^([1-9][0-9]{0,100}|100)$/.test(value)),
+      done: Yup.boolean().required()
+    })
+ 
   });
 
   const { getPlan, setPlan, deletePlan, patchPlan } = useAuth();
@@ -45,6 +62,7 @@ export const ButtonsStuff = (props) => {
   const [visibleBtnA, setVisibleBtnA] = useState(false);
   const [placementIndex, setPlacementIndex] = useState(new IndexPath(0));
   const placement = props.placement[placementIndex.row];
+  
   
   const onPlacementSelect = (index) => {
     setPlacementIndex(index);
@@ -71,16 +89,17 @@ export const ButtonsStuff = (props) => {
        totalQuantity: values.quantity,
        sets: values.sets >= 1? values.sets: 1, 
        done: false };
+       console.log("BUG 1011111:", updatedPlan);
        const {getExercise, exercise, activities, getActivities} = {...props};  
        await patchPlan(props.date, updatedPlan);
        await props.getActivities();
-};
+  };
 
    const renderPlacementItem = (title, index) => (
     <SelectItem title={title} key={index} />
   );
 
-  const deleteHandler =  async (item) => {
+  const deleteHandler =  async () => {
       const {getExercise, exercise, activities, getActivities} = {...props};   
       await deletePlan(props.date, props.activityID); 
       await props.getActivities();
@@ -173,8 +192,10 @@ return(
               placeholder={`Current: ${values.quantity}`}
               value={values.quantity}
               onChangeText={handleChange("quantity")}
-              maxLength={5}
+              maxLength={3}
             />
+
+
             {errors.quantity && touched.quantity ? (
                   <Text style={tailwind("text-red-600")}>{errors.quantity}</Text>
                   ) : null}
@@ -189,16 +210,17 @@ return(
                   placeholder= {`Current: ${values.sets}`}
                   value = {values.sets}
                   onChangeText={handleChange("sets")}
-                  maxLength={5}
+                  maxLength={3}
                 />
-                
+
+                {errors.sets && touched.sets ? (
+                <Text style={tailwind("text-red-600")}>{errors.sets}</Text>
+                ) : null}
+
               </>
+              
             )}
 
-
-            {errors.sets && touched.sets ? (
-                  <Text style={tailwind("text-red-600")}>{errors.sets}</Text>
-                  ) : null}
             </Layout>  
 
               <Layout style={tailwind("flex-row justify-center items-center ")}>
@@ -210,10 +232,7 @@ return(
                   No
                 </Button>
                 <Button
-                  onPress={() => {
-                    EditHandler(props.activityID);
-                    setVisibleBtnA(false);
-                  }}>
+                  onPress={handleSubmit}>
                   
                   Yes
                   </Button>
