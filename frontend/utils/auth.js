@@ -105,8 +105,8 @@ export const AuthProvider = ({ children }) => {
   // Base function for login and register for reusability
   const base = async (method, body) => {
     const res = await axios.post(`${API_URL}/auth/${method}`, body);
-    console.log(res.data)
-    if (res.data.success) {
+
+    if (method === "register" && res.status === 200 || method === "login" && res.data.success) {
       const authData = {
         lastFetched: new Date(),
         token: res.data.token,
