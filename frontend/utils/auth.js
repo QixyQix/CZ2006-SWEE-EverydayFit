@@ -105,9 +105,8 @@ export const AuthProvider = ({ children }) => {
   // Base function for login and register for reusability
   const base = async (method, body) => {
     const res = await axios.post(`${API_URL}/auth/${method}`, body);
-
-    if (res.status == 200) {
-      // FIXME Not sure if we should store the tokens locally
+    console.log(res.data)
+    if (res.data.success) {
       const authData = {
         lastFetched: new Date(),
         token: res.data.token,
@@ -117,9 +116,8 @@ export const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem("auth", JSON.stringify(authData));
       setAuth(authData);
       return res.data;
-    } else {
+    } 
       throw res.data;
-    }
   };
 
   const getPlan = async (date) => {

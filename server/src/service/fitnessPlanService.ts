@@ -68,7 +68,7 @@ const AddActivityToFitnessPlan = async (userID: string, date: Date, exerciseID: 
         }
     } catch (err) {
         console.error(`FitnessPlanService: AddActivityToFitnessPlan: An error occured while adding activity to fitness plan for ${userID} on ${date.toDateString()}`);
-        throw new Error('An error occured while trying to add activity');
+        throw new Error(err.message);
     }
 }
 
@@ -97,7 +97,7 @@ const DeleteActivityFromFitnessPlan = async (userID: string, date: Date, activit
         return result;
     } catch (err) {
         console.error(`FitnessPlanService: DeleteActivityFromFitnessPlan: An error occured while deleting activity to fitness plan for ${userID} on ${date.toDateString()}`);
-        throw new Error('An error occured while trying to delete activity');
+        throw new Error(err.message);
     }
 }
 
