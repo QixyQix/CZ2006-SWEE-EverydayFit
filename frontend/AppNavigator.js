@@ -42,7 +42,7 @@ const HomeNavigator = () => {
     </Stack.Navigator>
   );
 };
-// TODO Set color to match with the theme
+
 const HomeIcon = (props) => (
   <MaterialIcons name="home" size={30} color="rgb(0, 0, 230)" />
 );

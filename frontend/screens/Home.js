@@ -13,7 +13,6 @@ import { useAuth } from "../utils/auth";
 export default Home = () => {
   const [forecasts, setForecasts] = useState([]);
 
-  // TODO handle server error
   const getForecasts = async () => {
     try {
       const res = await axios.get(`${API_URL}/forecasts`);
@@ -22,7 +21,6 @@ export default Home = () => {
       //setForecasts()
     }
   };
-
 
   useFocusEffect(
     useCallback(() => {

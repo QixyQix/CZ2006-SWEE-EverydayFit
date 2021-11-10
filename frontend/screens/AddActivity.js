@@ -11,16 +11,16 @@ export default AddActivity = ({ route }) => {
   const getExercisesAndUpdateState = async () => {
     setExercises(await getExercises());
   };
-  // TODO Add error catching
+
   useEffect(() => {
     getExercisesAndUpdateState();
   }, []);
-  // TODO Improve styling
+
   const renderItem = ({ item }) => (
     <ListItem
       onPress={() => {
         let indexToParse = route.params;
-        let itemToParse = {...item, ...indexToParse};
+        let itemToParse = { ...item, ...indexToParse };
         navigation.navigate("SetQuantity", itemToParse);
       }}
       title={item.name}
@@ -31,12 +31,11 @@ export default AddActivity = ({ route }) => {
       }
     />
   );
-  
-  
+
   return (
     <Layout style={tailwind("flex-1")}>
       <List
-        data={exercises.slice(0,8)}
+        data={exercises.slice(0, 8)}
         ItemSeparatorComponent={Divider}
         renderItem={renderItem}
       />

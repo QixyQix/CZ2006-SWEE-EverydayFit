@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     token: null,
     refreshToken: null,
   });
-  // TODO Add a loading screen while fetching the stored data
+
   const [isLoading, setIsLoading] = useState(true);
   const notificationListener = useRef();
   const responseListener = useRef();
@@ -63,23 +63,23 @@ export const AuthProvider = ({ children }) => {
   const registerForPushNotifications = async () => {
     try {
       // if (Constants.isDevice) {
-        // Get the token that identifies this device
-        let pushToken = await Notifications.getExpoPushTokenAsync();
+      // Get the token that identifies this device
+      let pushToken = await Notifications.getExpoPushTokenAsync();
 
-        // POST the token
-        await axios.post(
-          `${API_URL}/auth/expoToken`,
-          {
-            expoToken: pushToken.data,
+      // POST the token
+      await axios.post(
+        `${API_URL}/auth/expoToken`,
+        {
+          expoToken: pushToken.data,
+        },
+        {
+          headers: {
+            Authorization: `${auth.token}`,
           },
-          {
-            headers: {
-              Authorization: `${auth.token}`,
-            },
-          }
-        );
+        }
+      );
 
-        console.log("Registered for push notifs");
+      console.log("Registered for push notifs");
       // } else {
       //   console.log("Must use physical device for Push Notifications");
       // }
@@ -106,7 +106,10 @@ export const AuthProvider = ({ children }) => {
   const base = async (method, body) => {
     const res = await axios.post(`${API_URL}/auth/${method}`, body);
 
-    if (method === "register" && res.status === 200 || method === "login" && res.data.success) {
+    if (
+      (method === "register" && res.status === 200) ||
+      (method === "login" && res.data.success)
+    ) {
       const authData = {
         lastFetched: new Date(),
         token: res.data.token,
@@ -116,8 +119,8 @@ export const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem("auth", JSON.stringify(authData));
       setAuth(authData);
       return res.data;
-    } 
-      throw res.data;
+    }
+    throw res.data;
   };
 
   const getPlan = async (date) => {

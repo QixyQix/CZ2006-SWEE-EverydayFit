@@ -6,12 +6,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { isNumeric, quantitativeSchema, timeSchema, distanceSchema }  from "../utils/validationSchemas";
+import {
+  isNumeric,
+  quantitativeSchema,
+  timeSchema,
+  distanceSchema,
+} from "../utils/validationSchemas";
 import tailwind from "tailwind-rn";
 import { useAuth } from "../utils/auth";
 import moment from "moment";
 
-// TODO Add form validation
 export default function SetQuantity({ route }) {
   const navigation = useNavigation();
   const { getPlan, setPlan } = useAuth();
@@ -21,17 +25,18 @@ export default function SetQuantity({ route }) {
     initialValues: {
       quantity: "",
       sets: 0,
-    },    
+    },
     onSubmit: (values) => {
       setPlan(route.params, values);
       navigation.pop(2);
     },
 
-    validationSchema :  (exercise.quantityType === "QUANTITATIVE"
-                        ? quantitativeSchema
-                        : exercise.quantityType === "TIME"
-                        ? timeSchema
-                        : distanceSchema)
+    validationSchema:
+      exercise.quantityType === "QUANTITATIVE"
+        ? quantitativeSchema
+        : exercise.quantityType === "TIME"
+        ? timeSchema
+        : distanceSchema,
   });
 
   return (
@@ -58,9 +63,9 @@ export default function SetQuantity({ route }) {
           maxLength={5}
         />
 
-          {errors.quantity && touched.quantity ? (
+        {errors.quantity && touched.quantity ? (
           <Text style={tailwind("text-red-600")}>{errors.quantity}</Text>
-           ) : null}
+        ) : null}
 
         {/* Show Sets field if quantitative */}
         {exercise.quantityType === "QUANTITATIVE" && (
@@ -78,7 +83,7 @@ export default function SetQuantity({ route }) {
 
         {errors.sets && touched.sets ? (
           <Text style={tailwind("text-red-600")}>{errors.sets}</Text>
-           ) : null}
+        ) : null}
 
         <Button
           accessoryLeft={
