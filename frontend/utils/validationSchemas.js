@@ -9,6 +9,8 @@ const isIntMoreThan1 = (value) => /^([1-9][0-9]{0,100}|100)$/.test(value);
 const isTwoDigit = (value) => /^[1-9]?\d$/.test(value);
 const isSeconds = (value) => /^[0-5]?[0-9]$/.test(value);
 
+//const isCorrectLimit = (value) => /^[0-5]?[0-9]$/.test(value);
+
 
 const quantitativeSchema = Yup.object().shape({
         quantity: Yup.string()
@@ -57,16 +59,22 @@ const ipptSchema = Yup.object().shape({
         serviceType: Yup.string().required("Required"),
         age: Yup.string()
           .required("Required")
-          .test("Age", "Must be a positive integer", isTwoDigit),
-        runTimeMinutes: Yup.string().test("Minutes", isTwoDigit).required("Required"),
+          .test("Age", "Must be a positive integer", isTwoDigit)
+          .test("Age", "Age cannot be more than 60", val => parseInt(val) < 61 ),
+        runTimeMinutes: Yup.string()
+          .test("Minutes", isTwoDigit)
+          .required("Required")
+          .test("Minutes", "Enter a valid duration", val => parseInt(val) < 25 ),
         runTimeSeconds: Yup.string()
           .test("Seconds", isSeconds)
           .required("Required"),
         pushUpCount: Yup.string()
           .test("Push Up", "Must be a positive integer", isTwoDigit)
+          .test("Sit Up", "Number cannot be more than 60", val => parseInt(val) < 61 )
           .required("Required"),
         sitUpCount: Yup.string()
           .test("Sit Up", "Must be a positive integer", isTwoDigit)
+          .test("Sit Up", "Number cannot be more than 60", val => parseInt(val) < 61 )
           .required("Required"),
       });
 
